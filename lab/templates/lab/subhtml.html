@@ -1,0 +1,5 @@
+{% load tags_extras %} %}
+
+{% for val in values %}
+<option value={{ val|get_at_index:0 }}>{{ val|get_at_index:1 }}</option>
+{% endfor %}

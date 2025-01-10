@@ -1,0 +1,34 @@
+{% extends 'lab/base_activity.html' %}
+{% load render_table from django_tables2 %}
+{% load export_url from django_tables2 %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+{% load tags_extras %}
+{% load static %}
+
+{% block content %}
+    <script src="{% static "/js/do_extraction.js" %}"></script>
+     {% export_url "xlsx" as xlsx%}
+
+    {% include 'lab/form_errors.html' %}
+    <form action="" method="get" class="form form-inline" novalidate >
+        {% csrf_token %}
+        {% bootstrap_form  filter.form  layout='inline'%}
+        {% buttons submit='Filter' layout='inline' %}{% endbuttons %}
+        {% if export %}
+            {% bootstrap_button "Create an extraction" button_type="link" button_class="btn-primary" href=xlsx %}
+        {% endif %}
+
+    </form>
+         {% if amount != -1 %}
+            <p>Billable amount from these UOs: {{ amount }} €</p>
+            <br>
+        {% endif %}
+    {% if tables %}
+        {% for table in tables %}
+
+            <p>Entries for the activitiy {{ activities|get_at_index:forloop.counter0 }}:</p>
+            {% render_table table %}
+        {% endfor %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends 'lab/base.html' %}
+{% load render_table from django_tables2 %}
+{% load export_url from django_tables2 %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+{% load tags_extras %}
+{% load static %}
+
+{% block content %}
+    <script src="{% static "/js/process_extraction.js" %}"></script>
+    {% if thanks %}
+        <p>Votre facture a bien été enregistrée, vous pouvez la télécharger ci-dessous. L'administration va maintenant
+            procéder à son envoi.</p>
+        <hr class="mt-0 mb-4">
+    {% endif %}
+
+    {% if not email_status %}
+        <p>Votre facture a été enregistrée et validée mais son envoi par email a échoué...(les voies de l'informatique
+        sont impénétrables parfois ;-). Merci de la télécharger et de l'envoyer directement à gestionnaires@cemes.fr
+        pour facturation.</p>
+        <hr class="mt-0 mb-4">
+    {% endif %}
+
+    {% include 'lab/form_errors.html' %}
+    <form action="" method="POST" class="form form-inline formext">
+        {% csrf_token %}
+        {% bootstrap_form  form  layout='inline'%}
+        {% buttons %}
+        {% if modification %}
+            <button type="submit" class="btn btn-primary ml-1 mr-1" name="factured">Set as factured</button>
+            <button type="submit" class="btn btn-secondary  mr-1" name="unfactured">Set as not factured</button>
+        {% endif %}
+        <button type="submit" class="btn btn-secondary" name="download">Download xlsx</button>
+        {% if submitting %}
+            <button type="submit" class="btn btn-primary" name="submit">Send bill</button>
+        {% endif %}
+        <button type="submit" class="btn btn-primary getext" name="getext">Getext</button>
+
+        {% if submitting %}
+            <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+        {% endif %}
+        {% endbuttons %}
+
+    </form>
+
+
+    <hr class="mt-0 mb-4">
+
+    {% export_url "xlsx" as xlsx%}
+
+
+    {% include 'lab/form_errors.html' %}
+    <form action="" method="get" class="form form-inline">
+        {% csrf_token %}
+        {% bootstrap_form  filter.form  layout='inline'%}
+        {% buttons submit='Filter' layout='inline' %}{% endbuttons %}
+        {% if export %}
+            {% bootstrap_button "Create an extraction" button_type="link" button_class="btn-primary" href=xlsx %}
+        {% endif %}
+    </form>
+
+    {% if table %}
+    {% render_table table %}
+    {% endif %}
+{% endblock %}

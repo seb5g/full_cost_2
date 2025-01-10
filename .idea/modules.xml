@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/full_cost_2.iml" filepath="$PROJECT_DIR$/.idea/full_cost_2.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../full_cost_git/.idea/full_cost_git.iml" filepath="$PROJECT_DIR$/../full_cost_git/.idea/full_cost_git.iml" />
+    </modules>
+  </component>
+</project>

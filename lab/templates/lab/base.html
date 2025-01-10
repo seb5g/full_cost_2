@@ -1,0 +1,52 @@
+{% load static %}
+{% static "/logo_cemes.png" as logo_cemes%}
+
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    {% comment %} this is a comment
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="{{css}}">
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"
+			  integrity="sha256-0YPKAwZP7Mp3ALMRVB2i8GXeEndvCq3eSl/WsAl1Ryk="
+			  crossorigin="anonymous"></script>
+	{% endcomment %}
+    <link rel="stylesheet" href="{% static "/css/bootstrap.css"%}">
+    <link rel="stylesheet" type="text/css" href="{{css}}">
+    <script src="{% static "/js/jquery341.js"%}"></script>
+    <script src="{% static "/js/popper.js"%}"></script>
+    <script src="{% static "/js/bootstrap4.js"%}"></script>
+    <script src="{% static "/js/jquery-ui.js"%}"></script>
+
+    <title>CEMES LAB</title>
+  </head>
+  <body>
+
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-0">
+          <div class="row">
+            <h1 class="mt-2">
+              <img class="align-middle" src="{% static "/logo_cemes.png" %}" alt="" style="width:200px;height:200;">
+              CEMES - CNRS
+              <img class="align-middle" src="{% static "/logo_CNRS.png" %}" alt="" style="width:150px;height:150;">
+              </h1>
+          </div>
+          <hr class="mt-0 mb-4">
+          {% include 'lab/navbar.html' %}
+          {% block content %}
+          {% endblock %}
+          <hr class="mt-0 mb-4">
+          {% include 'lab/footer.html' %}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+{% extends 'lab/base_activity.html' %}
+{% load crispy_forms_tags %}
+{% load bootstrap4 %}
+
+{% block content %}
+    {% include 'lab/form_errors.html' %}
+    {% crispy form%}
+{% endblock %}
