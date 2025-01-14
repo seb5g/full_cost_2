@@ -1,0 +1,2 @@
+recursive-include full_coster/static *
+recursive-include fullcoster/activity_base *

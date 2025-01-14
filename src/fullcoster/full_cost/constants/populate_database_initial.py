@@ -7,7 +7,7 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "full_cost.settings")
 import django
 django.setup()
 
-from lab.models import Project, User, Group, Price, Gestionnaire
+from fullcoster.lab.models import Project, User, Group, Price, Gestionnaire
 from full_cost.utils.ldap import LDAP
 from full_cost.constants.activities import ACTIVITIES, ActivityCategory
 from full_cost.constants.entities import ENTITIES, PriceCategory
