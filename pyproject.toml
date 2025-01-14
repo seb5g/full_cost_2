@@ -60,5 +60,3 @@ fallback-version = '2.0.0'
 
 [tool.hatch.build.targets.sdist]
 
-[tool.setuptools.packages.find]
-where = ["src"]
