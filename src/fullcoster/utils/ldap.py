@@ -1,4 +1,4 @@
-from full_cost import settings
+from ..full_cost import settings
 
 if hasattr(settings, 'AUTH_LDAP_SERVER_URI'):
     import ldap

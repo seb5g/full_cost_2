@@ -2,15 +2,20 @@ import os
 import codecs
 import csv
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "full_cost.settings")
+from pathlib import Path
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fullcoster.full_cost.settings")
 
 import django
 django.setup()
 
 from fullcoster.lab.models import Project, User, Group, Price, Gestionnaire
-from full_cost.utils.ldap import LDAP
-from full_cost.constants.activities import ACTIVITIES, ActivityCategory
-from full_cost.constants.entities import ENTITIES, PriceCategory
+from fullcoster.utils.ldap import LDAP
+from fullcoster.constants.activities import ACTIVITIES, ActivityCategory
+from fullcoster.constants.entities import ENTITIES, PriceCategory
+
+
+here = Path(__file__).parent
 
 gest = [dict(last_name='Trupin', first_name='Mireille', email='mireille.trupin@cemes.fr', groups=[]),
         dict(last_name='Rougale', first_name='Muriel', email='muriel.rougalle@cemes.fr', groups=[]),
@@ -34,7 +39,7 @@ def populate_gestionnaire():
 def populate_project():
     for p in Project.objects.all():
         p.delete()
-    with codecs.open('./project_pi.csv', 'r', 'utf-8') as csvfile:
+    with codecs.open(here.joinpath('project_pi.csv'), 'r', 'utf-8') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             pi_surname = row[1].split(' ')[0]
@@ -52,7 +57,7 @@ def populate_users():
         u.delete()
     for g in Group.objects.all():
         g.delete()
-    with codecs.open('./personnel.csv', 'r', 'utf-8') as csvfile:
+    with codecs.open(here.joinpath('personnel.csv'), 'r', 'utf-8') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             lgroup = get_group(row[0].upper())

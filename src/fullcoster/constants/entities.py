@@ -2,7 +2,7 @@ from typing import Iterable, Any
 from dataclasses import dataclass
 
 
-from full_cost.utils.enum import BaseEnum
+from ..utils.enum import BaseEnum
 
 
 class PriceCategory(BaseEnum):

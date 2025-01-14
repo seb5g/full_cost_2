@@ -36,7 +36,7 @@ LOGIN_REDIRECT_URL = '/lab/logged/'
 
 INSTALLED_APPS = [
     # 'osp.apps.OspConfig',
-    'lab.apps.LabConfig',
+    'fullcoster.lab.apps.LabConfig',
     # 'met.apps.MetConfig',
     # 'prepa.apps.PrepaConfig',
     # 'fib.apps.FibConfig',

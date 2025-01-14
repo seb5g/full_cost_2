@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class LabConfig(AppConfig):
-    name = 'lab'
+    name = 'fullcoster.lab'
