@@ -11,11 +11,13 @@ from datetime import date
 from django.http import HttpResponse
 from django.db.models import Max
 from django.urls import reverse
-from full_cost.constants.entities import Entity
+
+from ..constants.entities import Entity
 # from full_cost.utils.constants import get_activities_from_entity, get_subbillings_from_entity_short,\
 #     get_subbillings_from_entity_long, get_entity_long, CNRS_PERCENTAGE
-from lab.models import Extraction, Price
-from full_cost import settings
+from ..lab.models import Extraction, Price
+from ..full_cost import settings
+
 
 def get_border(style=None, color='FF000000'):
     return Border(left=Side(border_style=style, color=color),

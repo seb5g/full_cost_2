@@ -14,6 +14,7 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
 
@@ -22,9 +23,9 @@ urlpatterns = [
     path('accounts/', include('django.contrib.auth.urls')),]
 
 try:
-    from lab.views import Index
+    from fullcoster.lab.views import Index
     urlpatterns.append(path('', Index.as_view(), name='index'))
-    urlpatterns.append(path('lab/', include('lab.urls')))
+    urlpatterns.append(path('lab/', include('fullcoster.lab.urls')))
 #     path('osp/', include('osp.urls')),
 #     path('met/', include('met.urls')),
 #     path('prepa/', include('prepa.urls')),

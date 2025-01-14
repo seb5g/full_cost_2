@@ -5,8 +5,8 @@ from django.contrib.postgres.fields import ArrayField
 from django.utils.timezone import now
 from simple_history.models import HistoricalRecords
 import datetime
-from ..constants.activities import activities_choices
-from ..constants.entities import PriceCategory, ENTITIES, get_entities_as_list
+from fullcoster.constants.activities import activities_choices
+from fullcoster.constants.entities import PriceCategory, ENTITIES, get_entities_as_list
 
 activity_short = Path(__file__).parts[-2]
 
@@ -14,6 +14,7 @@ activity_short = Path(__file__).parts[-2]
 
 
 class Gestionnaire(models.Model):
+
     first_name = models.CharField(max_length=200, default=None)
     last_name = models.CharField(max_length=200, default=None)
     email = models.EmailField(max_length=200, default=None)

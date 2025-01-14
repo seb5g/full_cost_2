@@ -1,6 +1,7 @@
 from importlib import import_module
-from full_cost import settings
+
 from copy import deepcopy
+
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.models import AnonymousUser
@@ -12,25 +13,30 @@ from django.db.models import Q, QuerySet
 from post_office import mail
 from django.core.exceptions import ObjectDoesNotExist
 from pathlib import Path
-from full_cost.utils.filter_stuff import filterset_factory_extra
+
+from fullcoster.utils.filter_stuff import filterset_factory_extra
+from fullcoster.utils.facturing import generate_xlsx, create_extraction
+
 from django_tables2.config import RequestConfig
-from full_cost.utils.facturing import generate_xlsx, create_extraction
 from django_tables2.export.export import TableExport
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from lab.models import User, Extraction
-from lab.filters import ProjectFilter, ExtractDisplayFilter, ExtractFilterAll, ExtractFilterForm, FilterSet
-from lab.tables import ProjectTable, RecordTableFull, ExtractionTable, RecordTable
-from lab.forms import ExtractionForm
 
 
-from full_cost.constants.activities import ACTIVITIES, ActivityCategory, get_activities_from_entity
-from full_cost.constants.entities import get_entities_as_list, EntityCategory
+from .models import User, Extraction
+from .filters import ProjectFilter, ExtractDisplayFilter, ExtractFilterAll, ExtractFilterForm, FilterSet
+from .tables import ProjectTable, RecordTableFull, ExtractionTable, RecordTable
+from .forms import ExtractionForm
 
 
-from full_cost.utils.ldap import LDAP
-from full_cost.utils.facturing import calculate_totals
-from full_cost.utils.url_stuff import get_field_from_url
+from ..constants.activities import ACTIVITIES, ActivityCategory, get_activities_from_entity
+from ..constants.entities import get_entities_as_list, EntityCategory
+
+
+from ..utils.ldap import LDAP
+from ..utils.facturing import calculate_totals
+from ..utils.url_stuff import get_field_from_url
+
 from .models import Record, Group
 
 activity_short = Path(__file__).parts[-2]

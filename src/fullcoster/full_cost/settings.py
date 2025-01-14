@@ -72,7 +72,7 @@ MIDDLEWARE = [
     'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
-ROOT_URLCONF = 'full_cost.urls'
+ROOT_URLCONF = 'fullcoster.full_cost.urls'
 
 TEMPLATES = [
     {
@@ -91,7 +91,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'full_cost.wsgi.application'
+WSGI_APPLICATION = 'fullcoster.full_cost.wsgi.application'
 
 
 # Database
