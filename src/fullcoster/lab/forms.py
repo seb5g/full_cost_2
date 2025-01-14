@@ -1,7 +1,10 @@
 from django.forms import ModelForm, DateInput, Textarea, NumberInput, Select, CharField, TextInput, ModelChoiceField
 from django.db.models.query import QuerySet
+
+
 from .models import Record, Extraction
-from lab.models import Project, User
+from .models import Project, User
+
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Column, Div
 

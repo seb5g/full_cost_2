@@ -31,19 +31,20 @@ classifiers = [
     "Topic :: Software Development :: User Interfaces",
 ]
 dependencies = [
-        'numpy',
-        'django',
-        'psycopg2',
-        'python-ldap',
-        'django-auth-ldap',
-        'django-tables2',
-        'django-filter',
-        'django-bootstrap4',
-        'django-crispy-forms',
-        'django-simple-history',
-        'django-post_office',
-        'openpyxl',
-        'tablib',
+    'numpy',
+    'django',
+    'psycopg2',
+    'python-ldap',
+    'django-auth-ldap',
+    'django-tables2',
+    'django-filter',
+    'django-bootstrap4',
+    'django-crispy-forms',
+    'django-simple-history',
+    'django-post_office',
+    'openpyxl',
+    'tablib',
+    'portion',
 ]
 
 [project.scripts]

@@ -4,7 +4,8 @@ import django_filters
 from crispy_forms.helper import FormHelper
 from django.forms import IntegerField, Form, DateInput, DateField
 from django.forms.widgets import Select
-from lab.models import Project, User, Group, Extraction
+
+from .models import Project, User, Group, Extraction
 
 
 

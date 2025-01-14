@@ -1,5 +1,5 @@
 import django_tables2 as tables
-from lab.models import Project, Extraction
+from .models import Project, Extraction
 
 field_sequence = ('date_from', 'time_from',
                   'date_to', 'time_to',

@@ -6,7 +6,7 @@ import django.db.models.deletion
 import django.utils.timezone
 import simple_history.models
 
-from full_cost.constants.entities import PriceCategory
+from ...constants.entities import PriceCategory
 
 
 class Migration(migrations.Migration):
