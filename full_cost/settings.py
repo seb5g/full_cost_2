@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'simple_history',
     'post_office',
+    'django_tables2',
 ]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

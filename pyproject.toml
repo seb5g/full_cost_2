@@ -1,0 +1,64 @@
+[build-system]
+requires = ["hatchling>=1.9.0", "hatch-vcs", "toml"]
+build-backend = "hatchling.build"
+
+[project]
+name = "full_cost"
+dynamic = [
+    "version",
+]
+description = "Project allowing saving use of lab experiments for a full cost"
+readme = "README.rst"
+license = { file="LICENSE" }
+requires-python = ">=3.11"
+authors = [
+    { name = "Sébastien Weber", email = "sebastien.weber@cemes.fr" },
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Other Environment",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Human Machine Interfaces",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: User Interfaces",
+]
+dependencies = [
+        'numpy',
+        'django',
+        'psycopg2',
+        'python-ldap',
+        'django-auth-ldap',
+        'django-tables2',
+        'django-filter',
+        'django-bootstrap4',
+        'django-crispy-forms',
+        'django-simple-history',
+        'django-post_office',
+        'openpyxl',
+        'tablib',
+]
+
+[project.scripts]
+
+
+[project.urls]
+Homepage = "https://full-cost.cemes.fr"
+Source = ""
+Tracker = ""
+
+[tool.hatch.version]
+source = "vcs"
+fallback-version = '2.0.0'
+
+[tool.hatch.build.targets.sdist]
+
+[tool.setuptools.packages.find]
+where = ["src"]
