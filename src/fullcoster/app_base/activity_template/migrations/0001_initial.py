@@ -6,11 +6,18 @@ from django.db import migrations, models
 import django.db.models.deletion
 import django.utils.timezone
 import simple_history.models
-from fullcoster.constants.activities import Activity, ACTIVITIES
+
+from full_cost.constants.activities import ActivityCategory
+from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory
 from fullcoster.constants.entities import ENTITIES
 
+""" 
 
-activity: Activity = {{'activity'}}
+The template tag {{'activity'}} will be replaced by the name of the ActivityCategory enum specifying the Activity
+
+"""
+
+activity: Activity = ACTIVITIES[ActivityCategory[{{'activity'}}]]
 
 activity_short_lower = f'{activity.activity_short.lower()}'
 

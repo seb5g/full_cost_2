@@ -1,5 +1,5 @@
 # tutorial/tables.py
-import lab.tables as tables
+import fullcoster.lab.tables as tables
 from .models import Record, Extraction
 
 Rfields = [f.name for f in Record._meta.fields]

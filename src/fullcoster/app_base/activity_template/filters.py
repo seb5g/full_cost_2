@@ -1,8 +1,9 @@
 import django_filters
 from django.db.models import Q
 from .models import Record, Experiment
-from ..lab.models import Project
-from ..lab import filters as filters
+
+from fullcoster.lab.models import Project
+from fullcoster.lab import filters as filters
 from django.utils.timezone import now
 from datetime import timedelta
 
@@ -14,7 +15,7 @@ class RecordFilter(filters.RecordFilter):
     project = filtered_project
 
     experiment = django_filters.ModelChoiceFilter(queryset=Experiment.objects.all(),
-                                               empty_label= 'All Experiments')
+                                                  empty_label= 'All Experiments')
     class Meta(filters.RecordFilter.Meta):
         model = Record
 

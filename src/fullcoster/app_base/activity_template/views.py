@@ -1,32 +1,39 @@
 from pathlib import Path
-from lab.views import FilterRecord, Export, GetRecord
+from fullcoster.lab.views import FilterRecord, Export, GetRecord
 
 from .models import Record
 from .forms import RecordForm
 from .tables import RecordTable, RecordTableFull
 from .filters import RecordFilter
-from full_cost.utils import manage_time
-from full_cost.utils.constants import ACTIVITIES
-#####################################################
-activity_short = Path(__file__).parts[-2]
-activity_long = ACTIVITIES[activity_short]['activity_long']
-activity={'short': activity_short, 'long': activity_long,}
+
+from fullcoster.utils import manage_time
+
+#################################################################
+from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory
+""" 
+The template tag {{'activity'}} will be replaced by the name of the ActivityCategory enum specifying the Activity
+"""
+activity: Activity = ACTIVITIES[ActivityCategory[{{'activity'}}]]
+activity_short = f'{activity.activity_short.lower()}'
+activity_long = activity.activity_long
+
+activity_dict = {'short': activity_short, 'long': activity_long,}
 #####################################################
 
 class FilterRecord(FilterRecord):
     filter_class = RecordFilter
     table_class = RecordTable
-    activity = activity
+    activity = activity_dict
 
 class Export(Export):
     table_class = RecordTableFull
-    activity = activity
+    activity = activity_dict
 
 
 class GetRecord(GetRecord):
     record_class = Record
     form_class = RecordForm
-    activity = activity
+    activity = activity_dict
 
     def validate_record(self, record, form):
         error = manage_time.is_range_intersecting_date_session(record, self.record_class)

@@ -1,8 +1,8 @@
 from django.forms import ModelForm, DateInput, Textarea, NumberInput, Select, CharField, TextInput, ModelChoiceField
 from .models import Record
-from lab.models import Project, User, Extraction
-from lab.forms import RecordForm as LRecordForm
-from lab.forms import ExtractionForm as LExtractionForm
+from fullcoster.lab.models import Project, User, Extraction
+from fullcoster.lab.forms import RecordForm as LRecordForm
+from fullcoster.lab.forms import ExtractionForm as LExtractionForm
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Fieldset, Submit, Row, Column, Div, Reset, Layout, Button
