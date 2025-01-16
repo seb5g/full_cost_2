@@ -1,1 +1,0 @@
-from fullcoster.app_base import activity_template
