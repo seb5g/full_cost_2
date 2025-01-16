@@ -11,11 +11,13 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
+import toml
 import ldap
 from django_auth_ldap.config import LDAPSearch
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -34,18 +36,10 @@ LOGIN_REDIRECT_URL = '/lab/logged/'
 
 # Application definition
 
+ACTIVITY_APPS = [f'fullcoster.{app.lower()}.apps.{app.capitalize()}Config' for app in toml.load(BASE_DIR.joinpath('app_base/apps.toml'))['apps']]
+
 INSTALLED_APPS = [
-    # 'osp.apps.OspConfig',
     'fullcoster.lab.apps.LabConfig',
-    # 'met.apps.MetConfig',
-    # 'prepa.apps.PrepaConfig',
-    # 'fib.apps.FibConfig',
-    # 'mphys.apps.MphysConfig',
-    # 'chem.apps.ChemConfig',
-    # 'imag.apps.ImagConfig',
-    # 'fab.apps.FabConfig',
-    # 'implant.apps.ImplantConfig',
-    # 'engi.apps.EngiConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -58,6 +52,7 @@ INSTALLED_APPS = [
     'post_office',
     'django_tables2',
 ]
+INSTALLED_APPS.extend(ACTIVITY_APPS)
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 

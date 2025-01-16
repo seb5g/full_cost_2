@@ -13,11 +13,11 @@ from fullcoster.constants.entities import ENTITIES
 
 """ 
 
-The template tag {{'activity'}} will be replaced by the name of the ActivityCategory enum specifying the Activity
+The template tag {{activity}} will be replaced by the name of the ActivityCategory enum specifying the Activity
 
 """
 
-activity: Activity = ACTIVITIES[ActivityCategory[{{'activity'}}]]
+activity: Activity = ACTIVITIES[ActivityCategory[{{activity}}]]
 
 activity_short_lower = f'{activity.activity_short.lower()}'
 

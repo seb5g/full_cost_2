@@ -12,12 +12,12 @@ The template tag {{'activity'}} will be replaced by the name of the ActivityCate
 
 """
 
-activity: Activity = ACTIVITIES[ActivityCategory[{{'activity'}}]]
+activity: Activity = ACTIVITIES[ActivityCategory[{{activity}}]]
 
 my_config_class = type(f'{activity.activity_short.capitalize()}Config',
              (AppConfig, ),
              {'name': activity.activity_short.lower()})
-my_config_class.__module__ = f'{apps.__package__}.{activity.activity_short.lower()}.apps'
+my_config_class.__module__ = f'fullcoster.{activity.activity_short.lower()}.apps'
 
 
 setattr(apps, f'{activity.activity_short.capitalize()}Config', my_config_class)

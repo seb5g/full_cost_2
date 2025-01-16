@@ -45,6 +45,7 @@ dependencies = [
     'openpyxl',
     'tablib',
     'portion',
+    'toml',
 ]
 
 [project.scripts]
