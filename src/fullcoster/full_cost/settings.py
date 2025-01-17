@@ -36,7 +36,7 @@ LOGIN_REDIRECT_URL = '/lab/logged/'
 
 # Application definition
 
-ACTIVITY_APPS = [f'fullcoster.{app.lower()}.apps.{app.capitalize()}Config' for app in toml.load(BASE_DIR.joinpath('app_base/apps.toml'))['apps']]
+ACTIVITY_APPS = [f'fullcoster.{app.lower()}.apps.AppConfig' for app in toml.load(BASE_DIR.joinpath('app_base/apps.toml'))['apps']]
 
 INSTALLED_APPS = [
     'fullcoster.lab.apps.LabConfig',
@@ -46,13 +46,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_filters',
     'bootstrap4',
+    'crispy_bootstrap4',
     'crispy_forms',
     'simple_history',
     'post_office',
     'django_tables2',
 ]
-INSTALLED_APPS.extend(ACTIVITY_APPS)
+INSTALLED_APPS = ACTIVITY_APPS + INSTALLED_APPS
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -80,7 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'lab.context_processors.get_all_activity',
+                #'lab.context_processors.get_all_activity',
             ],
         },
     },
@@ -166,11 +168,22 @@ SHORT_DATETIME_FORMAT = 'j N Y H:i'
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    BASE_DIR.joinpath("static"),
-    '/usr/lib/python3.6/site-packages/django/contrib/admin/static'
-    ]
 
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR.joinpath("lab/static"),
+        "C:/Users/weber/.conda/envs/full_cost/Lib/site-packages/django/contrib/admin/static"
+        #'/usr/lib/python3.6/site-packages/django/contrib/admin/static'
+    ]
+    ## in debug mode add the app static dir to the STATICFILES_DIRS
+    STATIC_APPS = [BASE_DIR.joinpath(f"{app.lower()}/static") for app in
+                   toml.load(BASE_DIR.joinpath('app_base/apps.toml'))['apps']]
+    STATICFILES_DIRS.extend(STATIC_APPS)
+else:
+    ## in deplayoment, static files should be collected with the command:
+    #python manage.py collectstatic
+    #that will add all static files into the STATIC_ROOT dir
+    STATIC_ROOT = BASE_DIR.joinpath("static"),
 
 #emailing
 EMAIL_BACKEND = 'post_office.EmailBackend'

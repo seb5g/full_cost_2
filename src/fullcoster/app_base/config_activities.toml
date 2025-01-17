@@ -1,0 +1,71 @@
+[activities]
+
+[activities.MET]
+name = 'Transmission Electron Microscopy Platform'
+entities = [
+    'MET_C',
+    'MET_A',
+]
+
+[activities.PREPA]
+name = 'Sample Preparation Service'
+entities = [
+    'PREPA',
+    'PREPA_SOFT',
+]
+
+[activities.FIB_MEB]
+name = 'Focused Ion Beam and MEB'
+entities = [
+    'FIB_MEB',
+]
+
+[activities.OSM]
+name = 'Optical Spectroscopy and Magnetism'
+entities = [
+    'SPECTRO',
+    'SPECTRO_CHEMISTRY',
+    'MAGNET'
+]
+
+[activities.CARAC]
+name = 'Material Characterisation'
+entities = [
+    'MATC',
+]
+
+[activities.NANOFAB]
+name = 'NanoFabrication'
+entities = [
+    'CLEANR',
+    'NEARF',
+    'FIB_LITHO',
+]
+
+[activities.CHEM]
+name = 'Chemistry'
+entities = [
+    'CHEMISTRY',
+]
+
+[activities.GROWTH_IMP]
+name = 'Growth and Implantation'
+entities = [
+    'GROWTH',
+    'IMPLANT',
+]
+
+[activities.STM_AFM]
+name = 'UHV Imagery'
+entities = [
+    'DUFG',
+    'UHVI',
+    'LT4P',
+]
+
+[activities.ENGINEERING]
+name = 'Engineering'
+entities = [
+    'MECA',
+    'ELEC',
+]

@@ -15,8 +15,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 
+from pathlib import Path
+import toml
+
 from django.contrib import admin
 from django.urls import path, include
+
+ACTIVITY_APPS = toml.load(Path(__file__).parent.parent.joinpath('app_base/apps.toml'))['apps']
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -26,16 +32,10 @@ try:
     from fullcoster.lab.views import Index
     urlpatterns.append(path('', Index.as_view(), name='index'))
     urlpatterns.append(path('lab/', include('fullcoster.lab.urls')))
-#     path('osp/', include('osp.urls')),
-#     path('met/', include('met.urls')),
-#     path('prepa/', include('prepa.urls')),
-#     path('fib/', include('fib.urls')),
-#     path('mphys/', include('mphys.urls')),
-#     path('chem/', include('chem.urls')),
-#     path('imag/', include('imag.urls')),
-#     path('fab/', include('fab.urls')),
-#     path('implant/', include('implant.urls')),
-#     path('engi/', include('engi.urls')),
+
+    for app in ACTIVITY_APPS:
+        urlpatterns.append(path(f'{app.lower()}/', include(f'fullcoster.{app.lower()}.urls')))
+
 
 except Exception as e:
     print(str(e))

@@ -1,0 +1,314 @@
+[entities]
+[entities.MET_C]
+name = 'Conventionnal TEM'
+T1 = 247
+T2 = 1066
+T3 = 1333
+experiments = [
+    'JEOL',
+    'CM20FEG',
+    'FemtoTEM',
+    'JEOL 2100',
+    'HF2000',
+]
+uo = 'day'
+uo_quantity = 0.5
+
+[entities.MET_A]
+name = 'Advanced TEM'
+T1 = 81
+T2 = 976
+T3 = 1121
+experiments = [
+    'Technai',
+    'I2TEM',
+    'HC-IUMI',
+]
+uo = 'day'
+uo_quantity = 0.5
+
+[entities.PREPA]
+name = 'Preparation for MET and MEB'
+T1 = 119
+T2 = 1366
+T3 = 1708
+experiments = [
+    'PIPS',
+    'PIPS II',
+    'Tripod',
+    'Electro-polishing',
+    'Electro-erosion',
+    'Other',
+]
+uo = 'sample'
+
+[entities.PREPA_SOFT]
+name = 'Soft Matter Preparation'
+T1 = 119
+T2 = 1366
+T3 = 1708
+experiments = [
+    'Soft Matter',
+]
+uo = 'sample'
+
+[entities.FIB_MEB]
+name = 'FIB Preparation and MEB'
+T1 = 202
+T2 = 341
+T3 = 426
+experiments = [
+    'EBSD/HELIOS',
+    'EDS/HELIOS',
+    'FIB/HELIOS',
+    'SEM/HELIOS',
+    'TEM Preparation/HELIOS',
+    'FIB/ZEISS',
+    'SEM/ZEISS',
+]
+uo = 'session'
+uo_quantity = ['Morning', 'AfterNoon', 'Evening', 'Night']
+
+[entities.SPECTRO]
+name = 'Optical Spectroscopy'
+T1 = 130
+T2 = 419
+T3 = 524
+experiments = [
+    'Xplora',
+    'T64000',
+    'Visible',
+    'UV',
+    'Reflectivité',
+    'TERS',
+    'FLIM',
+    'Plasmonique quantique',
+    'Femto',
+    'Micro-Moke',
+    'Macro-Moke',
+    'µ-scope IR',
+    'Stationnary Waves',
+]
+uo = 'day'
+uo_quantity = 0.5
+uo_extra = {night = true}
+
+[entities.SPECTRO_CHEMISTRY]
+name = 'Optical Spectroscopy for Chemistry'
+T1 = 130
+T2 = 419
+T3 = 524
+experiments = [
+    'UV (A125)',
+    'IR (A125)',
+    'Electrochimie (A125)',
+]
+uo = 'day'
+uo_quantity = 0.5
+
+[entities.MAGNET]
+name = 'Magnetic Properties'
+T1 = 130
+T2 = 419
+T3 = 524
+experiments = [
+    'Magneto-transport',
+]
+uo = 'day'
+uo_quantity = 0.5
+
+[entities.MATC]
+name = 'Material Caracterisation'
+T1 = 66
+T2 = 358
+T3 = 448
+experiments = [
+    'RX-D8 Advance',
+    'RX-D8 Discover',
+    'Traction ',
+    'Fluage',
+    'Powder-ATD/ATG',
+    'Powder-Adsorption Gaz',
+    'Powder-Titrimétrie',
+    'Powder-DLS',
+    'Powder-Zetamétrie',
+    'Powder-Granulométrie Laser',
+    'Powder-Réfractométrie',
+    'Powder-Spectrofluorométrie',
+    'Powder-Sonde Puissance',
+    'Powder-Préparation Echantillon (A121)',
+    'Powder-Pycnométrie',
+    'Powder-Binoculaire',
+    'Powder-Electrochimie',
+    'Powder-Fours à Moufle',
+    'Powder-Fours tubulaires',
+    'Powder-Etuves',
+    'Powder-Chaine conductimétrique',
+    'Powder-Chaine ionométrique',
+    'Powder-Dosage métaux (voltamétrie)',
+]
+uo = 'day'
+uo_quantity = 0.5
+
+[entities.CLEANR]
+name = 'Clean Room Processes'
+T1 = 281
+T2 = 652
+T3 = 815
+experiments = [
+    'CR-Laser lithography',
+    'CR-Photolithography',
+    'CR-Physical Vapor Deposition - sputtering',
+    'CR-Physical Vapor Deposition - ebeam',
+    'CR-Plasma etching - RIE',
+    'CR-Ion beam etching',
+    'CR-Chemistry (wet etching, surface treatments)',
+    'CR-Electrical Characterizations',
+    'CR-Mechanical profilometer',
+    'CR-DUS',
+]
+uo = 'day'
+uo_quantity = 0.5
+
+[entities.NEARF]
+name = 'Near-field microscopy'
+T1 = 281
+T2 = 652
+T3 = 815
+experiments = [
+    'D3000',
+    'D3100-STMLE',
+    'Multimode',
+]
+uo = 'day'
+uo_quantity = 0.5
+
+[entities.FIB_LITHO]
+name = 'Lithography using the ZEISS'
+T1 = 281
+T2 = 652
+T3 = 815
+experiments = [
+    'Lithography/ZEISS',
+]
+uo = 'day'
+uo_quantity = 0.5
+
+[entities.CHEMISTRY]
+name = 'Chemistry'
+T1 = 95
+T2 = 149
+T3 = 186
+experiments = [
+    'Labo 103',
+    'Labo 105',
+    'Labo 107',
+    'Labo 109',
+    'Labo 115',
+    'Labo 117',
+    'Labo 119',
+    'Labo 121',
+    'Labo 121 Four à gaz réduction',
+    'Labo 123',
+    'Labo 127',
+    'P007 boite à gants',
+]
+uo = 'day'
+uo_quantity = 0.5
+
+[entities.GROWTH]
+name = 'Growth'
+T1 = 122
+T2 = 219
+T3 = 274
+experiments = [
+    'Growth Plassys',
+    'Growth Mantis',
+    'Four',
+    'Four RTA',
+]
+uo = 'hour'
+uo_quantity = 1
+
+[entities.IMPLANT]
+name = 'Ionic Implantation'
+T1 = 232
+T2 = 2958
+T3 = 3698
+experiments = [
+    'Implantation',
+]
+uo = 'hour'
+uo_quantity = 1
+
+[entities.UHVI]
+name = 'UHV Imagery'
+T1 = 413
+T2 = 540
+T3 = 676
+experiments = [
+    'DUF-RT STM/AFM Maintenance',
+    'DUF-RT STM/AFM Sample/Spectroscopy',
+    'DUF-VT STM/AFM Maintenance',
+    'DUF-VT STM/AFM Sample/Spectroscopy',
+    'LT-UHV-STM/Qplus Maintenance',
+    'LT-UHV-STM/Qplus Sample preparation',
+    'LT-UHV-STM/Qplus Imagery/Spectroscopy',
+]
+uo = 'day'
+uo_quantity = 1
+
+[entities.DUFG]
+name = 'Growth DUF'
+T1 = 413
+T2 = 540
+T3 = 676
+experiments = [
+    'DUF-Ion Source Maintenance',
+    'DUF-Ion Source Ion deposition',
+    'DUF-MBE Growth Maintenance',
+    'DUF-MBE Growth Sample Growth',
+    'DUF-Preparation Maintenance',
+    'DUF-Preparation Sample/Tip preparation',
+]
+uo = 'day'
+uo_quantity = 1
+
+[entities.LT4P]
+name = 'LT-UHV 4 tips'
+T1 = 1166
+T2 = 1459
+T3 = 1824
+experiments = [
+    'LT-UHV-4STM SEM Maintenance',
+    'LT-UHV-4STM SEM Sample preparation',
+    'LT-UHV-4STM SEM Spectroscopy',
+    'LT-UHV-4STM SEM Topography',
+    'LT-UHV-4STM SEM Atom-Manipulation',
+]
+uo = 'day'
+uo_quantity = 1
+
+[entities.MECA]
+name = 'Mechanic Service'
+T1 = 247
+T2 = 1066
+T3 = 1333
+experiments = [
+    'ABEILHOU Pierre',
+    'GATTI Bertrand',
+]
+uo = 'day'
+uo_quantity = 0.5
+
+[entities.ELEC]
+name = 'Electronic Service'
+T1 = 81
+T2 = 976
+T3 = 1121
+experiments = [
+    'PERTEL Christian',
+    'LASFAR Abdelouahed',
+]
+uo = 'day'
+uo_quantity = 1

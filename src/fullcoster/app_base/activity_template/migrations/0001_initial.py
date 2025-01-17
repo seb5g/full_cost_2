@@ -7,7 +7,6 @@ import django.db.models.deletion
 import django.utils.timezone
 import simple_history.models
 
-from full_cost.constants.activities import ActivityCategory
 from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory
 from fullcoster.constants.entities import ENTITIES
 
@@ -37,8 +36,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('experiment', models.CharField(max_length=200)),
-                ('exp_type', models.CharField(choices=[(Activity.activity_short, Activity.activity_long)],
-                                              default=Activity.activity_short, max_length=200)),
+                ('exp_type', models.CharField(choices=[(activity.activity_short, activity.activity_long)],
+                                              default=activity.activity_short, max_length=200)),
             ],
         ),
         migrations.CreateModel(

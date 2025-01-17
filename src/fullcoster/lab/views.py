@@ -41,7 +41,7 @@ from .models import Record, Group
 
 activity_short = Path(__file__).parts[-2]
 activity_long = 'CEMES Laboratory'
-activity={'short': activity_short, 'long': activity_long}
+activity= {'short': activity_short, 'long': activity_long}
 
 def get_logged_user(request):
     if not isinstance(request.user, AnonymousUser):
@@ -197,9 +197,11 @@ class GetRecord(View):
                 record = self.populate_record(data)
 
                 #automatic attribution of the billing entry from ATIVITIES constant
-
-                if record.experiment.exp_type in ACTIVITIES[self.activity['short']]['related_entities']:
-                    record.billing = ACTIVITIES[self.activity['short']]['related_entities'][record.experiment.exp_type]
+                entities = ACTIVITIES[ActivityCategory[self.activity['short'].upper()]].entities
+                for entity in entities:
+                    if record.experiment.exp_type == entity.short:
+                        record.billing = entity.short
+                        break
 
                 # check if this record is compatible with existing records or other issue
                 form, valid_state = self.validate_record(record, form)

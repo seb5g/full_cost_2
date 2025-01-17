@@ -1,8 +1,14 @@
 from dataclasses import dataclass
 from collections.abc import Iterable
+from pathlib import Path
 
-from ..constants.entities import Entity, ENTITIES, EntityCategory
-from ..utils.enum import BaseEnum
+import toml
+
+from fullcoster.constants.entities import Entity, ENTITIES, EntityCategory
+from fullcoster.utils.enum import BaseEnum
+
+
+activity_config_path = Path(__file__).parent.parent.joinpath('app_base/config_activities.toml')
 
 
 @dataclass()
@@ -18,86 +24,21 @@ class Activity:
         return (entity.name for entity in self.entities)
 
 
-class ActivityCategory(BaseEnum):
+ActivityCategory = BaseEnum(
+    'ActivityCategory',
+    [(key, val['name']) for key, val in toml.load(activity_config_path)['activities'].items()]
+)
 
-    MET = 'Transmission Electron Microscopy Platform'
-    PREPA = 'Sample Preparation Service'
-    FIB_MEB = 'Focused Ion Beam and MEB'
-    OSM = 'Optical Spectroscopy and Magnetism'
-    CARAC = 'Material Characterisation'
-    NANOFAB = 'NanoFabrication'
-    CHEM = 'Chemistry'
-    GROWTH_IMP = 'Growth and Implantation'
-    STM_AFM = 'UHV Imagery'
-    ENGINEERING = 'Engineering'
+ACTIVITIES = {}
 
-    def to_activity(self, entities: Iterable[Entity]) -> Activity:
-        return Activity(self.name, self.value, entities)
-
-
-ACTIVITIES = {
-    ActivityCategory.MET:
-             ActivityCategory.MET.to_activity(
-                 entities=(
-                     ENTITIES[EntityCategory.MET_C],
-                     ENTITIES[EntityCategory.MET_A],
-             )),
-    ActivityCategory.PREPA:
-        ActivityCategory.PREPA.to_activity(
-            entities=(
-                ENTITIES[EntityCategory.PREPA],
-                ENTITIES[EntityCategory.PREPA_SOFT],
-            )),
-    ActivityCategory.FIB_MEB:
-        ActivityCategory.FIB_MEB.to_activity(
-            entities=(
-                ENTITIES[EntityCategory.FIB_MEB],
-            )),
-    ActivityCategory.OSM:
-        ActivityCategory.OSM.to_activity(
-            entities=(
-                ENTITIES[EntityCategory.SPECTRO],
-                ENTITIES[EntityCategory.SPECTRO_CHEMISTRY],
-                ENTITIES[EntityCategory.MAGNET],
-            )),
-    ActivityCategory.CARAC:
-        ActivityCategory.CARAC.to_activity(
-            entities=(
-                ENTITIES[EntityCategory.MATC],
-            )),
-    ActivityCategory.NANOFAB:
-        ActivityCategory.NANOFAB.to_activity(
-            entities=(
-                ENTITIES[EntityCategory.CLEANR],
-                ENTITIES[EntityCategory.NEARF],
-                ENTITIES[EntityCategory.FIB_LITHO],
-            )),
-    ActivityCategory.CHEM:
-        ActivityCategory.CHEM.to_activity(
-            entities=(
-                ENTITIES[EntityCategory.CHEMISTRY],
-            )),
-    ActivityCategory.GROWTH_IMP:
-        ActivityCategory.GROWTH_IMP.to_activity(
-            entities=(
-                ENTITIES[EntityCategory.GROWTH],
-                ENTITIES[EntityCategory.IMPLANT],
-                ENTITIES[EntityCategory.MAGNET],
-            )),
-    ActivityCategory.STM_AFM:
-        ActivityCategory.STM_AFM.to_activity(
-            entities=(
-                ENTITIES[EntityCategory.DUFG],
-                ENTITIES[EntityCategory.UHVI],
-                ENTITIES[EntityCategory.LT4P],
-            )),
-    ActivityCategory.ENGINEERING:
-        ActivityCategory.ENGINEERING.to_activity(
-            entities=(
-                ENTITIES[EntityCategory.MECA],
-                ENTITIES[EntityCategory.ELEC],
-            )),
-}
+for activity_short, activity_dict in toml.load(activity_config_path)['activities'].items():
+    ACTIVITIES[ActivityCategory[activity_short]] = (
+        Activity(activity_short,
+                 activity_dict['name'],
+                 entities=[
+                     ENTITIES[EntityCategory[entity]] for entity in activity_dict['entities']
+                 ]
+                 ))
 
 activities_choices = [(ACTIVITIES[activity].activity_short,
                        ACTIVITIES[activity].activity_long,) for activity in ACTIVITIES]

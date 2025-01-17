@@ -42,6 +42,7 @@ dependencies = [
     'django-crispy-forms',
     'django-simple-history',
     'django-post_office',
+    'crispy-bootstrap4',
     'openpyxl',
     'tablib',
     'portion',

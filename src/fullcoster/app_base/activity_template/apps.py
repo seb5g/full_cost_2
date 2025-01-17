@@ -1,5 +1,16 @@
-""" To be left empty
+from django.apps import AppConfig
+from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory
 
-The AppConfig class is created dynamically in __init__ of the parent module
+
+""" Creating dynamically the AppConfig of the given activity
+
+The template tag {{'activity'}} will be replaced by the name of the ActivityCategory enum specifying the Activity
 
 """
+
+activity: Activity = ACTIVITIES[ActivityCategory[{{activity}}]]
+
+
+class AppConfig(AppConfig):
+    name = f'fullcoster.{activity.activity_short.lower()}'
+
