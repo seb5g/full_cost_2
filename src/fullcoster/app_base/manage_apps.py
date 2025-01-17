@@ -23,6 +23,14 @@ def create_file_from_template(activity: str, template_path: str):
     if not path.parent.exists():
         path.parent.mkdir(exist_ok=True)
 
+    if 'record.js' in path:
+        # rename the record javascript file with the proper name
+        path = path.parent.joinpath(f'{activity.lower()}_record.js')
+
+    if 'logo.png' in path:
+        # rename the logo png file with the proper name
+        path = path.parent.joinpath(f'logo_{activity.lower()}.js')
+
     with path.open('w') as fp:
         env.get_template(template_path).stream(activity= f"'{activity}'").dump(fp)
 
