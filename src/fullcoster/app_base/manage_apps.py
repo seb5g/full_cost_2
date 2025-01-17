@@ -4,6 +4,7 @@ from collections.abc import Iterable
 from pathlib import Path, PurePath
 import toml
 from jinja2 import Environment, FileSystemLoader, select_autoescape
+import shutil
 
 from fullcoster.constants.activities import Activity, ActivityCategory, ACTIVITIES
 
@@ -17,22 +18,30 @@ env = Environment(
     autoescape=select_autoescape()
 )
 
-
-def create_file_from_template(activity: str, template_path: str):
-    path = apps_parent_path.joinpath(activity.lower()).joinpath(template_path)
+def create_parent_dir(path: Path):
     if not path.parent.exists():
-        path.parent.mkdir(exist_ok=True)
+        path.parent.mkdir(parents=True, exist_ok=True)
 
-    if 'record.js' in path:
+def create_file_from_template(activity: str, template_path_rel: str):
+    path = apps_parent_path.joinpath(activity.lower()).joinpath(template_path_rel)
+    create_parent_dir(path)
+
+    if 'record' in path.stem:
         # rename the record javascript file with the proper name
-        path = path.parent.joinpath(f'{activity.lower()}_record.js')
+        new_path = path.parent.joinpath(f'{activity.lower()}_record.js')
+        shutil.copy(template_path.joinpath(template_path_rel), new_path)
 
-    if 'logo.png' in path:
+    elif 'logo' in path.stem:
         # rename the logo png file with the proper name
-        path = path.parent.joinpath(f'logo_{activity.lower()}.js')
+        new_path = path.parent.joinpath(f'logo_{activity.lower()}.png')
+        shutil.copy(template_path.joinpath(template_path_rel), new_path)
 
-    with path.open('w') as fp:
-        env.get_template(template_path).stream(activity= f"'{activity}'").dump(fp)
+    else:
+        try:
+            with path.open('w') as fp:
+                env.get_template(template_path_rel).stream(activity= f"'{activity}'").dump(fp)
+        except UnicodeError:
+            shutil.copy(template_path.joinpath(template_path_rel), path)
 
 
 def populate_experiments():
@@ -102,7 +111,7 @@ activities = ActivityCategory.names()
 
 
 if __name__ == '__main__':
-    create_activities_apps(('OSM',))
+    create_activities_apps(('OSM', 'MET'))
     #remove_activity('PREPA')
     #clear_activities()
     populate_experiments()
