@@ -82,7 +82,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                #'lab.context_processors.get_all_activity',
+                'lab.context_processors.get_all_activity', #to have access to this within the templates, see lab/navbar.html
             ],
         },
     },
