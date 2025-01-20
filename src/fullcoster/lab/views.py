@@ -125,7 +125,7 @@ class GetRecord(View):
 
     def check_user(self, data):
         if data['user'].user_last_name == "OTHER":
-            if data['user_text_name'] != '':
+            if not (data['user_text_name'] == '' or data['user_text_surname'] == ''):
                 user = User(user_first_name=data['user_text_name'].capitalize(),
                             user_last_name=data['user_text_surname'].upper())
                 user.save()
