@@ -125,10 +125,11 @@ class GetRecord(View):
 
     def check_user(self, data):
         if data['user'].user_last_name == "OTHER":
-            user = User(user_first_name=data['user_text_name'].capitalize(),
-                        user_last_name=data['user_text_surname'].upper())
-            user.save()
-            data['user'] = user
+            if data['user_text_name'] != '':
+                user = User(user_first_name=data['user_text_name'].capitalize(),
+                            user_last_name=data['user_text_surname'].upper())
+                user.save()
+                data['user'] = user
         return data
 
     def get_group(self, user):
