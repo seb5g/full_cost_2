@@ -1,7 +1,7 @@
 from pathlib import Path
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
+
 from django.utils.timezone import now
 from simple_history.models import HistoricalRecords
 import datetime
