@@ -33,7 +33,7 @@ classifiers = [
 dependencies = [
     'numpy',
     'django',
-    'psycopg2',
+    'psycopg[binary]',
     'python-ldap',
     'django-auth-ldap',
     'django-tables2',
