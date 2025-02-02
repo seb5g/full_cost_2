@@ -15,6 +15,9 @@ activity_config_path = Path(__file__).parent.parent.joinpath('app_base/config_ac
 class Activity:
     activity_short: str
     activity_long: str
+    uo: str
+    dates: int
+    range_names: list[str]
     entities: Iterable[Entity]
 
     def get_entities_short(self):
@@ -35,6 +38,9 @@ for activity_short, activity_dict in toml.load(activity_config_path)['activities
     ACTIVITIES[ActivityCategory[activity_short]] = (
         Activity(activity_short,
                  activity_dict['name'],
+                 activity_dict.get('uo', 'day'),
+                 activity_dict.get('dates', 2),
+                 activity_dict.get('range_names', ['Morning', 'Afternoon']),
                  entities=[
                      ENTITIES[EntityCategory[entity]] for entity in activity_dict['entities']
                  ]

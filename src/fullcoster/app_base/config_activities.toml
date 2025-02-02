@@ -2,6 +2,9 @@
 
 [activities.MET]
 name = 'Transmission Electron Microscopy Platform'
+uo = 'day'
+dates = 2
+range_names = ['Morning', 'AfterNoon']
 entities = [
     'MET_C',
     'MET_A',
@@ -9,6 +12,9 @@ entities = [
 
 [activities.PREPA]
 name = 'Sample Preparation Service'
+uo = 'sample'
+dates = 1
+range_names = ['Morning', 'AfterNoon', 'Evening']
 entities = [
     'PREPA',
     'PREPA_SOFT',
@@ -16,12 +22,18 @@ entities = [
 
 [activities.FIB_MEB]
 name = 'Focused Ion Beam and MEB'
+uo = 'session'
+dates = 1
+range_names = ['Morning', 'AfterNoon', 'Evening', 'Night']
 entities = [
     'FIB_MEB',
 ]
 
 [activities.OSM]
 name = 'Optical Spectroscopy and Magnetism'
+uo = 'day'
+dates = 2
+range_names = ['Morning', 'AfterNoon', 'Night']
 entities = [
     'SPECTRO',
     'SPECTRO_CHEMISTRY',
@@ -30,12 +42,18 @@ entities = [
 
 [activities.CARAC]
 name = 'Material Characterisation'
+uo = 'day'
+dates = 2
+range_names = ['Morning', 'AfterNoon']
 entities = [
     'MATC',
 ]
 
 [activities.NANOFAB]
 name = 'NanoFabrication'
+uo = 'day'
+dates = 2
+range_names = ['Morning', 'AfterNoon', 'nights']
 entities = [
     'CLEANR',
     'NEARF',
@@ -44,12 +62,17 @@ entities = [
 
 [activities.CHEM]
 name = 'Chemistry'
+uo = 'day'
+dates = 2
+range_names = ['8h30-10h30', '10h30-12h30', '14h-16h', '16h-18h']
 entities = [
     'CHEMISTRY',
 ]
 
 [activities.GROWTH_IMP]
 name = 'Growth and Implantation'
+uo = 'hours'
+dates = 2
 entities = [
     'GROWTH',
     'IMPLANT',
@@ -57,6 +80,9 @@ entities = [
 
 [activities.STM_AFM]
 name = 'UHV Imagery'
+uo = 'day'
+dates = 2
+range_names = ['Morning', 'AfterNoon']
 entities = [
     'DUFG',
     'UHVI',
@@ -65,6 +91,9 @@ entities = [
 
 [activities.ENGINEERING]
 name = 'Engineering'
+uo = 'day'
+dates = 2
+range_names = ['Morning', 'AfterNoon']
 entities = [
     'MECA',
     'ELEC',

@@ -172,72 +172,54 @@ class RecordDate(models.Model):
     class Meta:
         abstract = True
 
-class Record2Range(models.Model):
-    AM = 0
-    PM = 1
-    date_choices = [(AM, 'Morning'),
-                    (PM, 'Afternoon'),]
 
-    time_from = models.SmallIntegerField(choices=date_choices, default=AM)
-    time_to= models.SmallIntegerField(choices=date_choices, default=AM)
+class RecordRange(models.Model):
+    R1 = 0
+    R2 = 1
+    R3 = 2
+    R4 = 3
+    R5 = 4
+    date_choices = [(R1, 'Range1'),
+                    (R2, 'Range2'),]
+
+    time_from = models.SmallIntegerField(choices=date_choices, default=R1)
+    time_to= models.SmallIntegerField(choices=date_choices, default=R1)
     class Meta:
         abstract = True
 
+class Record2Range(RecordRange):
 
-class Record3Range(models.Model):
-    AM = 0
-    PM = 1
-    EV = 2
-    date_choices = [(AM, 'Morning'),
-                    (PM, 'Afternoon'),
-                    (EV, 'Evening')]
-
-    time_from = models.SmallIntegerField(choices=date_choices, default=AM,)
-    time_to= models.SmallIntegerField(choices=date_choices, default=AM,)
-    class Meta:
-        abstract = True
-
-class Record4RangeNight(models.Model):
-    AM = 0
-    PM = 1
-    EV = 2
-    NI = 3
-    date_choices = [(AM, 'Morning'),
-                    (PM, 'Afternoon'),
-                    (EV, 'Evening'),
-                    (NI, 'Night')]
-
-    time_from = models.SmallIntegerField(choices=date_choices, default=AM,)
-    time_to= models.SmallIntegerField(choices=date_choices, default=AM,)
-    class Meta:
-        abstract = True
-
-class Record4Range(models.Model):
-    AM1 = 0
-    AM2 = 1
-    PM1 = 2
-    PM2 = 3
-    date_choices = [(AM1, '8h30-10h30'),
-                    (AM2, '10h30-12h30'),
-                    (PM1, '14h-16h'),
-                    (PM2, '16h-18h')]
-
-    time_from = models.SmallIntegerField(choices=date_choices, default=AM1,)
-    time_to = models.SmallIntegerField(choices=date_choices, default=AM1,)
-    class Meta:
-        abstract = True
-
-class RecordHRange(models.Model):
+    date_choices = [(RecordRange.R1, 'Morning'),
+                    (RecordRange.R2, 'Afternoon'),]
 
 
-    AM = 0
-    PM = 1
+class Record3Range(RecordRange):
+
+    date_choices = [(RecordRange.R1, 'Morning'),
+                    (RecordRange.R2, 'Afternoon'),
+                    (RecordRange.R3, 'Evening')]
+
+
+
+class Record4RangeNight(RecordRange):
+    date_choices = [(RecordRange.R1, 'Morning'),
+                    (RecordRange.R2, 'Afternoon'),
+                    (RecordRange.R3, 'Evening'),
+                    (RecordRange.R4, 'Night')]
+
+
+class Record4Range(RecordRange):
+    date_choices = [(RecordRange.R1, '8h30-10h30'),
+                    (RecordRange.R2, '10h30-12h30'),
+                    (RecordRange.R3, '14h-16h'),
+                    (RecordRange.R4, '16h-18h')]
+
+
+class RecordHRange(RecordRange):
     date_choices = [(ind, f'{ind}h00') for ind in range(24)]
 
     time_from = models.SmallIntegerField(choices=date_choices, default=8)
     time_to= models.SmallIntegerField(choices=date_choices, default=12)
-    class Meta:
-        abstract = True
 
 class RecordDateTime(RecordDate):
     date_from = models.DateTimeField(default=now)
