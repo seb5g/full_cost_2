@@ -71,18 +71,19 @@ def create_activities_apps(activities: Iterable[str]):
         activity_obj = ACTIVITIES[ActivityCategory[activity]]
 
         apps_parent_path.joinpath(activity.lower()).mkdir(exist_ok=True)
-        apps_parent_path.joinpath(f'{activity.lower()}/js').mkdir(exist_ok=True)
+        apps_parent_path.joinpath(f'{activity.lower()}/static/js').mkdir(parents=True, exist_ok=True)
 
         # manage javascript
-        new_path = apps_parent_path.joinpath(f'{activity.lower()}/js/{activity.lower()}_record.js')
+        new_path = apps_parent_path.joinpath(f'{activity.lower()}/static/js/{activity.lower()}_record.js')
         if activity_obj.uo == 'day':
-            shutil.copy(js_parent_path.joinpath('day_record.js'), new_path)
+            js_path = js_parent_path.joinpath('day_record.js')
         elif activity_obj.uo == 'sample':
-            shutil.copy(js_parent_path.joinpath('sample_record.js'), new_path)
-        elif activity_obj.uo == 'hour':
-            shutil.copy(js_parent_path.joinpath('hour_record.js'), new_path)
+            js_path = js_parent_path.joinpath('sample_record.js')
+        elif activity_obj.uo == 'hours':
+            js_path = js_parent_path.joinpath('hour_record.js')
         elif activity_obj.uo == 'session':
-            shutil.copy(js_parent_path.joinpath('session_record.js'), new_path)
+            js_path = js_parent_path.joinpath('session_record.js')
+        shutil.copy(js_path, new_path)
 
         toml_dict['apps'].append(activity)
         with toml_path.open('w') as f:
@@ -107,18 +108,22 @@ def _empty_dirs(start_path: Path):
 def _delete_dir(start_path: Path):
     _empty_dirs(start_path)
     for path in start_path.iterdir():
-        path.rmdir()
+        _empty_dirs(path)
+        try:
+            path.rmdir()
+        except OSError:
+            _delete_dir(path)
     start_path.rmdir()
 
 
 def remove_activity(activity: str):
-        toml_dict = toml.load(toml_path)
-        if activity in toml_dict['apps']:
-            toml_dict['apps'].remove(activity)
-            with toml_path.open('w') as f:
-                toml.dump(toml_dict, f)
-        if apps_parent_path.joinpath(activity.lower()).exists():
-            _delete_dir(apps_parent_path.joinpath(activity.lower()))
+    toml_dict = toml.load(toml_path)
+    if activity in toml_dict['apps']:
+        toml_dict['apps'].remove(activity)
+        with toml_path.open('w') as f:
+            toml.dump(toml_dict, f)
+    if apps_parent_path.joinpath(activity.lower()).exists():
+        _delete_dir(apps_parent_path.joinpath(activity.lower()))
 
 
 def clear_activities():
@@ -140,6 +145,6 @@ activities = ActivityCategory.names()
 
 
 if __name__ == '__main__':
-    create_activities_apps(('OSM',))
+    create_activities_apps(('GROWTH_IMP', ))
     #remove_activity('PREPA')
     #clear_activities()
