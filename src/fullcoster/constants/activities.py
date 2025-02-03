@@ -4,6 +4,7 @@ from pathlib import Path
 
 import toml
 
+from fullcoster.app_base.activity_template.views import activity_dict
 from fullcoster.constants.entities import Entity, ENTITIES, EntityCategory
 from fullcoster.utils.enum import BaseEnum
 
@@ -18,6 +19,7 @@ class Activity:
     uo: str
     dates: int
     range_names: list[str]
+    night: bool
     entities: Iterable[Entity]
 
     def get_entities_short(self):
@@ -41,6 +43,7 @@ for activity_short, activity_dict in toml.load(activity_config_path)['activities
                  activity_dict.get('uo', 'day'),
                  activity_dict.get('dates', 2),
                  activity_dict.get('range_names', ['Morning', 'Afternoon']),
+                 activity_dict.get('night', 'False'),
                  entities=[
                      ENTITIES[EntityCategory[entity]] for entity in activity_dict['entities']
                  ]

@@ -33,7 +33,8 @@ entities = [
 name = 'Optical Spectroscopy and Magnetism'
 uo = 'day'
 dates = 2
-range_names = ['Morning', 'AfterNoon', 'Night']
+range_names = ['Morning', 'AfterNoon']
+night = true
 entities = [
     'SPECTRO',
     'SPECTRO_CHEMISTRY',
@@ -53,7 +54,8 @@ entities = [
 name = 'NanoFabrication'
 uo = 'day'
 dates = 2
-range_names = ['Morning', 'AfterNoon', 'nights']
+range_names = ['Morning', 'AfterNoon']
+night = true
 entities = [
     'CLEANR',
     'NEARF',
