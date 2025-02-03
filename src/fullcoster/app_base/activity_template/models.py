@@ -44,7 +44,16 @@ class RecordRange(models.Model):
         abstract = True
 
 
-class Record(lab_models.Record, RecordDate, RecordRange, lab_models.RecordNights):
+base_class = [lab_models.Record, RecordDate]
+if activity.uo == 'day' or activity.uo == 'session':
+    base_class.append(RecordRange)
+elif activity.uo == 'hours':
+    base_class.append(lab_models.RecordTwoTimes)
+if activity.night:
+    base_class.append(lab_models.RecordNights)
+
+
+class Record(*base_class):
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     extraction = models.ForeignKey(Extraction, on_delete=models.SET_NULL, blank=True, null=True,
                                    related_name="%(app_label)s_%(class)s_related",
