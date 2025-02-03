@@ -107,8 +107,9 @@ def populate_prices():
 
 
 if __name__ == '__main__':
-    populate_users()
     populate_gestionnaire()
+    populate_users()
+
     populate_users()
     populate_prices()
     populate_project()
