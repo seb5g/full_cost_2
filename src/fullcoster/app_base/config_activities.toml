@@ -3,6 +3,7 @@
 [activities.MET]
 name = 'Transmission Electron Microscopy Platform'
 uo = 'day'
+uo_label = 'Number of half day'
 dates = 2
 range_names = ['Morning', 'AfterNoon']
 entities = [
@@ -13,6 +14,7 @@ entities = [
 [activities.PREPA]
 name = 'Sample Preparation Service'
 uo = 'sample'
+uo_label = 'Number of samples'
 dates = 1
 range_names = ['Morning', 'AfterNoon', 'Evening']
 entities = [
@@ -23,8 +25,10 @@ entities = [
 [activities.FIB_MEB]
 name = 'Focused Ion Beam and MEB'
 uo = 'session'
+uo_label = 'Number of sessions'
 dates = 1
 range_names = ['Morning', 'AfterNoon', 'Evening', 'Night']
+night = false
 entities = [
     'FIB_MEB',
 ]
@@ -32,6 +36,7 @@ entities = [
 [activities.OSM]
 name = 'Optical Spectroscopy and Magnetism'
 uo = 'day'
+uo_label = 'Number of half day'
 dates = 2
 range_names = ['Morning', 'AfterNoon']
 night = true
@@ -44,6 +49,7 @@ entities = [
 [activities.CARAC]
 name = 'Material Characterisation'
 uo = 'day'
+uo_label = 'Number of half day'
 dates = 2
 range_names = ['Morning', 'AfterNoon']
 entities = [
@@ -53,6 +59,7 @@ entities = [
 [activities.NANOFAB]
 name = 'NanoFabrication'
 uo = 'day'
+uo_label = 'Number of half day'
 dates = 2
 range_names = ['Morning', 'AfterNoon']
 night = true
@@ -65,6 +72,7 @@ entities = [
 [activities.CHEM]
 name = 'Chemistry'
 uo = 'day'
+uo_label = 'Number of half day'
 dates = 2
 range_names = ['8h30-10h30', '10h30-12h30', '14h-16h', '16h-18h']
 entities = [
@@ -74,6 +82,7 @@ entities = [
 [activities.GROWTH_IMP]
 name = 'Growth and Implantation'
 uo = 'hours'
+uo_label = 'Number of hours'
 dates = 2
 entities = [
     'GROWTH',
