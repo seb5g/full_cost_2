@@ -11,7 +11,6 @@ django.setup()
 
 from fullcoster.lab.models import Project, User, Group, Price, Gestionnaire
 from fullcoster.utils.ldap import LDAP
-from fullcoster.constants.activities import ACTIVITIES, ActivityCategory
 from fullcoster.constants.entities import ENTITIES, PriceCategory
 
 
