@@ -5,7 +5,6 @@ from django.db import models
 from django.utils.timezone import now
 from simple_history.models import HistoricalRecords
 import datetime
-from fullcoster.constants.activities import activities_choices
 from fullcoster.constants.entities import PriceCategory, ENTITIES, get_entities_as_list
 
 activity_short = Path(__file__).parts[-2]
@@ -165,6 +164,14 @@ class RecordTwoDatesTwoTimes(models.Model):
     class Meta:
         abstract = True
 
+
+class RecordTwoTimes(models.Model):
+    time_from = models.TimeField(default=datetime.time(0, 0, 0))
+    time_to = models.TimeField(default=datetime.time(0, 0, 0))
+    class Meta:
+        abstract = True
+
+
 class RecordDate(models.Model):
     date_from = models.DateField(default=now)
     date_to = models.DateField(default=now)
@@ -172,54 +179,6 @@ class RecordDate(models.Model):
     class Meta:
         abstract = True
 
-
-class RecordRange(models.Model):
-    R1 = 0
-    R2 = 1
-    R3 = 2
-    R4 = 3
-    R5 = 4
-    date_choices = [(R1, 'Range1'),
-                    (R2, 'Range2'),]
-
-    time_from = models.SmallIntegerField(choices=date_choices, default=R1)
-    time_to= models.SmallIntegerField(choices=date_choices, default=R1)
-    class Meta:
-        abstract = True
-
-class Record2Range(RecordRange):
-
-    date_choices = [(RecordRange.R1, 'Morning'),
-                    (RecordRange.R2, 'Afternoon'),]
-
-
-class Record3Range(RecordRange):
-
-    date_choices = [(RecordRange.R1, 'Morning'),
-                    (RecordRange.R2, 'Afternoon'),
-                    (RecordRange.R3, 'Evening')]
-
-
-
-class Record4RangeNight(RecordRange):
-    date_choices = [(RecordRange.R1, 'Morning'),
-                    (RecordRange.R2, 'Afternoon'),
-                    (RecordRange.R3, 'Evening'),
-                    (RecordRange.R4, 'Night')]
-
-
-class Record4Range(RecordRange):
-    date_choices = [(RecordRange.R1, '8h30-10h30'),
-                    (RecordRange.R2, '10h30-12h30'),
-                    (RecordRange.R3, '14h-16h'),
-                    (RecordRange.R4, '16h-18h')]
-
-
-class RecordHRange(RecordRange):
-    date_choices = [(ind, f'{ind}h00') for ind in range(24)]
-
-    time_from = models.SmallIntegerField(choices=date_choices, default=8)
-    time_to= models.SmallIntegerField(choices=date_choices, default=12)
 
 class RecordDateTime(RecordDate):
     date_from = models.DateTimeField(default=now)
