@@ -90,8 +90,9 @@ def create_activities_apps(activities: Iterable[str]):
         for template_path in env.loader.list_templates():
             create_file_from_template(activity, template_path)
 
-        make_migrations()
-        migrate()
+    make_migrations()
+    migrate()
+    for activity in activities:
         populate_experiments(activity)
 
 
