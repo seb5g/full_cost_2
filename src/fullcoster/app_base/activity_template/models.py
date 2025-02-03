@@ -1,7 +1,8 @@
 from pathlib import Path
 
 from django.db import models
-from fullcoster.lab.models import (Record as LRecord,  Extraction, Record2Range, RecordDate, RecordNights)
+from fullcoster.lab.models import Extraction
+from fullcoster.lab import models as lab_models
 from simple_history.models import HistoricalRecords
 
 from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory
@@ -15,7 +16,6 @@ activity_short = f'{activity.activity_short}'
 entities = activity.entities
 
 
-
 class Experiment(models.Model):
     experiment = models.CharField(max_length=200)
     exp_type = models.CharField(choices=[(entity.short, entity.name) for entity in entities],
@@ -27,7 +27,24 @@ class Experiment(models.Model):
 # class Extraction(Extraction):
 #     history = HistoricalRecords()
 
-class Record(LRecord, RecordDate, Record2Range, RecordNights):
+
+bases = [lab_models.Record]
+if activity.dates == 1:
+    RecordDate = lab_models.RecordOneDate
+else:
+    RecordDate = lab_models.RecordDate
+
+
+class RecordRange(models.Model):
+    date_choices = [(ind, name) for ind, name in enumerate(activity.range_names)]
+    time_from = models.SmallIntegerField(choices=date_choices, default=0)
+    time_to = models.SmallIntegerField(choices=date_choices, default=0)
+
+    class Meta:
+        abstract = True
+
+
+class Record(lab_models.Record, RecordDate, RecordRange, lab_models.RecordNights):
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     extraction = models.ForeignKey(Extraction, on_delete=models.SET_NULL, blank=True, null=True,
                                    related_name="%(app_label)s_%(class)s_related",
