@@ -12,7 +12,6 @@ from fullcoster.constants.activities import Activity, ActivityCategory, ACTIVITI
 
 template_path = Path(__file__).parent.joinpath('activity_template')
 apps_parent_path = template_path.parent.parent
-js_parent_path = Path(__file__).parent.joinpath('js')
 toml_path = Path(__file__).parent.joinpath('apps.toml')
 
 
@@ -21,25 +20,30 @@ env = Environment(
     autoescape=select_autoescape()
 )
 
+
+
 def create_parent_dir(path: Path):
     if not path.parent.exists():
         path.parent.mkdir(parents=True, exist_ok=True)
 
-def create_file_from_template(activity: str, template_path_rel: str):
-    path = apps_parent_path.joinpath(activity.lower()).joinpath(template_path_rel)
-    create_parent_dir(path)
+def create_file_from_template(activity: Activity, template_path_rel: str):
 
-    if 'logo' in path.stem:
-        # rename the logo png file with the proper name
-        new_path = path.parent.joinpath(f'logo_{activity.lower()}.png')
-        shutil.copy(template_path.joinpath(template_path_rel), new_path)
+    activity_string = activity.activity_short.lower()
+    if 'js' not in template_path or ('js' in template_path and activity.uo.name in template_path):
+        path = apps_parent_path.joinpath(activity_string).joinpath(template_path_rel)
+        create_parent_dir(path)
 
-    else:
-        try:
-            with path.open('w') as fp:
-                env.get_template(template_path_rel).stream(activity= f"'{activity}'").dump(fp)
-        except UnicodeError:
-            shutil.copy(template_path.joinpath(template_path_rel), path)
+        if 'logo' in path.stem:
+            # rename the logo png file with the proper name
+            new_path = path.parent.joinpath(f'logo_{activity_string}.png')
+            shutil.copy(template_path.joinpath(template_path_rel), new_path)
+
+        else:
+            try:
+                with path.open('w') as fp:
+                    env.get_template(template_path_rel).stream(activity=activity).dump(fp)
+            except UnicodeError:
+                shutil.copy(template_path.joinpath(template_path_rel), path)
 
 
 def populate_experiments(app: str):
@@ -73,25 +77,11 @@ def create_activities_apps(activities: Iterable[str]):
         apps_parent_path.joinpath(activity.lower()).mkdir(exist_ok=True)
         apps_parent_path.joinpath(f'{activity.lower()}/static/js').mkdir(parents=True, exist_ok=True)
 
-        # manage javascript
-        new_path = apps_parent_path.joinpath(f'{activity.lower()}/static/js/{activity.lower()}_record.js')
-        if activity_obj.uo == UO.day:
-            js_path = js_parent_path.joinpath('day_record.js')
-        elif activity_obj.uo == UO.sample:
-            js_path = js_parent_path.joinpath('sample_record.js')
-        elif activity_obj.uo == UO.hours:
-            js_path = js_parent_path.joinpath('hour_record.js')
-        elif activity_obj.uo == UO.session:
-            js_path = js_parent_path.joinpath('session_record.js')
-        elif activity_obj.uo == UO.duration:
-            js_path = js_parent_path.joinpath('duration_record.js')
-        shutil.copy(js_path, new_path)
-
         toml_dict['apps'].append(activity)
         with toml_path.open('w') as f:
             toml.dump(toml_dict, f)
         for template_path in env.loader.list_templates():
-            create_file_from_template(activity, template_path)
+            create_file_from_template(activity_obj, template_path)
 
     make_migrations()
     migrate()

@@ -1,20 +1,31 @@
 $(document).ready(function() {
+
     $(".uo").prop("readonly",true);
     $(".uo").css("background-color","LightGray");
-    $(".durationcol").css("display","block");
     var Nunits = calculateUO();
     $(".uo").val(Nunits);
-
 
     $( ".okclass" ).click(function(event) {
         event.preventDefault();
         var dfrom = new Date($(".dfrom").val());
+        var dto = new Date($(".dto").val());
+        var tfrom = $(".tfrom").val(); //values are 0 or 1 has defined in the model field
+        var tto = $(".tto").val();
+
+        if (dto.getTime() < dfrom.getTime())
+            {alert("Days are not in the right order!");
+            return false;}
+
+        else if (dto.getTime() == dfrom.getTime() && tto ==0 && tfrom == 1)
+            {alert("Sessions are not in the right order!");
+            return false;}
+
         var exp = $("select.experiment").children("option:selected").text();
         var user = $("select.user").children("option:selected").text();
         var group = $("select.group").children("option:selected").text();
         var project = $("select.project").children("option:selected").text();
         var Nunits=$(".uo").val();
-        var confirm_text = "You will submit this:"+user+" from "+group+" used "+String(Nunits).bold()+" WU of "+exp+" the "+dfrom.toDateString().bold()+". The project to use is: "+project+".";
+        var confirm_text = "You will submit this:"+user+" from "+group+" used "+String(Nunits).bold()+" WU of "+exp+" from "+dfrom.toDateString().bold()+"/"+$(".tfrom").children("option:selected").text().bold()+" to "+dto.toDateString().bold()+"/"+$(".tto").children("option:selected").text().bold()+". The project to use is: "+project+".";
         confirmation(confirm_text,event)
         //var retVal = confirm(confirm_text);
         //if( retVal != true ){
@@ -43,10 +54,22 @@ $(document).ready(function() {
     function calculateUO(){
 
         try {
-            var exp = $("select.experiment").children("option:selected").text();
-            if (exp.includes("Four"))
-                {Nunits=Math.ceil($(".seconds").val()/(3600*24));}
-            else {Nunits=Math.round($(".seconds").val()/360)/10;}
+            var dfrom = $(".dfrom").val();
+            var dto = $(".dto").val();
+
+            var tfrom = $(".tfrom").val(); //values are 0 or 1 has defined in the model field
+            var tto = $(".tto").val();
+            var ndays = Number(elapsed_days(new Date(dfrom),new Date(dto)));
+            {% if activity.night %}
+            var Nnights = Number($(".nights").val())
+            if (Nnights > ndays){alert("You cannot do more nights than days"); return 0;}
+            var Nunits = new Number(2*ndays + Nnights);
+            {% else %}
+            var Nunits = new Number(2*ndays);
+            {% endif %}
+            if (tfrom != 0){Nunits-=1;}
+            if (tto == 0){Nunits-=1;}
+
             return Nunits;
            }
         catch (error) {alert("catch triggered"+error);return 0}
@@ -61,22 +84,15 @@ $(document).ready(function() {
       return year+'-'+month+'-'+day
     };
 
-    $(".seconds").change(function() {
-        var Nunits = calculateUO();
-        $(".uo").val(Nunits);
+    $(".datepicker").change(function(){
+        var dfrom = new Date($(".dfrom").val());
+        var dto = new Date($(".dto").val());
+        if (dto < dfrom)
+            {alertc("Date to cannot be before Date from!");
+            $(".dto").val(dfrom.yyyymmdd());}
     })
 
-    $(".dto").change(function() {
-        var Nunits = calculateUO();
-        $(".uo").val(Nunits);
-    })
-
-    $(".dfrom").change(function() {
-        var Nunits = calculateUO();
-        $(".uo").val(Nunits);
-    })
-
-    $("select.experiment").change(function() {
+    $(".time").change(function() {
         var Nunits = calculateUO();
         $(".uo").val(Nunits);
     })

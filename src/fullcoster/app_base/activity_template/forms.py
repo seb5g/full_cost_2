@@ -12,7 +12,7 @@ from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCatego
 """ 
 The template tag {{activity}} will be replaced by the name of the ActivityCategory enum specifying the Activity
 """
-activity: Activity = ACTIVITIES[ActivityCategory[{{activity}}]]
+activity: Activity = ACTIVITIES[ActivityCategory[{{{{activity.activity_short}}}}]]
 
 is_night = activity.night
 

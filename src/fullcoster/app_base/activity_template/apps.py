@@ -8,7 +8,7 @@ The template tag {{'activity'}} will be replaced by the name of the ActivityCate
 
 """
 
-activity: Activity = ACTIVITIES[ActivityCategory[{{activity}}]]
+activity: Activity = ACTIVITIES[ActivityCategory[{{activity.activity_short}}]]
 
 
 class AppConfig(AppConfig):
