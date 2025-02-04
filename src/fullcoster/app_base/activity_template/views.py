@@ -11,9 +11,11 @@ from fullcoster.utils import manage_time
 #################################################################
 from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory
 """ 
-The template tag {{activity}} will be replaced by the name of the ActivityCategory enum specifying the Activity
+{% raw %}
+The template tag {{'activity'}} will be replaced by the name of the ActivityCategory enum specifying the Activity
+{% endraw %}
 """
-activity: Activity = ACTIVITIES[ActivityCategory[{{{{activity.activity_short}}}}]]
+activity: Activity = ACTIVITIES[ActivityCategory['{{activity.activity_short}}']]
 activity_short = f'{activity.activity_short.lower()}'
 activity_long = activity.activity_long
 

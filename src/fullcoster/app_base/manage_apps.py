@@ -29,14 +29,18 @@ def create_parent_dir(path: Path):
 def create_file_from_template(activity: Activity, template_path_rel: str):
 
     activity_string = activity.activity_short.lower()
-    if 'js' not in template_path or ('js' in template_path and activity.uo.name in template_path):
-        path = apps_parent_path.joinpath(activity_string).joinpath(template_path_rel)
+    if 'js' not in template_path_rel or ('js' in template_path_rel and activity.uo.name in template_path_rel):
+        if 'js' in template_path_rel and activity.uo.name in template_path_rel:
+            new_path = template_path_rel.replace(f'{activity.uo.name}', activity_string)
+        else:
+            new_path = template_path_rel
+        path = apps_parent_path.joinpath(activity_string).joinpath(new_path)
         create_parent_dir(path)
 
         if 'logo' in path.stem:
             # rename the logo png file with the proper name
-            new_path = path.parent.joinpath(f'logo_{activity_string}.png')
-            shutil.copy(template_path.joinpath(template_path_rel), new_path)
+            logo_path = path.parent.joinpath(f'logo_{activity_string}.png')
+            shutil.copy(template_path.joinpath(template_path_rel), logo_path)
 
         else:
             try:
