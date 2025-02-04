@@ -11,14 +11,21 @@ from fullcoster.utils.enum import BaseEnum
 activity_config_path = Path(__file__).parent.parent.joinpath('app_base/config_activities.toml')
 
 
+class UO(BaseEnum):
+    day = 0
+    session = 1
+    hours = 2
+    sample = 3
+    duration = 4
+
+
 @dataclass()
 class Activity:
     activity_short: str
     activity_long: str
-    uo: str
+    uo: UO
     uo_label: str
-    dates: int
-    range_names: list[str]
+    session_names: list[str]
     night: bool
     entities: Iterable[Entity]
 
@@ -39,12 +46,11 @@ ACTIVITIES = {}
 for activity_short, activity_dict in toml.load(activity_config_path)['activities'].items():
     ACTIVITIES[ActivityCategory[activity_short]] = (
         Activity(activity_short,
-                 activity_dict['name'],
-                 activity_dict.get('uo', 'day'),
-                 activity_dict.get('uo_label', 'Working Unit:'),
-                 activity_dict.get('dates', 2),
-                 activity_dict.get('range_names', ['Morning', 'Afternoon']),
-                 activity_dict.get('night', 'False'),
+                 activity_long=activity_dict['name'],
+                 uo=UO[activity_dict.get('uo', 'day')],  # to make sure the uo is within the possible options
+                 uo_label=activity_dict.get('uo_label', 'Working Unit:'),
+                 session_names=activity_dict.get('session_names', None),
+                 night=activity_dict.get('night', False),
                  entities=[
                      ENTITIES[EntityCategory[entity]] for entity in activity_dict['entities']
                  ]

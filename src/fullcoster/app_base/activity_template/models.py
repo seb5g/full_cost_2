@@ -5,7 +5,7 @@ from fullcoster.lab.models import Extraction
 from fullcoster.lab import models as lab_models
 from simple_history.models import HistoricalRecords
 
-from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory
+from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory, UO
 """ 
 The template tag {{activity}} will be replaced by the name of the ActivityCategory enum specifying the Activity
 """
@@ -29,26 +29,33 @@ class Experiment(models.Model):
 
 
 bases = [lab_models.Record]
-if activity.dates == 1:
-    RecordDate = lab_models.RecordOneDate
-else:
+if activity.uo == UO.day:
     RecordDate = lab_models.RecordDate
-
-
-class RecordRange(models.Model):
-    date_choices = [(ind, name) for ind, name in enumerate(activity.range_names)]
-    time_from = models.SmallIntegerField(choices=date_choices, default=0)
-    time_to = models.SmallIntegerField(choices=date_choices, default=0)
-
-    class Meta:
-        abstract = True
+else:
+    RecordDate = lab_models.RecordOneDate
 
 
 base_class = [lab_models.Record, RecordDate]
-if activity.uo == 'day' or activity.uo == 'session':
+if (activity.session_names is not None and
+        (activity.uo == UO.day or
+         activity.uo == UO.session or
+         activity.uo == UO.sample)):
+
+    class RecordRange(models.Model):
+        date_choices = [(ind, name) for ind, name in enumerate(activity.session_names)]
+        time_from = models.SmallIntegerField(choices=date_choices, default=0)
+        time_to = models.SmallIntegerField(choices=date_choices, default=0)
+
+        class Meta:
+            abstract = True
+
     base_class.append(RecordRange)
-elif activity.uo == 'hours':
+
+elif activity.uo == UO.hours:
     base_class.append(lab_models.RecordTwoTimes)
+elif activity.uo == UO.duration:
+    base_class.append(lab_models.RecordDuration)
+
 if activity.night:
     base_class.append(lab_models.RecordNights)
 

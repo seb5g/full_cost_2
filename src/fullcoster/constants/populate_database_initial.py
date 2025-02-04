@@ -15,6 +15,7 @@ from fullcoster.constants.entities import ENTITIES, PriceCategory
 
 
 here = Path(__file__).parent
+resource_path = here.parent.joinpath('resources')
 
 gest = [dict(last_name='Trupin', first_name='Mireille', email='mireille.trupin@cemes.fr', groups=[]),
         dict(last_name='Rougale', first_name='Muriel', email='muriel.rougalle@cemes.fr', groups=[]),
@@ -38,7 +39,7 @@ def populate_gestionnaire():
 def populate_project():
     for p in Project.objects.all():
         p.delete()
-    with codecs.open(here.joinpath('project_pi.csv'), 'r', 'utf-8') as csvfile:
+    with codecs.open(resource_path.joinpath('project_pi.csv'), 'r', 'utf-8') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             pi_surname = row[1].split(' ')[0]
@@ -56,7 +57,7 @@ def populate_users():
         u.delete()
     for g in Group.objects.all():
         g.delete()
-    with codecs.open(here.joinpath('personnel.csv'), 'r', 'utf-8') as csvfile:
+    with codecs.open(resource_path.joinpath('personnel.csv'), 'r', 'utf-8') as csvfile:
         reader = csv.reader(csvfile)
         for row in reader:
             lgroup = get_group(row[0].upper())
@@ -85,6 +86,7 @@ def get_group(user):
                            description=group['long'],
                            gestionnaire=gest)
             lgroup.save()
+            print(lgroup)
         else:
             lgroup = g[0]
     return lgroup

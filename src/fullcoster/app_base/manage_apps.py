@@ -8,7 +8,7 @@ import toml
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import shutil
 
-from fullcoster.constants.activities import Activity, ActivityCategory, ACTIVITIES
+from fullcoster.constants.activities import Activity, ActivityCategory, ACTIVITIES, UO
 
 template_path = Path(__file__).parent.joinpath('activity_template')
 apps_parent_path = template_path.parent.parent
@@ -75,14 +75,16 @@ def create_activities_apps(activities: Iterable[str]):
 
         # manage javascript
         new_path = apps_parent_path.joinpath(f'{activity.lower()}/static/js/{activity.lower()}_record.js')
-        if activity_obj.uo == 'day':
+        if activity_obj.uo == UO.day:
             js_path = js_parent_path.joinpath('day_record.js')
-        elif activity_obj.uo == 'sample':
+        elif activity_obj.uo == UO.sample:
             js_path = js_parent_path.joinpath('sample_record.js')
-        elif activity_obj.uo == 'hours':
+        elif activity_obj.uo == UO.hours:
             js_path = js_parent_path.joinpath('hour_record.js')
-        elif activity_obj.uo == 'session':
+        elif activity_obj.uo == UO.session:
             js_path = js_parent_path.joinpath('session_record.js')
+        elif activity_obj.uo == UO.duration:
+            js_path = js_parent_path.joinpath('duration_record.js')
         shutil.copy(js_path, new_path)
 
         toml_dict['apps'].append(activity)
@@ -145,6 +147,7 @@ activities = ActivityCategory.names()
 
 
 if __name__ == '__main__':
-    create_activities_apps(('GROWTH_IMP', ))
+    #create_activities_apps(('OSM', 'STM_AFM', 'GROWTH_IMP', 'FIB_MEB',))
+    create_activities_apps(('OSM', 'MET'))
     #remove_activity('PREPA')
     #clear_activities()

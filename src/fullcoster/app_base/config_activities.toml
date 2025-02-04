@@ -4,8 +4,7 @@
 name = 'Transmission Electron Microscopy Platform'
 uo = 'day'
 uo_label = 'Number of half day'
-dates = 2
-range_names = ['Morning', 'AfterNoon']
+session_names = ['Morning', 'AfterNoon']
 entities = [
     'MET_C',
     'MET_A',
@@ -15,8 +14,7 @@ entities = [
 name = 'Sample Preparation Service'
 uo = 'sample'
 uo_label = 'Number of samples'
-dates = 1
-range_names = ['Morning', 'AfterNoon', 'Evening']
+session_names = ['Morning', 'AfterNoon', 'Evening']
 entities = [
     'PREPA',
     'PREPA_SOFT',
@@ -26,8 +24,7 @@ entities = [
 name = 'Focused Ion Beam and MEB'
 uo = 'session'
 uo_label = 'Number of sessions'
-dates = 1
-range_names = ['Morning', 'AfterNoon', 'Evening', 'Night']
+session_names = ['Morning', 'AfterNoon', 'Evening', 'Night']
 night = false
 entities = [
     'FIB_MEB',
@@ -37,8 +34,7 @@ entities = [
 name = 'Optical Spectroscopy and Magnetism'
 uo = 'day'
 uo_label = 'Number of half day'
-dates = 2
-range_names = ['Morning', 'AfterNoon']
+session_names = ['Morning', 'AfterNoon']
 night = true
 entities = [
     'SPECTRO',
@@ -50,8 +46,7 @@ entities = [
 name = 'Material Characterisation'
 uo = 'day'
 uo_label = 'Number of half day'
-dates = 2
-range_names = ['Morning', 'AfterNoon']
+session_names = ['Morning', 'AfterNoon']
 entities = [
     'MATC',
 ]
@@ -60,8 +55,7 @@ entities = [
 name = 'NanoFabrication'
 uo = 'day'
 uo_label = 'Number of half day'
-dates = 2
-range_names = ['Morning', 'AfterNoon']
+session_names = ['Morning', 'AfterNoon']
 night = true
 entities = [
     'CLEANR',
@@ -73,17 +67,17 @@ entities = [
 name = 'Chemistry'
 uo = 'day'
 uo_label = 'Number of half day'
-dates = 2
-range_names = ['8h30-10h30', '10h30-12h30', '14h-16h', '16h-18h']
+session_names = ['8h30-10h30', '10h30-12h30', '14h-16h', '16h-18h']
 entities = [
     'CHEMISTRY',
 ]
 
 [activities.GROWTH_IMP]
 name = 'Growth and Implantation'
-uo = 'hours'
+uo = 'duration'
+uo_unit = 's'
+uo_unity = 3600
 uo_label = 'Number of hours'
-dates = 2
 entities = [
     'GROWTH',
     'IMPLANT',
@@ -92,8 +86,7 @@ entities = [
 [activities.STM_AFM]
 name = 'UHV Imagery'
 uo = 'day'
-dates = 2
-range_names = ['Morning', 'AfterNoon']
+session_names = []
 entities = [
     'DUFG',
     'UHVI',
@@ -103,8 +96,7 @@ entities = [
 [activities.ENGINEERING]
 name = 'Engineering'
 uo = 'day'
-dates = 2
-range_names = ['Morning', 'AfterNoon']
+session_names = ['Morning', 'AfterNoon']
 entities = [
     'MECA',
     'ELEC',
