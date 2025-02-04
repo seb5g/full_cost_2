@@ -1,3 +1,5 @@
+from typing import Any
+
 from dataclasses import dataclass
 from collections.abc import Iterable
 from pathlib import Path
@@ -11,7 +13,7 @@ from fullcoster.utils.enum import BaseEnum
 activity_config_path = Path(__file__).parent.parent.joinpath('app_base/config_activities.toml')
 
 
-class UO(BaseEnum):
+class WUCategories(BaseEnum):
     day = 0
     session = 1
     hours = 2
@@ -23,8 +25,10 @@ class UO(BaseEnum):
 class Activity:
     activity_short: str
     activity_long: str
-    uo: UO
-    uo_label: str
+    wu: WUCategories
+    wu_unit: Any
+    wu_unity: float
+    wu_label: str
     session_names: list[str]
     night: bool
     entities: Iterable[Entity]
@@ -47,8 +51,10 @@ for activity_short, activity_dict in toml.load(activity_config_path)['activities
     ACTIVITIES[ActivityCategory[activity_short]] = (
         Activity(activity_short,
                  activity_long=activity_dict['name'],
-                 uo=UO[activity_dict.get('uo', 'day')],  # to make sure the uo is within the possible options
-                 uo_label=activity_dict.get('uo_label', 'Working Unit:'),
+                 wu=WUCategories[activity_dict.get('wu', 'day')],  # to make sure the wu is within the possible options
+                 wu_unit=activity_dict.get('wu_unit', 'day'),
+                 wu_unity = activity_dict.get('wu_unity', 1),
+                 wu_label=activity_dict.get('wu_label', 'Working Unit:'),
                  session_names=activity_dict.get('session_names', None),
                  night=activity_dict.get('night', False),
                  entities=[

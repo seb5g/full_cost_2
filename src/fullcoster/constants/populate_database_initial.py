@@ -92,6 +92,14 @@ def get_group(user):
     return lgroup
 
 
+def create_fake_groups():
+    gest = Gestionnaire.objects.all()[0]
+    lgroup = Group(group='GROUP',
+                   description='a_fake_group',
+                   gestionnaire=gest)
+    lgroup.save()
+    print(lgroup)
+
 def set_prices(prices, entity):
     for p in prices:
         billing = Price(price_category=p[0], price=p[1], price_name=p[2], price_entity=entity)

@@ -5,7 +5,7 @@ from fullcoster.lab.models import Extraction
 from fullcoster.lab import models as lab_models
 from simple_history.models import HistoricalRecords
 
-from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory, UO
+from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory, WUCategories
 """ 
 {% raw %}
 The template tag {{'activity'}} will be replaced by the name of the ActivityCategory enum specifying the Activity
@@ -31,7 +31,7 @@ class Experiment(models.Model):
 
 
 bases = [lab_models.Record]
-if activity.uo == UO.day:
+if activity.wu == WUCategories.day:
     RecordDate = lab_models.RecordDate
 else:
     RecordDate = lab_models.RecordOneDate
@@ -39,9 +39,9 @@ else:
 
 base_class = [lab_models.Record, RecordDate]
 if (activity.session_names is not None and
-        (activity.uo == UO.day or
-         activity.uo == UO.session or
-         activity.uo == UO.sample)):
+        (activity.wu == WUCategories.day or
+         activity.wu == WUCategories.session or
+         activity.wu == WUCategories.sample)):
 
     class RecordRange(models.Model):
         date_choices = [(ind, name) for ind, name in enumerate(activity.session_names)]
@@ -53,9 +53,9 @@ if (activity.session_names is not None and
 
     base_class.append(RecordRange)
 
-elif activity.uo == UO.hours:
+elif activity.wu == WUCategories.hours:
     base_class.append(lab_models.RecordTwoTimes)
-elif activity.uo == UO.duration:
+elif activity.wu == WUCategories.duration:
     base_class.append(lab_models.RecordDuration)
 
 if activity.night:

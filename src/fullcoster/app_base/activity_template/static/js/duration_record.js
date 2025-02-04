@@ -1,9 +1,9 @@
 $(document).ready(function() {
-    $(".uo").prop("readonly",true);
-    $(".uo").css("background-color","LightGray");
+    $(".wu").prop("readonly",true);
+    $(".wu").css("background-color","LightGray");
     $(".durationcol").css("display","block");
-    var Nunits = calculateUO();
-    $(".uo").val(Nunits);
+    var Nunits = calculatewu();
+    $(".wu").val(Nunits);
 
 
     $( ".okclass" ).click(function(event) {
@@ -13,7 +13,7 @@ $(document).ready(function() {
         var user = $("select.user").children("option:selected").text();
         var group = $("select.group").children("option:selected").text();
         var project = $("select.project").children("option:selected").text();
-        var Nunits=$(".uo").val();
+        var Nunits=$(".wu").val();
         var confirm_text = "You will submit this:"+user+" from "+group+" used "+String(Nunits).bold()+" WU of "+exp+" the "+dfrom.toDateString().bold()+". The project to use is: "+project+".";
         confirmation(confirm_text,event)
         //var retVal = confirm(confirm_text);
@@ -40,13 +40,11 @@ $(document).ready(function() {
         else {return 1};
         }
 
-    function calculateUO(){
+    function calculatewu(){
 
         try {
-            var exp = $("select.experiment").children("option:selected").text();
-            if (exp.includes("Four"))
-                {Nunits=Math.ceil($(".seconds").val()/(3600*24));}
-            else {Nunits=Math.round($(".seconds").val()/360)/10;}
+            Nunits=Math.round($(".duration").val()/{{activity.wu_unity}} * 10)/10;
+            Nunits = Math.max(Nunits, 1);
             return Nunits;
            }
         catch (error) {alert("catch triggered"+error);return 0}
@@ -61,24 +59,24 @@ $(document).ready(function() {
       return year+'-'+month+'-'+day
     };
 
-    $(".seconds").change(function() {
-        var Nunits = calculateUO();
-        $(".uo").val(Nunits);
+    $(".duration").change(function() {
+        var Nunits = calculatewu();
+        $(".wu").val(Nunits);
     })
 
     $(".dto").change(function() {
-        var Nunits = calculateUO();
-        $(".uo").val(Nunits);
+        var Nunits = calculatewu();
+        $(".wu").val(Nunits);
     })
 
     $(".dfrom").change(function() {
-        var Nunits = calculateUO();
-        $(".uo").val(Nunits);
+        var Nunits = calculatewu();
+        $(".wu").val(Nunits);
     })
 
     $("select.experiment").change(function() {
-        var Nunits = calculateUO();
-        $(".uo").val(Nunits);
+        var Nunits = calculatewu();
+        $(".wu").val(Nunits);
     })
 
     function alertc(confirm_text, event){

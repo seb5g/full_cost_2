@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
-    $(".uo").prop("readonly",true);
-    $(".uo").css("background-color","LightGray");
-    var Nunits = calculateUO();
-    $(".uo").val(Nunits);
+    $(".wu").prop("readonly",true);
+    $(".wu").css("background-color","LightGray");
+    var Nunits = calculatewu();
+    $(".wu").val(Nunits);
 
     $( ".okclass" ).click(function(event) {
         event.preventDefault();
@@ -24,7 +24,7 @@ $(document).ready(function() {
         var user = $("select.user").children("option:selected").text();
         var group = $("select.group").children("option:selected").text();
         var project = $("select.project").children("option:selected").text();
-        var Nunits=$(".uo").val();
+        var Nunits=$(".wu").val();
         var confirm_text = "You will submit this:"+user+" from "+group+" used "+String(Nunits).bold()+" WU of "+exp+" from "+dfrom.toDateString().bold()+"/"+$(".tfrom").children("option:selected").text().bold()+" to "+dto.toDateString().bold()+"/"+$(".tto").children("option:selected").text().bold()+". The project to use is: "+project+".";
         confirmation(confirm_text,event)
         //var retVal = confirm(confirm_text);
@@ -51,7 +51,7 @@ $(document).ready(function() {
         else {return 1};
         }
 
-    function calculateUO(){
+    function calculatewu(){
 
         try {
             var dfrom = $(".dfrom").val();
@@ -93,8 +93,8 @@ $(document).ready(function() {
     })
 
     $(".time").change(function() {
-        var Nunits = calculateUO();
-        $(".uo").val(Nunits);
+        var Nunits = calculatewu();
+        $(".wu").val(Nunits);
     })
 
     function alertc(confirm_text, event){

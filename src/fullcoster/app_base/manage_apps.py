@@ -8,7 +8,7 @@ import toml
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import shutil
 
-from fullcoster.constants.activities import Activity, ActivityCategory, ACTIVITIES, UO
+from fullcoster.constants.activities import Activity, ActivityCategory, ACTIVITIES, WUCategories
 
 template_path = Path(__file__).parent.joinpath('activity_template')
 apps_parent_path = template_path.parent.parent
@@ -29,9 +29,9 @@ def create_parent_dir(path: Path):
 def create_file_from_template(activity: Activity, template_path_rel: str):
 
     activity_string = activity.activity_short.lower()
-    if 'js' not in template_path_rel or ('js' in template_path_rel and activity.uo.name in template_path_rel):
-        if 'js' in template_path_rel and activity.uo.name in template_path_rel:
-            new_path = template_path_rel.replace(f'{activity.uo.name}', activity_string)
+    if 'js' not in template_path_rel or ('js' in template_path_rel and activity.wu.name in template_path_rel):
+        if 'js' in template_path_rel and activity.wu.name in template_path_rel:
+            new_path = template_path_rel.replace(f'{activity.wu.name}', activity_string)
         else:
             new_path = template_path_rel
         path = apps_parent_path.joinpath(activity_string).joinpath(new_path)
@@ -142,6 +142,6 @@ activities = ActivityCategory.names()
 
 if __name__ == '__main__':
     #create_activities_apps(('OSM', 'STM_AFM', 'GROWTH_IMP', 'FIB_MEB',))
-    create_activities_apps(('OSM', 'MET'))
+    create_activities_apps(('OSM', 'GROWTH_IMP' ))
     #remove_activity('PREPA')
     #clear_activities()

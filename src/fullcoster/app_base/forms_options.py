@@ -2,16 +2,18 @@ from django.forms import ModelForm, DateInput, Textarea, NumberInput, Select, Ch
 from crispy_forms.layout import Fieldset, Submit, Row, Column, Div, Reset, Layout, Button
 from crispy_forms.bootstrap import FormActions
 
-from fullcoster.constants.activities import Activity, UO
+from fullcoster.constants.activities import Activity, WUCategories
 
 
 def get_field(activity: Activity):
     fields = []
     fields.append('date_from')
-    if activity.uo == UO.day:
+    if activity.wu == WUCategories.day:
         fields.append('date_to')
     if activity.session_names is not None:
         fields.extend(['time_from', 'time_to'])
+    if activity.wu == WUCategories.duration:
+        fields.append('duration')
     fields.extend(['user', 'wu'])
     if activity.night:
         fields.append('nights')
@@ -22,8 +24,10 @@ def get_field(activity: Activity):
 def get_labels(activity: Activity):
     labels = {}
     labels.update({'date_from': 'From:'})
-    if activity.uo == UO.day:
+    if activity.wu == WUCategories.day:
         labels.update({'date_to': 'To:'})
+    if activity.wu == WUCategories.duration:
+        labels.update({'duration': 'Duration in s:'})
     labels.update({'wu': 'WU:', 'experiment': 'Experiment:'})
     if activity.night:
         labels.update({'nights': 'N nights:'})
@@ -35,9 +39,10 @@ def get_labels(activity: Activity):
 def get_help_text(activity: Activity):
     help_texts = {}
     help_texts.update({'date_from': 'The starting date of your run'})
-    if activity.uo == UO.day:
+    if activity.wu == WUCategories.day:
         help_texts.update({'date_to': 'The last date of your run'})
-    help_texts.update({'wu': activity.uo_label, 'experiment': 'Pick an experiment'})
+
+    help_texts.update({'wu': activity.wu_label, 'experiment': 'Pick an experiment'})
     if activity.night:
         help_texts.update({'nights': 'If your run went late (after 20h), add the number of late nights you did'})
     if activity.session_names is not None:
@@ -49,18 +54,20 @@ def get_help_text(activity: Activity):
 def get_widgets(activity: Activity):
     widgets = {}
     widgets.update({'date_from': DateInput(attrs={'type': 'date', 'class': 'datepicker dfrom time'})})
-    if activity.uo == UO.day:
+    if activity.wu == WUCategories.day:
         widgets.update({'date_to': DateInput(attrs={'type': 'date', 'class': 'datepicker dto time'})})
+    if activity.wu == WUCategories.duration:
+        widgets.update({'duration': NumberInput(attrs={'min':0, 'step':1, 'class': 'duration'}),})
     widgets.update({'wu': 'WU:', 'experiment': 'Experiment:'})
 
     if activity.session_names is not None:
-        if activity.uo == UO.day or activity.uo == 'session':
+        if activity.wu == WUCategories.day or activity.wu == 'session':
             widgets.update({'time_from': Select(attrs={'class': 'tfrom time'}),
                             'time_to': Select(attrs={'class': 'tto time'})})
-        elif activity.uo == UO.hours:
+        elif activity.wu == WUCategories.hours:
             widgets.update({'time_from': TimeInput(attrs={'type': 'time', 'class': 'timepicker tfrom time'}),
                             'time_to': TimeInput(attrs={'type': 'time', 'class': 'timepicker tto time'}),})
-        elif activity.uo == UO.duration:
+        elif activity.wu == WUCategories.duration:
             widgets.update({'duration': NumberInput(attrs={'min': 0, 'step': 1, 'class': 'seconds'})})
 
     widgets.update(
@@ -70,7 +77,7 @@ def get_widgets(activity: Activity):
          'group': Select(attrs={'class': 'group', }),
          'project': Select(attrs={'class': 'project', }),
          'user': Select(attrs={'placeholder': 'Surname Name', 'class': 'user'}),
-         'wu': NumberInput(attrs={'required': False, 'class': 'uo', 'value': 0, 'min': 0, 'step': 0.5,
+         'wu': NumberInput(attrs={'required': False, 'class': 'wu', 'value': 0, 'min': 0, 'step': 0.5,
                                   'style': 'width:10ch'}),})
     if activity.night:
         widgets.update({'nights': NumberInput(attrs={'class': 'nights time', 'value': 0, 'min': 0, 'step': 1}),})
@@ -81,19 +88,21 @@ def get_layout(activity: Activity):
     wu_row = Row()
     if activity.night:
         wu_row .append(Column('nights', css_class='form-group col-md-6 nightcol'))
-    wu_row.append(Column('wu', css_class='form-group col-md-4 uocol'))
+    wu_row.append(Column('wu', css_class='form-group col-md-4 wucol'))
 
     date_row = Row(Column('date_from', css_class='form-group col-md-3'), css_class='form-row')
 
-    if activity.uo == UO.day or activity.uo == UO.session or activity.uo == UO.hours:
+    if activity.wu == WUCategories.day or activity.wu == WUCategories.session or activity.wu == WUCategories.hours:
         date_row.append(Column('time_from', css_class='form-group col-md-3'))
 
     date_row.append(Div(css_class='w-100'))
 
-    if activity.uo == UO.day:
+    if activity.wu == WUCategories.day:
         date_row.append(Column('date_to', css_class='form-group col-md-3'))
-    if activity.uo == UO.day or activity.uo == UO.session or activity.uo == UO.hours:
+    if activity.wu == WUCategories.day or activity.wu == WUCategories.session or activity.wu == WUCategories.hours:
         date_row.append(Column('time_to', css_class='form-group col-md-3'))
+    if activity.wu == WUCategories.duration:
+        date_row.append(Column('duration', css_class='form-group col-md-6 gi-col durationcol'))
     date_row.append(Column('experiment', css_class='form-group col-6'))
 
     layout = Layout(
