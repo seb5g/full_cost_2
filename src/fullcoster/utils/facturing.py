@@ -1,6 +1,8 @@
 import importlib
 import os
 import datetime
+
+from fullcoster.lab.models import Project
 from openpyxl import load_workbook, utils
 from django.db.models import Q
 from openpyxl.styles import Border, Side, Alignment, Font
@@ -12,11 +14,16 @@ from django.http import HttpResponse
 from django.db.models import Max
 from django.urls import reverse
 
-from ..constants.entities import Entity
-# from full_cost.utils.constants import get_activities_from_entity, get_subbillings_from_entity_short,\
+from ..constants.entities import Entity, ENTITIES, PriceCategory, EntityCategory
+from ..constants.activities import (get_activities_from_entity, ActivityCategory, ACTIVITIES,
+                                    get_entities_obj_from_activity, Activity)
+
+# get_subbillings_from_entity_short,\
 #     get_subbillings_from_entity_long, get_entity_long, CNRS_PERCENTAGE
 from ..lab.models import Extraction, Price
 from ..full_cost import settings
+
+
 
 
 def get_border(style=None, color='FF000000'):
@@ -51,35 +58,42 @@ def to_string(val):
     return '{:.02f}'.format(val)
 
 
-def calculate_wus(records_list, entity: Entity):
-    subbillings_long = get_subbillings_from_entity_long(entity)
-    Nwu = np.array([0. for idx in range(len(subbillings_long))])
+def calculate_wus(records_list, activity: ActivityCategory):
+    entities = get_entities_obj_from_activity(activity)
+    entities_name = [entity.name for entity in entities]
+    Nwu = np.array([0. for idx in range(len(entities))])
     for records in records_list:
         for r in records:
-            if r.experiment.get_exp_type_display() in subbillings_long:
-                ind = subbillings_long.index(r.experiment.get_exp_type_display())
-                Nwutmp = np.array([r.wu if idx == ind else 0 for idx in range(len(subbillings_long))])
+            if r.experiment.get_exp_type_display() in entities_name:
+                ind = entities_name.index(r.experiment.get_exp_type_display())
+                Nwutmp = np.array([r.wu if idx == ind else 0 for idx in range(len(entities_name))])
                 Nwu += Nwutmp
     return Nwu
 
-def populate_releve(records_list, project, entity, show_time=True):
+def populate_releve(records_list, project: Project, activity: ActivityCategory,
+                    show_time=True):
 
+    entities_obj = get_entities_obj_from_activity(activity)
+    entities_long = [entity.name for entity in entities_obj]
 
-    subbilling_long = get_subbillings_from_entity_long(entity)
-
-    wb = load_workbook(filename=os.path.join(settings.STATIC_ROOT, 'template_facturation.xlsx'))
+    try:  # in deployment
+        workbook_file = settings.STATIC_ROOT.joinpath('template_facturation.xlsx')
+    except AttributeError:  # in debug
+        workbook_file = settings.STATICFILES_DIRS[0].joinpath('template_facturation.xlsx')
+    wb = load_workbook(workbook_file)
     ws = wb.create_sheet('Relevé')
 
     ws.append([None])
     ws.append([None])
-    if entity == 'MECA' or entity == 'ELEC':
-        header = ['Date', 'Worker', 'Session']
-    else:
-        header = ['Date', 'Experiment', 'Session']
-    header.extend(subbilling_long)
+    # if entity == 'MECA' or entity == 'ELEC':
+    #     header = ['Date', 'Worker', 'Session']
+    # else:
+    #     header = ['Date', 'Experiment', 'Session']
+    header = ['Date', 'Experiment', 'Session']
+    header.extend(entities_long)
 
     ws.append(header)
-    Nwu = calculate_wus(records_list, entity)
+    Nwu = calculate_wus(records_list, activity)
 
 
     for records in records_list:
@@ -110,8 +124,8 @@ def populate_releve(records_list, project, entity, show_time=True):
                 session = f"le {date_from}: {time_from if show_time else ''} - {time_to if show_time else ''}"
 
 
-            ind = subbilling_long.index(r.experiment.get_exp_type_display())
-            wus = [r.wu if idx == ind else None for idx in range(len(subbilling_long))]
+            ind = entities_long.index(r.experiment.get_exp_type_display())
+            wus = [r.wu if idx == ind else None for idx in range(len(entities_long))]
             row = [r.date_from, str(r.experiment.experiment), session]
             row.extend(wus)
             ws.append(row)
@@ -138,60 +152,55 @@ def populate_releve(records_list, project, entity, show_time=True):
 
     return wb, Nwu
 
-def calculate_totals(project, records_list, entity):
-
-    wus = calculate_wus(records_list, entity)
-    subbilling_short = get_subbillings_from_entity_short(entity)
+def calculate_totals(project, records_list, activity: ActivityCategory):
+    wus = calculate_wus(records_list, activity)
+    entities = get_entities_obj_from_activity(activity)
     totals = [0]
-
-    for ind, bill in enumerate(subbilling_short):
-        price, tarification = get_project_price(project, entity, bill)
-        totals[0] += wus[ind]*price
-
-
+    for ind, entity in enumerate(entities):
+        price, princing = get_project_price(project, entity)
+        totals[0] += float(wus[ind]*price)
     return totals
 
-def get_project_price(project, entity, bill):
-    if project.is_academic:
-        tarification = 'académique'
-        if project.is_national:
-            tarification += ' nationale'
-            price = Price.objects.get(price_entity=entity, price_category='T3ANR', price_name=bill).price
-        else:
-            tarification += ' internationale ou privée'
-            price = Price.objects.get(price_entity=entity, price_category='T3', price_name=bill).price
-        if not project.is_cnrs:
-            price += price * CNRS_PERCENTAGE / 100
-            tarification += ' non gérée par le CNRS'
-        else:
-            tarification += ' gérée par le CNRS'
+def get_project_price(project: Project, entity: Entity) -> (float, str):
+    """ Get the price to impute on a given Project associated  and given the selected entity"""
+    if project.is_cnrs:
+        price = Price.objects.get(price_entity=entity.short, price_category=PriceCategory.T1.name,
+                                  price_name=entity.short).price
+        pricing = PriceCategory.T1.value
+    elif project.is_academic:
+        price = Price.objects.get(price_entity=entity.short, price_category=PriceCategory.T2.name,
+                                  price_name=entity.short).price
+        pricing = PriceCategory.T2.value
     else:
-        tarification = 'privée'
-        price = Price.objects.get(price_entity=entity, price_category='T1', price_name=bill).price
-    return price, tarification
+        price = Price.objects.get(price_entity=entity.short, price_category=PriceCategory.T3.name,
+                                  price_name=entity.short).price
+        pricing = PriceCategory.T3.value
 
-def populate_facture(extraction_name, extraction, entity):
+    return price, pricing
+
+def populate_facture(extraction_name: str, extraction: Extraction, activity: ActivityCategory):
     records_list = []
-    for act in get_activities_from_entity(entity):
-        records_list.append(getattr(extraction, f'{act}_record_related').all())
+    records_list.append(getattr(extraction, f'{activity.name.lower()}_record_related').all())
 
     project = extraction.project
 
     dates = [extraction.date_after.strftime('%d/%m/%Y'),
             extraction.date_before.strftime('%d/%m/%Y'),]
 
-    wb, wus = populate_releve(records_list, project, entity)
+    wb, wus = populate_releve(records_list, project, activity)
 
 
     ws = wb['Facture']
 
-    totals = calculate_totals(project, records_list, entity)
+    totals = calculate_totals(project, records_list, activity)
+    entities_obj = get_entities_obj_from_activity(activity)
+    entities_long = [entity.name for entity in entities_obj]
+    entities_short = [entity.short for entity in entities_obj]
 
-    subbilling_short = get_subbillings_from_entity_short(entity)
-    subbilling_long = get_subbillings_from_entity_long(entity)
-    for ind, bill in enumerate(subbilling_short):
-        price, tarification = get_project_price(project, entity, bill)
-        row = [None, subbilling_long[ind], wus[ind], price, to_string(wus[ind]*price)]
+    for ind, entity in enumerate(entities_short):
+        entity_obj = ENTITIES[EntityCategory[entity]]
+        price, pricing = get_project_price(project, entity_obj)
+        row = [None, entities_long[ind], wus[ind], price, to_string(wus[ind]*price)]
         ws.append(row)
 
 
@@ -199,7 +208,7 @@ def populate_facture(extraction_name, extraction, entity):
 
 
     letter = 'E'
-    irow = 24 + len(subbilling_long) + 1
+    irow = 24 + len(entities_long) + 1
     cells = ws['C24':f'{letter}{24}']
     for row in cells:
         for cell in row:
@@ -216,15 +225,15 @@ def populate_facture(extraction_name, extraction, entity):
 
     ws['C13'] = str(project.project_pi)
     ws['C14'] = project.project_name
-    ws['C17'] = get_entity_long(entity)
+    ws['C17'] = activity.name
     ws['C20'] = dates[0]
     ws['E20'] = dates[1]
     ws['G6'] = date.today().strftime('%d/%m/%Y')
     ws['C2'] = extraction_name
 
-    facture_object = '" et de "'.join(subbilling_long)
+    facture_object = '" et de "'.join(entities_long)
     ws['C19'] = f'Séances de "{facture_object}"'
-    ws['B22'] = f'Tarification {tarification}'
+    ws['B22'] = f'Tarification {pricing}'
     return wb
 
 
@@ -235,10 +244,12 @@ def export_book(wb):
 
 def generate_xlsx(extraction):
     ext_id = extraction.creation_id
-    entity = extraction.billing
-    extraction_name = f"{entity} {date.today().strftime('%y')}-{ext_id:03d}"
+    activity_str = extraction.activity
+    extraction_name = f"{activity_str} {date.today().strftime('%y')}-{ext_id:03d}"
 
-    wb = populate_facture(extraction_name, extraction, entity)
+    activity_cat = ActivityCategory[activity_str]
+
+    wb = populate_facture(extraction_name, extraction, activity_cat)
     data = export_book(wb)
 
     filename = f'extract_{extraction_name}.xlsx'
@@ -249,19 +260,20 @@ def generate_xlsx(extraction):
 
 
 
-def create_extraction(entity, records_list, project, filter):
-    ext_id = Extraction.objects.all().filter(creation_date__year=date.today().year).aggregate(Max('creation_id'))['creation_id__max']
+def create_extraction(activity: ActivityCategory, records_list, project, filter):
+    ext_id = Extraction.objects.all().filter(
+        creation_date__year=date.today().year).aggregate(Max('creation_id'))['creation_id__max']
     if ext_id is not None:
         ext_id += 1
     else:
         ext_id = 0
 
-    totals = calculate_totals(project, records_list, entity)
+    totals = calculate_totals(project, records_list, activity)
     total = totals[0]
     ext = Extraction(project=project,
                      date_after=filter.form.cleaned_data['date_from'].start,
                      date_before=filter.form.cleaned_data['date_from'].stop,
-                     creation_id=ext_id, amount=total, billing=entity)
+                     creation_id=ext_id, amount=total, activity=ACTIVITIES[activity].activity_short)
 
     ext.save()
     for records in records_list:
