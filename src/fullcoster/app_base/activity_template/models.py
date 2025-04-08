@@ -40,8 +40,7 @@ else:
 base_class = [lab_models.Record, RecordDate]
 if (activity.session_names is not None and
         (activity.wu == WUCategories.day or
-         activity.wu == WUCategories.session or
-         activity.wu == WUCategories.sample)):
+         activity.wu == WUCategories.session)):
 
     class RecordRange(models.Model):
         date_choices = [(ind, name) for ind, name in enumerate(activity.session_names)]
