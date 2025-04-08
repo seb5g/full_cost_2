@@ -29,8 +29,10 @@ from .tables import ProjectTable, RecordTableFull, ExtractionTable, RecordTable
 from .forms import ExtractionForm
 
 
-from ..constants.activities import ACTIVITIES, ActivityCategory, get_activities_from_entity
-from ..constants.entities import get_entities_as_list, EntityCategory
+from ..constants.activities import (ACTIVITIES, ActivityCategory, get_activities_from_entity,
+                                    get_entities_ids_from_activity, get_entities_short_from_activity,
+                                    get_entities_obj_from_activity)
+from ..constants.entities import get_entities_as_list, EntityCategory, ENTITIES
 
 
 from ..utils.ldap import LDAP
@@ -198,7 +200,7 @@ class GetRecord(View):
                 record = self.populate_record(data)
 
                 #automatic attribution of the billing entry from ATIVITIES constant
-                entities = ACTIVITIES[ActivityCategory[self.activity['short'].upper()]].entities
+                entities = get_entities_obj_from_activity(ActivityCategory[self.activity['short'].upper()])
                 for entity in entities:
                     if record.experiment.exp_type == entity.short:
                         record.billing = entity.short
@@ -232,28 +234,34 @@ class ExtractRecordAll(View):
         self.table_class = []
         for act in activities:
             try:
-                module = import_module(f"{act}")
+                module = import_module(f"fullcoster.{act.name.lower()}")
                 ##self.filter_class.append(deepcopy(ExtractFilterAll))
-                self.filter_class.append(filterset_factory_extra(module.models.Record, ('billing', 'date_from', 'project'),FilterSet, ExtractFilterForm))
+                self.filter_class.append(filterset_factory_extra(module.models.Record,
+                                                                 ('billing', 'date_from', 'project'),
+                                                                 FilterSet,
+                                                                 ExtractFilterForm))
                 self.table_class.append(module.tables.RecordTable)
-            except ModuleNotFoundError:
+            except ModuleNotFoundError as e:
                 pass #activity defined in constants.py but not yet as a django app
 
 
     def get(self, request):
-        entity_previous = None
+        activity_previous = None
         url_previous = request.META.get('HTTP_REFERER')
         if url_previous is not None:
-            entity_previous =  get_field_from_url(url_previous, 'billing')
-
-        entity = EntityCategory[request.GET.get('billing')]
+            activity = get_field_from_url(url_previous, 'billing')
+            if activity is not None:
+                activity_previous =  ActivityCategory[activity]
+        try:
+            activity = ActivityCategory[request.GET.get('billing')]
+        except KeyError:
+            activity = ActivityCategory[next(ActivityCategory.names())]
         full_dates = True
-        if entity is None:
-            entity = EntityCategory.SPECTRO
-        elif entity == entity_previous:
+        if activity == activity_previous:
             full_dates = False
 
-        activities = get_activities_from_entity(entity)
+        activities = [activity]
+
         self.set_filter(activities)
 
 
@@ -264,8 +272,8 @@ class ExtractRecordAll(View):
             filters.append(filter(request.GET))
 
             if full_dates:
-                module = import_module(f"{activities[ind].name}")
-                sub_billings = [entity]
+                module = import_module(f"fullcoster.{activity.name.lower()}")
+                sub_billings = get_entities_short_from_activity(activity)
                 req = Q()
                 for sub in sub_billings:
                     req = req | Q(experiment__exp_type=sub)
@@ -279,14 +287,14 @@ class ExtractRecordAll(View):
             date_min = min(dates_min)
             date_max = max(dates_max)
             for filter in self.filter_class:
-                filters.append(filter(data={'billing': entity, 'date_from_after': date_min, 'date_from_before': date_max}, request=request.GET))
+                filters.append(filter(data={'billing': activity.name, 'date_from_after': date_min, 'date_from_before': date_max}, request=request.GET))
 
         filter = filters[0]
 
         tables = []
         qss = []
         for ind, filter in enumerate(filters):
-            sub_billings = (entity,)
+            sub_billings = get_entities_short_from_activity(activity)
             req = Q()
             for sub in sub_billings:
                 req = req | Q(experiment__exp_type=sub)
@@ -317,15 +325,17 @@ class ExtractRecordAll(View):
             if filter.form.is_valid():
                 project = filter.form.cleaned_data['project']
                 export = True
-                amount = calculate_totals(project, qss, entity)[0]
+                amount = calculate_totals(project, qss, activity)[0]
 
                 if '_export' in request.GET:
-                    ext = create_extraction(entity, qss, project, filter)
-                    return redirect('lab:fextract_entity_id', entity=entity, id=ext.creation_id, thanks='true')
+                    ext = create_extraction(activity, qss, project, filter)
+                    return redirect('lab:fextract_activity_id', activity=ACTIVITIES[activity].activity_short,
+                                    id=ext.creation_id, thanks='true')
 
 
         return render(request, f"{self.activity['short']}/filter_table_lab.html",
-                    {'activity': self.activity, 'filter': filter, 'tables':tables, 'activities': activities,
+                    {'activity': self.activity, 'filter': filter, 'tables': tables,
+                     'activities': [activity.name for activity in activities],
                      'export':export, 'user': f'{request.user.last_name} {request.user.first_name}', 'amount': amount})
 
 @method_decorator(login_required, name='dispatch')
@@ -407,7 +417,7 @@ class ShowSetExtractionAll(View):
         except:
             return False
 
-    def post(self, request, entity=None, id=-1, thanks=''):
+    def post(self, request, activity: str = None, id=-1, thanks=''):
         form = self.form_class(request.POST)
         status = True
         if form.is_valid():
@@ -434,13 +444,13 @@ class ShowSetExtractionAll(View):
 
         return self.response(request, table, form, filter, ext=ext, email_status=status)
 
-    def get(self, request, entity=None, id=-1, thanks=''):
+    def get(self, request, activity: str = None, id=-1, thanks=''):
         filter = self.filter_class(request.GET)  # get all objects from the filter model
 
         table = self.table_class(filter.qs)
         RequestConfig(request).configure(table)
-        if entity is not None and id != -1:
-            ext = Extraction.objects.filter(creation_id=id, billing=entity)
+        if activity is not None and id != -1:
+            ext = Extraction.objects.filter(creation_id=id, activity=activity)
             if ext.exists():
                 form =self.form_class(initial={'extractions' : ext[0]})
             else:
