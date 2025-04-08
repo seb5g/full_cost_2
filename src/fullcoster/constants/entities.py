@@ -6,13 +6,15 @@ import toml
 
 from fullcoster.utils.enum import BaseEnum
 
+from enum import StrEnum
+
 
 entity_config_path = Path(__file__).parent.parent.joinpath('app_base/config_entities.toml')
 
 
-class PriceCategory(BaseEnum):
-    T1 = 'CNRS Interne'
-    T2 = 'CNRS Externe'
+class PriceCategory(StrEnum):
+    T1 = 'CNRS and partners'
+    T2 = 'Academic'
     T3 = 'Private'
 
     @classmethod
