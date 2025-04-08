@@ -1,6 +1,9 @@
 $(document).ready(function() {
+
+    $(".nightcol").css("display","none");
     $(".activity_div").css("display","none");
-    $(".wu").attr("step", 1)
+    $(".one_date_class").css("display","none");
+    $(".uo").attr("step", 1)
 
     $( ".okclass" ).click(function(event) {
         event.preventDefault();
@@ -10,7 +13,7 @@ $(document).ready(function() {
         var user = $("select.user").children("option:selected").text();
         var group = $("select.group").children("option:selected").text();
         var project = $("select.project").children("option:selected").text();
-        var Nunits=$(".wu").val();
+        var Nunits=$(".uo").val();
         var confirm_text = "You will submit this:"+user+" from "+group+" used "+String(Nunits).bold()+" WU of "+exp+" the "+dfrom.toDateString().bold()+". The project to use is: "+project+".";
         confirmation(confirm_text,event)
         //var retVal = confirm(confirm_text);
