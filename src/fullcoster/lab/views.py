@@ -15,7 +15,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from pathlib import Path
 
 from fullcoster.utils.filter_stuff import filterset_factory_extra
-from fullcoster.utils.facturing import generate_xlsx, create_extraction
+from fullcoster.utils.billing import generate_xlsx, create_extraction
 
 from django_tables2.config import RequestConfig
 from django_tables2.export.export import TableExport
@@ -36,7 +36,7 @@ from ..constants.entities import get_entities_as_list, EntityCategory, ENTITIES
 
 
 from ..utils.ldap import LDAP
-from ..utils.facturing import calculate_totals
+from ..utils.billing import calculate_totals
 from ..utils.url_stuff import get_field_from_url
 
 from .models import Record, Group

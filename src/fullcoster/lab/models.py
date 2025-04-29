@@ -57,7 +57,6 @@ class Project(models.Model):
     project_pi = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, null=True)
     is_cnrs = models.BooleanField(default=True) # project managed by CNRS (True) or other institutions (False)
     is_academic = models.BooleanField(default=True) #for academic clients (CNRS, Fac, INSA, others) for private clients or prestations (False)
-    is_national = models.BooleanField(default=True) #for ANR or NEXT (True)
     expired = models.BooleanField(default=False)
     expired_date = models.DateField(default=now)
     amount_left = models.FloatField(default=0.0)

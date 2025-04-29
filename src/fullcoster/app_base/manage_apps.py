@@ -142,6 +142,6 @@ activities = ActivityCategory.names()
 
 if __name__ == '__main__':
     #create_activities_apps(('OSM', 'STM_AFM', 'GROWTH_IMP', 'FIB_MEB',))
-    create_activities_apps(('OSM', 'GROWTH_IMP' ))
-    #remove_activity('PREPA')
-    #clear_activities()
+    #create_activities_apps(('MET', ))
+    #remove_activity('MET')
+    clear_activities()
