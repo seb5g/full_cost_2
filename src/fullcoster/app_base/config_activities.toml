@@ -14,7 +14,7 @@ entities = [
 name = 'Sample Preparation Service'
 wu = 'sample'
 wu_label = 'Number of samples'
-session_names = ['Morning', 'AfterNoon', 'Evening']
+
 entities = [
     'PREPA',
     'PREPA_SOFT',

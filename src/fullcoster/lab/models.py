@@ -6,6 +6,7 @@ from django.utils.timezone import now
 from simple_history.models import HistoricalRecords
 import datetime
 from fullcoster.constants.entities import PriceCategory, ENTITIES, get_entities_as_list
+from fullcoster.constants.activities import get_activities_as_list
 
 activity_short = Path(__file__).parts[-2]
 
@@ -56,7 +57,6 @@ class Project(models.Model):
     project_pi = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, null=True)
     is_cnrs = models.BooleanField(default=True) # project managed by CNRS (True) or other institutions (False)
     is_academic = models.BooleanField(default=True) #for academic clients (CNRS, Fac, INSA, others) for private clients or prestations (False)
-    is_national = models.BooleanField(default=True) #for ANR or NEXT (True)
     expired = models.BooleanField(default=False)
     expired_date = models.DateField(default=now)
     amount_left = models.FloatField(default=0.0)
@@ -92,14 +92,14 @@ class Extraction(models.Model):
     creation_id = models.IntegerField(default=-1)
     factured = models.BooleanField(default=False)
     amount = models.FloatField(default=0.0)
-    billing = models.CharField(max_length=200, choices=get_entities_as_list(),
-                               default=get_entities_as_list()[0])
+    activity = models.CharField(max_length=200, choices=get_activities_as_list(),
+                               default=get_activities_as_list()[0])
     submitted = models.BooleanField(default=False)
     class Meta:
         ordering = ['creation_date', 'creation_id']
 
     def __str__(self):
-        return (f"Extraction {self.billing}-{self.creation_date.strftime('%y')}-"
+        return (f"Extraction {self.activity}-{self.creation_date.strftime('%y')}-"
                 f"{self.creation_id:03d} for {self.project}")
 
 class Record(models.Model):

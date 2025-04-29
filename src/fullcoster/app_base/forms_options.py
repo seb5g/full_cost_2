@@ -23,7 +23,10 @@ def get_field(activity: Activity):
 
 def get_labels(activity: Activity):
     labels = {}
-    labels.update({'date_from': 'From:'})
+    if activity.wu == WUCategories.sample:
+        labels.update({'date_from': 'Date:'})
+    else:
+        labels.update({'date_from': 'From:'})
     if activity.wu == WUCategories.day:
         labels.update({'date_to': 'To:'})
     if activity.wu == WUCategories.duration:
@@ -42,7 +45,8 @@ def get_help_text(activity: Activity):
     if activity.wu == WUCategories.day:
         help_texts.update({'date_to': 'The last date of your run'})
 
-    help_texts.update({'wu': activity.wu_label, 'experiment': 'Pick an experiment'})
+    #help_texts.update({'wu': activity.wu_label})
+    help_texts.update({'experiment': 'Pick an experiment'})
     if activity.night:
         help_texts.update({'nights': 'If your run went late (after 20h), add the number of late nights you did'})
     if activity.session_names is not None:
@@ -58,17 +62,14 @@ def get_widgets(activity: Activity):
         widgets.update({'date_to': DateInput(attrs={'type': 'date', 'class': 'datepicker dto time'})})
     if activity.wu == WUCategories.duration:
         widgets.update({'duration': NumberInput(attrs={'min':0, 'step':1, 'class': 'duration'}),})
-    widgets.update({'wu': 'WU:', 'experiment': 'Experiment:'})
 
     if activity.session_names is not None:
-        if activity.wu == WUCategories.day or activity.wu == 'session':
+        if activity.wu == WUCategories.day or activity.wu == WUCategories.session:
             widgets.update({'time_from': Select(attrs={'class': 'tfrom time'}),
                             'time_to': Select(attrs={'class': 'tto time'})})
         elif activity.wu == WUCategories.hours:
             widgets.update({'time_from': TimeInput(attrs={'type': 'time', 'class': 'timepicker tfrom time'}),
                             'time_to': TimeInput(attrs={'type': 'time', 'class': 'timepicker tto time'}),})
-        elif activity.wu == WUCategories.duration:
-            widgets.update({'duration': NumberInput(attrs={'min': 0, 'step': 1, 'class': 'seconds'})})
 
     widgets.update(
         {'remark': Textarea(attrs={'placeholder': 'Enter some detail here about your experiment',

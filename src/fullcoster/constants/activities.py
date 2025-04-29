@@ -45,7 +45,7 @@ ActivityCategory = BaseEnum(
     [(key, val['name']) for key, val in toml.load(activity_config_path)['activities'].items()]
 )
 
-ACTIVITIES = {}
+ACTIVITIES: dict[ActivityCategory, Activity] = {}
 
 for activity_short, activity_dict in toml.load(activity_config_path)['activities'].items():
     ACTIVITIES[ActivityCategory[activity_short]] = (
@@ -71,6 +71,13 @@ def get_entities_ids_from_activity(act: ActivityCategory):
         ACTIVITIES[act].get_entities_name()))
 
 
+def get_entities_short_from_activity(act: ActivityCategory) -> list[str]:
+    return ACTIVITIES[act].get_entities_short()
+
+def get_entities_obj_from_activity(act: ActivityCategory) -> list[Entity]:
+    return ACTIVITIES[act].entities
+
+
 def get_activities_from_entity(entity_enum: EntityCategory) -> Iterable[ActivityCategory]:
     activities = []
     for activity in ACTIVITIES:
@@ -78,3 +85,7 @@ def get_activities_from_entity(entity_enum: EntityCategory) -> Iterable[Activity
             if entity.short == entity_enum.name:
                 activities.append(activity)
     return activities
+
+
+def get_activities_as_list() -> list[tuple[str, str]]:
+    return activities_choices
