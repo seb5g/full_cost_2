@@ -1,3 +1,5 @@
+from typing import Any
+
 from dataclasses import dataclass
 from collections.abc import Iterable
 from pathlib import Path
@@ -11,10 +13,24 @@ from fullcoster.utils.enum import BaseEnum
 activity_config_path = Path(__file__).parent.parent.joinpath('app_base/config_activities.toml')
 
 
+class WUCategories(BaseEnum):
+    day = 0
+    session = 1
+    hours = 2
+    sample = 3
+    duration = 4
+
+
 @dataclass()
 class Activity:
     activity_short: str
     activity_long: str
+    wu: WUCategories
+    wu_unit: Any
+    wu_unity: float
+    wu_label: str
+    session_names: list[str]
+    night: bool
     entities: Iterable[Entity]
 
     def get_entities_short(self):
@@ -29,12 +45,18 @@ ActivityCategory = BaseEnum(
     [(key, val['name']) for key, val in toml.load(activity_config_path)['activities'].items()]
 )
 
-ACTIVITIES = {}
+ACTIVITIES: dict[ActivityCategory, Activity] = {}
 
 for activity_short, activity_dict in toml.load(activity_config_path)['activities'].items():
     ACTIVITIES[ActivityCategory[activity_short]] = (
         Activity(activity_short,
-                 activity_dict['name'],
+                 activity_long=activity_dict['name'],
+                 wu=WUCategories[activity_dict.get('wu', 'day')],  # to make sure the wu is within the possible options
+                 wu_unit=activity_dict.get('wu_unit', 'day'),
+                 wu_unity = activity_dict.get('wu_unity', 1),
+                 wu_label=activity_dict.get('wu_label', 'Working Unit:'),
+                 session_names=activity_dict.get('session_names', None),
+                 night=activity_dict.get('night', False),
                  entities=[
                      ENTITIES[EntityCategory[entity]] for entity in activity_dict['entities']
                  ]
@@ -49,6 +71,13 @@ def get_entities_ids_from_activity(act: ActivityCategory):
         ACTIVITIES[act].get_entities_name()))
 
 
+def get_entities_short_from_activity(act: ActivityCategory) -> list[str]:
+    return ACTIVITIES[act].get_entities_short()
+
+def get_entities_obj_from_activity(act: ActivityCategory) -> list[Entity]:
+    return ACTIVITIES[act].entities
+
+
 def get_activities_from_entity(entity_enum: EntityCategory) -> Iterable[ActivityCategory]:
     activities = []
     for activity in ACTIVITIES:
@@ -56,3 +85,7 @@ def get_activities_from_entity(entity_enum: EntityCategory) -> Iterable[Activity
             if entity.short == entity_enum.name:
                 activities.append(activity)
     return activities
+
+
+def get_activities_as_list() -> list[tuple[str, str]]:
+    return activities_choices

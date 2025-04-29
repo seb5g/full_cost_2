@@ -70,8 +70,8 @@ def calculate_wus(records_list, activity: ActivityCategory):
                 Nwu += Nwutmp
     return Nwu
 
-def populate_releve(records_list, project: Project, activity: ActivityCategory,
-                    show_time=True):
+def add_records_in_bill(records_list, project: Project, activity: ActivityCategory,
+                        show_time=True):
 
     entities_obj = get_entities_obj_from_activity(activity)
     entities_long = [entity.name for entity in entities_obj]
@@ -178,7 +178,7 @@ def get_project_price(project: Project, entity: Entity) -> (float, str):
 
     return price, pricing
 
-def populate_facture(extraction_name: str, extraction: Extraction, activity: ActivityCategory):
+def populate_bill(extraction_name: str, extraction: Extraction, activity: ActivityCategory):
     records_list = []
     records_list.append(getattr(extraction, f'{activity.name.lower()}_record_related').all())
 
@@ -187,7 +187,7 @@ def populate_facture(extraction_name: str, extraction: Extraction, activity: Act
     dates = [extraction.date_after.strftime('%d/%m/%Y'),
             extraction.date_before.strftime('%d/%m/%Y'),]
 
-    wb, wus = populate_releve(records_list, project, activity)
+    wb, wus = add_records_in_bill(records_list, project, activity)
 
 
     ws = wb['Facture']
@@ -249,7 +249,7 @@ def generate_xlsx(extraction):
 
     activity_cat = ActivityCategory[activity_str]
 
-    wb = populate_facture(extraction_name, extraction, activity_cat)
+    wb = populate_bill(extraction_name, extraction, activity_cat)
     data = export_book(wb)
 
     filename = f'extract_{extraction_name}.xlsx'

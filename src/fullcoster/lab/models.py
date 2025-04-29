@@ -5,8 +5,8 @@ from django.db import models
 from django.utils.timezone import now
 from simple_history.models import HistoricalRecords
 import datetime
-from fullcoster.constants.activities import activities_choices
 from fullcoster.constants.entities import PriceCategory, ENTITIES, get_entities_as_list
+from fullcoster.constants.activities import get_activities_as_list
 
 activity_short = Path(__file__).parts[-2]
 
@@ -57,7 +57,6 @@ class Project(models.Model):
     project_pi = models.ForeignKey(User, on_delete=models.SET_NULL, default=None, null=True)
     is_cnrs = models.BooleanField(default=True) # project managed by CNRS (True) or other institutions (False)
     is_academic = models.BooleanField(default=True) #for academic clients (CNRS, Fac, INSA, others) for private clients or prestations (False)
-    is_national = models.BooleanField(default=True) #for ANR or NEXT (True)
     expired = models.BooleanField(default=False)
     expired_date = models.DateField(default=now)
     amount_left = models.FloatField(default=0.0)
@@ -93,14 +92,14 @@ class Extraction(models.Model):
     creation_id = models.IntegerField(default=-1)
     factured = models.BooleanField(default=False)
     amount = models.FloatField(default=0.0)
-    billing = models.CharField(max_length=200, choices=get_entities_as_list(),
-                               default=get_entities_as_list()[0])
+    activity = models.CharField(max_length=200, choices=get_activities_as_list(),
+                               default=get_activities_as_list()[0])
     submitted = models.BooleanField(default=False)
     class Meta:
         ordering = ['creation_date', 'creation_id']
 
     def __str__(self):
-        return (f"Extraction {self.billing}-{self.creation_date.strftime('%y')}-"
+        return (f"Extraction {self.activity}-{self.creation_date.strftime('%y')}-"
                 f"{self.creation_id:03d} for {self.project}")
 
 class Record(models.Model):
@@ -165,6 +164,14 @@ class RecordTwoDatesTwoTimes(models.Model):
     class Meta:
         abstract = True
 
+
+class RecordTwoTimes(models.Model):
+    time_from = models.TimeField(default=datetime.time(0, 0, 0))
+    time_to = models.TimeField(default=datetime.time(0, 0, 0))
+    class Meta:
+        abstract = True
+
+
 class RecordDate(models.Model):
     date_from = models.DateField(default=now)
     date_to = models.DateField(default=now)
@@ -172,72 +179,6 @@ class RecordDate(models.Model):
     class Meta:
         abstract = True
 
-class Record2Range(models.Model):
-    AM = 0
-    PM = 1
-    date_choices = [(AM, 'Morning'),
-                    (PM, 'Afternoon'),]
-
-    time_from = models.SmallIntegerField(choices=date_choices, default=AM)
-    time_to= models.SmallIntegerField(choices=date_choices, default=AM)
-    class Meta:
-        abstract = True
-
-
-class Record3Range(models.Model):
-    AM = 0
-    PM = 1
-    EV = 2
-    date_choices = [(AM, 'Morning'),
-                    (PM, 'Afternoon'),
-                    (EV, 'Evening')]
-
-    time_from = models.SmallIntegerField(choices=date_choices, default=AM,)
-    time_to= models.SmallIntegerField(choices=date_choices, default=AM,)
-    class Meta:
-        abstract = True
-
-class Record4RangeNight(models.Model):
-    AM = 0
-    PM = 1
-    EV = 2
-    NI = 3
-    date_choices = [(AM, 'Morning'),
-                    (PM, 'Afternoon'),
-                    (EV, 'Evening'),
-                    (NI, 'Night')]
-
-    time_from = models.SmallIntegerField(choices=date_choices, default=AM,)
-    time_to= models.SmallIntegerField(choices=date_choices, default=AM,)
-    class Meta:
-        abstract = True
-
-class Record4Range(models.Model):
-    AM1 = 0
-    AM2 = 1
-    PM1 = 2
-    PM2 = 3
-    date_choices = [(AM1, '8h30-10h30'),
-                    (AM2, '10h30-12h30'),
-                    (PM1, '14h-16h'),
-                    (PM2, '16h-18h')]
-
-    time_from = models.SmallIntegerField(choices=date_choices, default=AM1,)
-    time_to = models.SmallIntegerField(choices=date_choices, default=AM1,)
-    class Meta:
-        abstract = True
-
-class RecordHRange(models.Model):
-
-
-    AM = 0
-    PM = 1
-    date_choices = [(ind, f'{ind}h00') for ind in range(24)]
-
-    time_from = models.SmallIntegerField(choices=date_choices, default=8)
-    time_to= models.SmallIntegerField(choices=date_choices, default=12)
-    class Meta:
-        abstract = True
 
 class RecordDateTime(RecordDate):
     date_from = models.DateTimeField(default=now)

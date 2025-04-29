@@ -1,9 +1,9 @@
 $(document).ready(function() {
 
-    $(".wu").prop("readonly",true);
-    $(".wu").css("background-color","LightGray");
-    var Nunits = calculatewu();
-    $(".wu").val(Nunits);
+    $(".uo").prop("readonly",true);
+    $(".uo").css("background-color","LightGray");
+    var Nunits = calculateUO();
+    $(".uo").val(Nunits);
 
     $( ".okclass" ).click(function(event) {
         event.preventDefault();
@@ -24,7 +24,7 @@ $(document).ready(function() {
         var user = $("select.user").children("option:selected").text();
         var group = $("select.group").children("option:selected").text();
         var project = $("select.project").children("option:selected").text();
-        var Nunits=$(".wu").val();
+        var Nunits=$(".uo").val();
         var confirm_text = "You will submit this:"+user+" from "+group+" used "+String(Nunits).bold()+" WU of "+exp+" from "+dfrom.toDateString().bold()+"/"+$(".tfrom").children("option:selected").text().bold()+" to "+dto.toDateString().bold()+"/"+$(".tto").children("option:selected").text().bold()+". The project to use is: "+project+".";
         confirmation(confirm_text,event)
         //var retVal = confirm(confirm_text);
@@ -51,7 +51,7 @@ $(document).ready(function() {
         else {return 1};
         }
 
-    function calculatewu(){
+    function calculateUO(){
 
         try {
             var dfrom = $(".dfrom").val();
@@ -60,15 +60,14 @@ $(document).ready(function() {
             var tfrom = $(".tfrom").val(); //values are 0 or 1 has defined in the model field
             var tto = $(".tto").val();
             var ndays = Number(elapsed_days(new Date(dfrom),new Date(dto)));
-            {% if activity.night %}
             var Nnights = Number($(".nights").val())
             if (Nnights > ndays){alert("You cannot do more nights than days"); return 0;}
             var Nunits = new Number(2*ndays + Nnights);
-            {% else %}
-            var Nunits = new Number(2*ndays);
-            {% endif %}
             if (tfrom != 0){Nunits-=1;}
             if (tto == 0){Nunits-=1;}
+            var exp = $("select.experiment").children("option:selected").text();
+            if (exp == 'UV (A125)' || exp == 'IR (A125)' || exp == 'Electrochimie (A125)')
+                {Nunits=$(".uo").val();}
 
             return Nunits;
            }
@@ -93,8 +92,8 @@ $(document).ready(function() {
     })
 
     $(".time").change(function() {
-        var Nunits = calculatewu();
-        $(".wu").val(Nunits);
+        var Nunits = calculateUO();
+        $(".uo").val(Nunits);
     })
 
     function alertc(confirm_text, event){
@@ -116,6 +115,22 @@ $(document).ready(function() {
             }
         });
     }
+
+    $("select.experiment").change(function() {
+        var exp = $(this).children("option:selected").text();
+        var Nunits = calculateUO();
+        $(".uo").val(Nunits);
+
+        if (exp == 'UV (A125)' || exp == 'IR (A125)' || exp == 'Electrochimie (A125)')
+            {$(".uo").prop("readonly",false);
+            $(".uo").css("background-color","white");
+            $(".nightcol").css("display","none");
+            $(".to_col").css("display","none");}
+        else {$(".uo").prop("readonly",true);
+            $(".uo").css("background-color","LightGray");
+            $(".nightcol").css("display","block");
+            $(".to_col").css("display","block");}
+        });
 
     function confirmation(confirm_text, event){
     $("<div></div>").appendTo("body")

@@ -34,8 +34,9 @@ try:
     urlpatterns.append(path('lab/', include('fullcoster.lab.urls')))
 
     for app in ACTIVITY_APPS:
+        print(f'Loading urls for: {app}')
         urlpatterns.append(path(f'{app.lower()}/', include(f'fullcoster.{app.lower()}.urls')))
 
 
 except Exception as e:
-    print(str(e))
+    print(f'Hello Seb: {str(e)}')

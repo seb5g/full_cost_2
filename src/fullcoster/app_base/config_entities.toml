@@ -11,8 +11,8 @@ experiments = [
     'JEOL 2100',
     'HF2000',
 ]
-uo = 'day'
-uo_quantity = 0.5
+wu = 'day'
+wu_quantity = 0.5
 
 [entities.MET_A]
 name = 'Advanced TEM'
@@ -24,8 +24,8 @@ experiments = [
     'I2TEM',
     'HC-IUMI',
 ]
-uo = 'day'
-uo_quantity = 0.5
+wu = 'day'
+wu_quantity = 0.5
 
 [entities.PREPA]
 name = 'Preparation for MET and MEB'
@@ -40,7 +40,7 @@ experiments = [
     'Electro-erosion',
     'Other',
 ]
-uo = 'sample'
+wu = 'sample'
 
 [entities.PREPA_SOFT]
 name = 'Soft Matter Preparation'
@@ -50,7 +50,7 @@ T3 = 1708
 experiments = [
     'Soft Matter',
 ]
-uo = 'sample'
+wu = 'sample'
 
 [entities.FIB_MEB]
 name = 'FIB Preparation and MEB'
@@ -66,8 +66,8 @@ experiments = [
     'FIB/ZEISS',
     'SEM/ZEISS',
 ]
-uo = 'session'
-uo_quantity = ['Morning', 'AfterNoon', 'Evening', 'Night']
+wu = 'session'
+wu_quantity = ['Morning', 'AfterNoon', 'Evening', 'Night']
 
 [entities.SPECTRO]
 name = 'Optical Spectroscopy'
@@ -89,9 +89,9 @@ experiments = [
     'µ-scope IR',
     'Stationnary Waves',
 ]
-uo = 'day'
-uo_quantity = 0.5
-uo_extra = {night = true}
+wu = 'day'
+wu_quantity = 0.5
+wu_extra = {night = true}
 
 [entities.SPECTRO_CHEMISTRY]
 name = 'Optical Spectroscopy for Chemistry'
@@ -103,8 +103,8 @@ experiments = [
     'IR (A125)',
     'Electrochimie (A125)',
 ]
-uo = 'day'
-uo_quantity = 0.5
+wu = 'day'
+wu_quantity = 0.5
 
 [entities.MAGNET]
 name = 'Magnetic Properties'
@@ -114,8 +114,8 @@ T3 = 524
 experiments = [
     'Magneto-transport',
 ]
-uo = 'day'
-uo_quantity = 0.5
+wu = 'day'
+wu_quantity = 0.5
 
 [entities.MATC]
 name = 'Material Caracterisation'
@@ -134,7 +134,7 @@ experiments = [
     'Powder-Zetamétrie',
     'Powder-Granulométrie Laser',
     'Powder-Réfractométrie',
-    'Powder-Spectrofluorométrie',
+    'Powder-Spectroflwurométrie',
     'Powder-Sonde Puissance',
     'Powder-Préparation Echantillon (A121)',
     'Powder-Pycnométrie',
@@ -147,8 +147,8 @@ experiments = [
     'Powder-Chaine ionométrique',
     'Powder-Dosage métaux (voltamétrie)',
 ]
-uo = 'day'
-uo_quantity = 0.5
+wu = 'day'
+wu_quantity = 0.5
 
 [entities.CLEANR]
 name = 'Clean Room Processes'
@@ -167,8 +167,8 @@ experiments = [
     'CR-Mechanical profilometer',
     'CR-DUS',
 ]
-uo = 'day'
-uo_quantity = 0.5
+wu = 'day'
+wu_quantity = 0.5
 
 [entities.NEARF]
 name = 'Near-field microscopy'
@@ -180,8 +180,8 @@ experiments = [
     'D3100-STMLE',
     'Multimode',
 ]
-uo = 'day'
-uo_quantity = 0.5
+wu = 'day'
+wu_quantity = 0.5
 
 [entities.FIB_LITHO]
 name = 'Lithography using the ZEISS'
@@ -191,8 +191,8 @@ T3 = 815
 experiments = [
     'Lithography/ZEISS',
 ]
-uo = 'day'
-uo_quantity = 0.5
+wu = 'day'
+wu_quantity = 0.5
 
 [entities.CHEMISTRY]
 name = 'Chemistry'
@@ -213,8 +213,8 @@ experiments = [
     'Labo 127',
     'P007 boite à gants',
 ]
-uo = 'day'
-uo_quantity = 0.5
+wu = 'day'
+wu_quantity = 0.5
 
 [entities.GROWTH]
 name = 'Growth'
@@ -227,8 +227,8 @@ experiments = [
     'Four',
     'Four RTA',
 ]
-uo = 'hour'
-uo_quantity = 1
+wu = 'hour'
+wu_quantity = 1
 
 [entities.IMPLANT]
 name = 'Ionic Implantation'
@@ -238,8 +238,8 @@ T3 = 3698
 experiments = [
     'Implantation',
 ]
-uo = 'hour'
-uo_quantity = 1
+wu = 'hour'
+wu_quantity = 1
 
 [entities.UHVI]
 name = 'UHV Imagery'
@@ -255,8 +255,8 @@ experiments = [
     'LT-UHV-STM/Qplus Sample preparation',
     'LT-UHV-STM/Qplus Imagery/Spectroscopy',
 ]
-uo = 'day'
-uo_quantity = 1
+wu = 'day'
+wu_quantity = 1
 
 [entities.DUFG]
 name = 'Growth DUF'
@@ -271,8 +271,8 @@ experiments = [
     'DUF-Preparation Maintenance',
     'DUF-Preparation Sample/Tip preparation',
 ]
-uo = 'day'
-uo_quantity = 1
+wu = 'day'
+wu_quantity = 1
 
 [entities.LT4P]
 name = 'LT-UHV 4 tips'
@@ -286,8 +286,8 @@ experiments = [
     'LT-UHV-4STM SEM Topography',
     'LT-UHV-4STM SEM Atom-Manipulation',
 ]
-uo = 'day'
-uo_quantity = 1
+wu = 'day'
+wu_quantity = 1
 
 [entities.MECA]
 name = 'Mechanic Service'
@@ -298,8 +298,8 @@ experiments = [
     'ABEILHOU Pierre',
     'GATTI Bertrand',
 ]
-uo = 'day'
-uo_quantity = 0.5
+wu = 'day'
+wu_quantity = 0.5
 
 [entities.ELEC]
 name = 'Electronic Service'
@@ -310,5 +310,5 @@ experiments = [
     'PERTEL Christian',
     'LASFAR Abdelouahed',
 ]
-uo = 'day'
-uo_quantity = 1
+wu = 'day'
+wu_quantity = 1

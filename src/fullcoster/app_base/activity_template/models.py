@@ -1,19 +1,21 @@
 from pathlib import Path
 
 from django.db import models
-from fullcoster.lab.models import (Record as LRecord,  Extraction, Record2Range, RecordDate, RecordNights)
+from fullcoster.lab.models import Extraction
+from fullcoster.lab import models as lab_models
 from simple_history.models import HistoricalRecords
 
-from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory
+from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory, WUCategories
 """ 
-The template tag {{activity}} will be replaced by the name of the ActivityCategory enum specifying the Activity
+{% raw %}
+The template tag {{'activity'}} will be replaced by the name of the ActivityCategory enum specifying the Activity
+{% endraw %}
 """
-activity: Activity = ACTIVITIES[ActivityCategory[{{activity}}]]
+activity: Activity = ACTIVITIES[ActivityCategory['{{activity.activity_short}}']]
 
 
 activity_short = f'{activity.activity_short}'
 entities = activity.entities
-
 
 
 class Experiment(models.Model):
@@ -27,7 +29,39 @@ class Experiment(models.Model):
 # class Extraction(Extraction):
 #     history = HistoricalRecords()
 
-class Record(LRecord, RecordDate, Record2Range, RecordNights):
+
+bases = [lab_models.Record]
+if activity.wu == WUCategories.day:
+    RecordDate = lab_models.RecordDate
+else:
+    RecordDate = lab_models.RecordOneDate
+
+
+base_class = [lab_models.Record, RecordDate]
+if (activity.session_names is not None and
+        (activity.wu == WUCategories.day or
+         activity.wu == WUCategories.session)):
+
+    class RecordRange(models.Model):
+        date_choices = [(ind, name) for ind, name in enumerate(activity.session_names)]
+        time_from = models.SmallIntegerField(choices=date_choices, default=0)
+        time_to = models.SmallIntegerField(choices=date_choices, default=0)
+
+        class Meta:
+            abstract = True
+
+    base_class.append(RecordRange)
+
+elif activity.wu == WUCategories.hours:
+    base_class.append(lab_models.RecordTwoTimes)
+elif activity.wu == WUCategories.duration:
+    base_class.append(lab_models.RecordDuration)
+
+if activity.night:
+    base_class.append(lab_models.RecordNights)
+
+
+class Record(*base_class):
     experiment = models.ForeignKey(Experiment, on_delete=models.CASCADE)
     extraction = models.ForeignKey(Extraction, on_delete=models.SET_NULL, blank=True, null=True,
                                    related_name="%(app_label)s_%(class)s_related",
