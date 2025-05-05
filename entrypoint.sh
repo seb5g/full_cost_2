@@ -1,4 +1,5 @@
 #!/bin/sh
+echo "Running entry point..."
 
 if [ "$DATABASE" = "postgres" ]
 then
@@ -11,7 +12,9 @@ then
     echo "PostgreSQL started"
 fi
 
-python ./src/fullcoster/manage.py flush --no-input
-python ./src/fullcoster/manage.py migrate
+echo "Running flush..."
+python -m fullcoster.manage flush --no-input
+echo "Running migrate..."
+python -m fullcoster.manage migrate
 
 exec "$@"

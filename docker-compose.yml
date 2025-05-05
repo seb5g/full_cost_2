@@ -1,7 +1,7 @@
 services:
   web:
-    build: ./
-    command: python /usr/src/fullcoster/manage.py runserver 0.0.0.0:8000
+    build: .
+    command:  python /usr/src/fullcoster/sleep.py
     volumes:
       - ./src/fullcoster:/usr/src/fullcoster/
     ports:
