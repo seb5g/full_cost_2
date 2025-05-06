@@ -47,6 +47,7 @@ dependencies = [
     'tablib',
     'portion',
     'toml',
+    'jinja2',
 ]
 
 [project.scripts]

@@ -25,7 +25,7 @@ gest = [dict(last_name='Trupin', first_name='Mireille', email='mireille.trupin@c
              groups=['NEO', 'MEM', 'M3', 'I3EM', 'PPM', 'SINANO', 'GNS']),
         ]
 
-def populate_gestionnaire():
+def populate_administrators():
     for g in Gestionnaire.objects.all():
         g.delete()
     for g in gest:
@@ -36,7 +36,7 @@ def populate_gestionnaire():
         print(gg)
 
 
-def populate_project():
+def populate_projects():
     for p in Project.objects.all():
         p.delete()
     with codecs.open(resource_path.joinpath('project_pi.csv'), 'r', 'utf-8') as csvfile:
@@ -115,12 +115,13 @@ def populate_prices():
         set_prices(prices, entity_enum.name)
 
 
+
+
 if __name__ == '__main__':
-    populate_gestionnaire()
+    populate_administrators()
     populate_users()
 
-    populate_users()
     populate_prices()
-    populate_project()
+    populate_projects()
 
 

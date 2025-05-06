@@ -75,22 +75,30 @@ def populate_experiments(app: str):
 def create_activities_apps(activities: Iterable[str]):
     toml_dict = toml.load(toml_path)
     for activity in activities:
+        if activity not in toml_dict['apps']:
+            print(f'creating activity: {activity}')
+            activity_obj = ACTIVITIES[ActivityCategory[activity]]
 
-        activity_obj = ACTIVITIES[ActivityCategory[activity]]
+            apps_parent_path.joinpath(activity.lower()).mkdir(exist_ok=True)
+            apps_parent_path.joinpath(f'{activity.lower()}/static/js').mkdir(parents=True, exist_ok=True)
 
-        apps_parent_path.joinpath(activity.lower()).mkdir(exist_ok=True)
-        apps_parent_path.joinpath(f'{activity.lower()}/static/js').mkdir(parents=True, exist_ok=True)
 
-        toml_dict['apps'].append(activity)
-        with toml_path.open('w') as f:
-            toml.dump(toml_dict, f)
-        for template_path in env.loader.list_templates():
-            create_file_from_template(activity_obj, template_path)
+            with toml_path.open('w') as f:
+                toml.dump(toml_dict, f)
+            for template_path in env.loader.list_templates():
+                create_file_from_template(activity_obj, template_path)
 
     make_migrations()
     migrate()
+
     for activity in activities:
-        populate_experiments(activity)
+        if activity not in toml_dict['apps']:
+            populate_experiments(activity)
+            toml_dict['apps'].append(activity)
+
+
+def create_activities_all():
+    create_activities_apps(ActivityCategory.names())
 
 
 def _empty_dirs(start_path: Path):
@@ -141,7 +149,7 @@ activities = ActivityCategory.names()
 
 
 if __name__ == '__main__':
-    #create_activities_apps(('OSM', 'STM_AFM', 'GROWTH_IMP', 'FIB_MEB',))
+    create_activities_apps(('OSM', 'MET'))
     #create_activities_apps(('MET', ))
     #remove_activity('MET')
-    clear_activities()
+    #clear_activities()

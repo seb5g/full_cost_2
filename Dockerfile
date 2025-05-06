@@ -2,7 +2,7 @@
 FROM python:3.11.4-slim-buster
 
 # set work directory
-WORKDIR /usr/src/fullcoster
+WORKDIR /usr/src/fullcost
 
 # set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -15,19 +15,16 @@ apt-get clean
 # install dependencies
 RUN pip install --upgrade pip
 
-
-# copy entrypoint.sh
-COPY entrypoint.sh .
-RUN sed -i 's/\r$//g' /usr/src/fullcoster/entrypoint.sh
-RUN chmod +x /usr/src/fullcoster/entrypoint.sh
-
-
 # copy project
-COPY .. .
+COPY . .
 
 RUN pip install -e .
 
+# copy entrypoint.sh
+RUN sed -i 's/\r$//g' /usr/src/fullcost/entrypoint.sh
+RUN chmod +x /usr/src/fullcost/entrypoint.sh
+
 # run entrypoint.sh
-#ENTRYPOINT ["/usr/src/fullcoster/entrypoint.sh"]
+ENTRYPOINT ["/usr/src/fullcost/entrypoint.sh"]
 
 

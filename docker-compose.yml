@@ -1,9 +1,7 @@
 services:
   web:
     build: .
-    command:  python /usr/src/fullcoster/sleep.py
-    volumes:
-      - ./src/fullcoster:/usr/src/fullcoster/
+    command:  /usr/src/fullcost/create_cemes.sh
     ports:
       - 8000:8000
     env_file:

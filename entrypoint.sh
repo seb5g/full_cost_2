@@ -12,9 +12,9 @@ then
     echo "PostgreSQL started"
 fi
 
-echo "Running flush..."
-python -m fullcoster.manage flush --no-input
+echo "Make migrations..."
+python /usr/src/fullcost/src/fullcoster/manage.py makemigrations
 echo "Running migrate..."
-python -m fullcoster.manage migrate
+python /usr/src/fullcost/src/fullcoster/manage.py migrate
 
 exec "$@"
