@@ -25,12 +25,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY", default='django-insecure-johsc@ee#m9atmco-9#%b+v6%)#05svpjd()fq$qd&(1kw#xsu')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="localhost").split(" ")
 
 LOGIN_REDIRECT_URL = '/lab/logged/'
 
@@ -97,11 +97,11 @@ WSGI_APPLICATION = 'fullcoster.full_cost.wsgi.application'
 
 DATABASES = {
     'default': {
-        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", BASE_DIR / "db.sqlite3"),
-        "USER": os.environ.get("SQL_USER", "user"),
-        "PASSWORD": os.environ.get("SQL_PASSWORD", "password"),
-        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.postgresql"),
+        "NAME": os.environ.get("SQL_DATABASE", "full_cost_2"),
+        "USER": os.environ.get("SQL_USER", "full_coster"),
+        "PASSWORD": os.environ.get("SQL_PASSWORD", "full_cost"),
+        "HOST": os.environ.get("SQL_HOST", "db"),
         "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
@@ -173,7 +173,7 @@ STATIC_URL = 'static/'
 if DEBUG:
     STATICFILES_DIRS = [
         BASE_DIR.joinpath("lab/static"),
-        "C:/Users/weber/.conda/envs/full_cost/Lib/site-packages/django/contrib/admin/static"
+        #"C:/Users/weber/.conda/envs/full_cost/Lib/site-packages/django/contrib/admin/static"
         #'/usr/lib/python3.6/site-packages/django/contrib/admin/static'
     ]
     ## in debug mode add the app static dir to the STATICFILES_DIRS
