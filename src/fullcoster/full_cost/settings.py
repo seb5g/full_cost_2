@@ -101,7 +101,7 @@ DATABASES = {
         "NAME": os.environ.get("SQL_DATABASE", "full_cost_2"),
         "USER": os.environ.get("SQL_USER", "full_coster"),
         "PASSWORD": os.environ.get("SQL_PASSWORD", "full_cost"),
-        "HOST": os.environ.get("SQL_HOST", "db"),
+        "HOST": os.environ.get("SQL_HOST", "localhost"),
         "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
