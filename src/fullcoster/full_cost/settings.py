@@ -184,7 +184,7 @@ else:
     ## in deplayoment, static files should be collected with the command:
     #python manage.py collectstatic
     #that will add all static files into the STATIC_ROOT dir
-    STATIC_ROOT = BASE_DIR.joinpath("staticfiles"),
+    STATIC_ROOT = BASE_DIR.joinpath("staticfiles")
 
 #emailing
 EMAIL_BACKEND = 'post_office.EmailBackend'

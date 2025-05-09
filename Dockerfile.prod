@@ -27,7 +27,7 @@ RUN addgroup --system fullcost && adduser --system --group fullcost
 ENV HOME=/home/fullcost
 ENV APP_HOME=/home/fullcost
 #RUN mkdir $APP_HOME
-RUN mkdir $APP_HOME/staticfiles
+
 WORKDIR $APP_HOME
 
 
@@ -45,7 +45,7 @@ RUN chown -R fullcost:fullcost $APP_HOME
 
 
 USER fullcost
-
+RUN mkdir $APP_HOME/src/fullcoster/staticfiles
 # run entrypoint.sh
 ENTRYPOINT ["/home/fullcost/entrypoint.prod.sh"]
 
