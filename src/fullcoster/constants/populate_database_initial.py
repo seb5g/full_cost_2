@@ -123,7 +123,7 @@ def populate_prices():
 def populate_experiments():
     toml_dict = toml.load(toml_path)
     for activity in ActivityCategory.names():
-        if activity not in toml_dict['apps']:
+        if activity in toml_dict['apps']:
             manage_apps.populate_experiments(activity)
 
 
