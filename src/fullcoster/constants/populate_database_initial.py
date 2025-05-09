@@ -15,6 +15,8 @@ from fullcoster.utils.ldap import LDAP
 from fullcoster.constants.entities import ENTITIES, PriceCategory
 from fullcoster.constants.activities import Activity, ActivityCategory
 
+from fullcoster.app_base import manage_apps
+
 here = Path(__file__).parent
 resource_path = here.parent.joinpath('resources')
 toml_path = here.parent.joinpath('app_base/apps.toml')
@@ -122,7 +124,7 @@ def populate_experiments():
     toml_dict = toml.load(toml_path)
     for activity in ActivityCategory.names():
         if activity not in toml_dict['apps']:
-            populate_experiments(activity)
+            manage_apps.populate_experiments(activity)
 
 
 
