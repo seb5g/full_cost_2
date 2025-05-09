@@ -34,6 +34,7 @@ dependencies = [
     'numpy',
     'django',
     'psycopg[binary]',
+    'gunicorn',
     'python-ldap',
     'django-auth-ldap',
     'django-tables2',
