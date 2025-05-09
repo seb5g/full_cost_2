@@ -12,14 +12,14 @@ django.setup()
 
 from fullcoster.lab.models import Project, User, Group, Price, Gestionnaire
 from fullcoster.utils.ldap import LDAP
-from fullcoster.constants.entities import ENTITIES, PriceCategory
-from fullcoster.constants.activities import Activity, ActivityCategory
+from fullcoster.constants.entities import ENTITIES
+from fullcoster.constants.activities import ActivityCategory
 
-from fullcoster.app_base import manage_apps
+from fullcoster.lab.management import manage_apps
 
 here = Path(__file__).parent
-resource_path = here.parent.joinpath('resources')
-toml_path = here.parent.joinpath('app_base/apps.toml')
+resource_path = here.parent.parent.joinpath('resources')
+toml_path = here.parent.parent.joinpath('app_base/apps.toml')
 
 
 gest = [dict(last_name='Trupin', first_name='Mireille', email='mireille.trupin@cemes.fr', groups=[]),

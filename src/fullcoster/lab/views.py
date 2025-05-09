@@ -29,6 +29,15 @@ try:
     from .filters import ProjectFilter, ExtractDisplayFilter, ExtractFilterAll, ExtractFilterForm, FilterSet
     from .tables import ProjectTable, RecordTableFull, ExtractionTable, RecordTable
 except ProgrammingError as e:
+    ProjectFilter = None
+    ExtractDisplayFilter = None
+    ExtractFilterAll = None
+    ExtractFilterForm = None
+    FilterSet = None
+    ProjectTable = None
+    RecordTableFull = None
+    ExtractionTable = None
+    RecordTable = None
     print("Could not yet load Project table as it's not populated...")
 
 from .forms import ExtractionForm

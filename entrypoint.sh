@@ -12,9 +12,21 @@ then
     echo "PostgreSQL started"
 fi
 
-echo "Make migrations..."
-python /usr/src/fullcost/src/fullcoster/manage.py flush --no-input
-echo "Running migrate..."
-python /usr/src/fullcost/src/fullcoster/manage.py migrate
+#echo "Make flush..."
+#python /usr/src/fullcost/src/fullcoster/manage.py flush --no-input
+#
+#echo "Running migrate..."
+#python /usr/src/fullcost/src/fullcoster/manage.py migrate
+#
+#echo "Make migrations..."
+#python /usr/src/fullcost/src/fullcoster/manage.py makemigrations
+#
+#echo "migrate..."
+#python /usr/src/fullcost/src/fullcoster/manage.py migrate
+#
+#echo "populate..."
+#python /usr/src/fullcost/src/fullcoster/constants/manage_fullcost.py populate all
+
+cd /usr/src/fullcost/src/fullcoster/
 
 exec "$@"

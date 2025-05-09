@@ -1,10 +1,6 @@
 import argparse
-import sys
 
-from subprocess import run
-
-from fullcoster.app_base import manage_apps
-from fullcoster.constants import populate_database_initial
+from fullcoster.lab.management import manage_apps, populate_database_initial
 
 parser = argparse.ArgumentParser(
                     prog='ManageFullCost',
@@ -50,12 +46,11 @@ def exec_from_command():
             populate_database_initial.populate_projects()
         elif parsed.table == 'experiments':
             populate_database_initial.populate_experiments()
-        elif parsed.table == 'all':
+        elif parsed.table == 'all_but_experiments':
             populate_database_initial.populate_administrators()
             populate_database_initial.populate_users()
             populate_database_initial.populate_prices()
             populate_database_initial.populate_projects()
-            populate_database_initial.populate_experiments()
 
 
 if __name__ == '__main__':

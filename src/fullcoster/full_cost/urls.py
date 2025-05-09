@@ -31,11 +31,13 @@ urlpatterns = [
 try:
     from fullcoster.lab.views import Index
     urlpatterns.append(path('', Index.as_view(), name='index'))
-    urlpatterns.append(path('lab/', include('fullcoster.lab.urls')))
+    urlpatterns.append(path('lab/', include('fullcoster.lab.urls', namespace='lab')))
 
     for app in ACTIVITY_APPS:
         print(f'Loading urls for: {app}')
-        urlpatterns.append(path(f'{app.lower()}/', include(f'fullcoster.{app.lower()}.urls')))
+        urlpatterns.append(path(f'{app.lower()}/',
+                                include(f'fullcoster.{app.lower()}.urls',
+                                        namespace=app.lower())))
 
 
 except Exception as e:
