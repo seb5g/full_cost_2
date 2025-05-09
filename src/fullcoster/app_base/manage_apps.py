@@ -82,13 +82,12 @@ def create_activities_apps(activities: Iterable[str]):
             apps_parent_path.joinpath(activity.lower()).mkdir(exist_ok=True)
             apps_parent_path.joinpath(f'{activity.lower()}/static/js').mkdir(parents=True, exist_ok=True)
 
+            toml_dict['apps'].append(activity)
 
             with toml_path.open('w') as f:
                 toml.dump(toml_dict, f)
             for template_path in env.loader.list_templates():
                 create_file_from_template(activity_obj, template_path)
-
-            toml_dict['apps'].append(activity)
 
 
 def create_activities_all():
