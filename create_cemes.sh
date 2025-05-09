@@ -33,3 +33,4 @@ python /usr/src/fullcost/src/fullcoster/lab/management/manage_fullcost.py popula
 
 echo "creating superuser..."
 python /usr/src/fullcost/src/fullcoster/manage.py createsuperuser_if_none_exists --user weber --password changeme
+

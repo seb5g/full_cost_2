@@ -1,0 +1,51 @@
+# pull official base image
+FROM python:3.11.4-slim-buster
+
+# set work directory
+WORKDIR /usr/src/fullcost
+
+# set environment variables
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+RUN apt-get update && \
+apt-get --yes install  netcat build-essential python3-dev libmemcached-dev libldap2-dev libsasl2-dev libzbar-dev  ldap-utils tox lcov valgrind && \
+apt-get clean
+
+# install dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt .
+RUN pip install -r ./requirements.txt
+
+# create directory for the fullcost user
+RUN mkdir -p /home/fullcost
+
+# create the fullcost user/group
+RUN addgroup --system fullcost && adduser --system --group fullcost
+
+# create the appropriate directories
+ENV HOME=/home/fullcost
+ENV APP_HOME=/home/fullcost
+#RUN mkdir $APP_HOME
+RUN mkdir $APP_HOME/staticfiles
+WORKDIR $APP_HOME
+
+
+# copy project
+COPY . $APP_HOME
+
+RUN pip install -e $APP_HOME
+
+# copy entrypoint.sh
+RUN sed -i 's/\r$//g' $APP_HOME/entrypoint.prod.sh
+RUN chmod +x $APP_HOME/entrypoint.prod.sh
+
+# chown all the files to the app user
+RUN chown -R fullcost:fullcost $APP_HOME
+
+
+USER fullcost
+
+# run entrypoint.sh
+ENTRYPOINT ["/home/fullcost/entrypoint.prod.sh"]
+
