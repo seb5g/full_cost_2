@@ -10,6 +10,7 @@ from django.forms import ModelForm
 from django.forms import ValidationError
 from django.views import View
 from django.db.models import Q, QuerySet
+from django.db.utils import ProgrammingError
 from post_office import mail
 from django.core.exceptions import ObjectDoesNotExist
 from pathlib import Path
@@ -24,8 +25,12 @@ from django.urls import reverse
 
 
 from .models import User, Extraction
-from .filters import ProjectFilter, ExtractDisplayFilter, ExtractFilterAll, ExtractFilterForm, FilterSet
-from .tables import ProjectTable, RecordTableFull, ExtractionTable, RecordTable
+try:
+    from .filters import ProjectFilter, ExtractDisplayFilter, ExtractFilterAll, ExtractFilterForm, FilterSet
+    from .tables import ProjectTable, RecordTableFull, ExtractionTable, RecordTable
+except ProgrammingError as e:
+    print("Could not yet load Project table as it's not populated...")
+
 from .forms import ExtractionForm
 
 
