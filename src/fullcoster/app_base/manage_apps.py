@@ -88,12 +88,6 @@ def create_activities_apps(activities: Iterable[str]):
             for template_path in env.loader.list_templates():
                 create_file_from_template(activity_obj, template_path)
 
-    make_migrations()
-    migrate()
-
-    for activity in activities:
-        if activity not in toml_dict['apps']:
-            populate_experiments(activity)
             toml_dict['apps'].append(activity)
 
 

@@ -13,7 +13,7 @@ then
 fi
 
 echo "Make migrations..."
-python /usr/src/fullcost/src/fullcoster/manage.py makemigrations
+python /usr/src/fullcost/src/fullcoster/manage.py flush --no-input
 echo "Running migrate..."
 python /usr/src/fullcost/src/fullcoster/manage.py migrate
 

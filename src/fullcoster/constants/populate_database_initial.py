@@ -3,6 +3,7 @@ import codecs
 import csv
 
 from pathlib import Path
+import toml
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fullcoster.full_cost.settings")
 
@@ -12,10 +13,12 @@ django.setup()
 from fullcoster.lab.models import Project, User, Group, Price, Gestionnaire
 from fullcoster.utils.ldap import LDAP
 from fullcoster.constants.entities import ENTITIES, PriceCategory
-
+from fullcoster.constants.activities import Activity, ActivityCategory
 
 here = Path(__file__).parent
 resource_path = here.parent.joinpath('resources')
+toml_path = here.parent.joinpath('app_base/apps.toml')
+
 
 gest = [dict(last_name='Trupin', first_name='Mireille', email='mireille.trupin@cemes.fr', groups=[]),
         dict(last_name='Rougale', first_name='Muriel', email='muriel.rougalle@cemes.fr', groups=[]),
@@ -114,6 +117,12 @@ def populate_prices():
         prices = ENTITIES[entity_enum].get_prices()
         set_prices(prices, entity_enum.name)
 
+
+def populate_experiments():
+    toml_dict = toml.load(toml_path)
+    for activity in ActivityCategory.names():
+        if activity not in toml_dict['apps']:
+            populate_experiments(activity)
 
 
 

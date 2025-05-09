@@ -1,7 +1,7 @@
 services:
   web:
     build: .
-    command:  /usr/src/fullcost/create_cemes.sh
+    command:  python /usr/src/fullcost/src/fullcoster/manage.py runserver 0.0.0.0:8000
     ports:
       - 8000:8000
     env_file:
