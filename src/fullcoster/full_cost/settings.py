@@ -28,9 +28,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY", default='django-insecure-johsc@ee#m9atmco-9#%b+v6%)#05svpjd()fq$qd&(1kw#xsu')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get("DEBUG", default=0))
+DEBUG = bool(os.environ.get("DEBUG", default=True))
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="localhost").split(" ")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS", default="localhost full-cost.cemes.fr 127.0.0.1".split())
 
 LOGIN_REDIRECT_URL = '/lab/logged/'
 
