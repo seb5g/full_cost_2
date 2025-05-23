@@ -41,11 +41,12 @@ RUN sed -i 's/\r$//g' $APP_HOME/entrypoint.prod.sh
 RUN chmod +x $APP_HOME/entrypoint.prod.sh
 
 # chown all the files to the app user
-RUN chown -R fullcost:fullcost $APP_HOME
+#RUN chown -R fullcost:fullcost $APP_HOME
 
+#USER fullcost
 
-USER fullcost
 RUN mkdir $APP_HOME/src/fullcoster/staticfiles
+
 # run entrypoint.sh
 ENTRYPOINT ["/home/fullcost/entrypoint.prod.sh"]
 

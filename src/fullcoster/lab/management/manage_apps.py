@@ -8,11 +8,11 @@ import toml
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 import shutil
 
-from fullcoster.constants.activities import Activity, ActivityCategory, ACTIVITIES, WUCategories
+from fullcoster.constants.activities import Activity, ActivityCategory, ACTIVITIES
 
-template_path = Path(__file__).parent.joinpath('activity_template')
+template_path = Path(__file__).parent.parent.parent.joinpath('app_base/activity_template')
 apps_parent_path = template_path.parent.parent
-toml_path = Path(__file__).parent.joinpath('apps.toml')
+toml_path = Path(__file__).parent.parent.parent.joinpath('app_base/apps.toml')
 
 
 env = Environment(

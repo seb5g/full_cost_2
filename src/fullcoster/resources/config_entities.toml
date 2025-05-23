@@ -1,9 +1,9 @@
 [entities]
 [entities.MET_C]
 name = 'Conventionnal TEM'
-T1 = 247
-T2 = 1066
-T3 = 1333
+T1 = 325.38
+T2 = 720.31
+T3 = 900.39
 experiments = [
     'JEOL',
     'CM20FEG',
@@ -13,25 +13,29 @@ experiments = [
 ]
 wu = 'day'
 wu_quantity = 0.5
+session_names = ['Morning', 'AfterNoon']
+wu_label = 'Number of half day'
 
 [entities.MET_A]
 name = 'Advanced TEM'
-T1 = 81
-T2 = 976
-T3 = 1121
+T1 = 778.22
+T2 = 1134.85
+T3 = 1418.57
 experiments = [
     'Technai',
     'I2TEM',
     'HC-IUMI',
 ]
 wu = 'day'
+session_names = ['Morning', 'AfterNoon']
 wu_quantity = 0.5
+wu_label = 'Number of half day'
 
 [entities.PREPA]
 name = 'Preparation for MET and MEB'
-T1 = 119
-T2 = 1366
-T3 = 1708
+T1 = 118.78
+T2 = 1366.29
+T3 = 1707.87
 experiments = [
     'PIPS',
     'PIPS II',
@@ -41,22 +45,26 @@ experiments = [
     'Other',
 ]
 wu = 'sample'
+wu_label = 'Number of samples'
+wu_quantity = 1
 
 [entities.PREPA_SOFT]
 name = 'Soft Matter Preparation'
-T1 = 119
-T2 = 1366
-T3 = 1708
+T1 = 118.78
+T2 = 1366.29
+T3 = 1707.87
 experiments = [
     'Soft Matter',
 ]
 wu = 'sample'
+wu_label = 'Number of samples'
+wu_quantity = 1
 
 [entities.FIB_MEB]
 name = 'FIB Preparation and MEB'
-T1 = 202
-T2 = 341
-T3 = 426
+T1 = 170.18
+T2 = 306.24
+T3 = 382.80
 experiments = [
     'EBSD/HELIOS',
     'EDS/HELIOS',
@@ -67,13 +75,16 @@ experiments = [
     'SEM/ZEISS',
 ]
 wu = 'session'
-wu_quantity = ['Morning', 'AfterNoon', 'Evening', 'Night']
+wu_qantity = 1
+session_names = ['Morning', 'AfterNoon', 'Evening', 'Night']
+wu_label = 'Number of sessions'
+wu_extra = {night = false}
 
 [entities.SPECTRO]
 name = 'Optical Spectroscopy'
-T1 = 130
-T2 = 419
-T3 = 524
+T1 = 130.17
+T2 = 367.21
+T3 = 459.01
 experiments = [
     'Xplora',
     'T64000',
@@ -90,38 +101,46 @@ experiments = [
     'Stationnary Waves',
 ]
 wu = 'day'
+wu_label = 'Number of half day'
 wu_quantity = 0.5
+session_names = ['Morning', 'AfterNoon']
 wu_extra = {night = true}
 
 [entities.SPECTRO_CHEMISTRY]
 name = 'Optical Spectroscopy for Chemistry'
-T1 = 130
-T2 = 419
-T3 = 524
+T1 = 130.17
+T2 = 367.21
+T3 = 459.01
 experiments = [
     'UV (A125)',
     'IR (A125)',
     'Electrochimie (A125)',
 ]
 wu = 'day'
+wu_label = 'Number of half day'
 wu_quantity = 0.5
+session_names = ['Morning', 'AfterNoon']
+wu_extra = {night = true}
 
 [entities.MAGNET]
 name = 'Magnetic Properties'
-T1 = 130
-T2 = 419
-T3 = 524
+T1 = 130.17
+T2 = 367.21
+T3 = 459.01
 experiments = [
     'Magneto-transport',
 ]
 wu = 'day'
+wu_label = 'Number of half day'
 wu_quantity = 0.5
+session_names = ['Morning', 'AfterNoon']
+wu_extra = {night = true}
 
 [entities.MATC]
 name = 'Material Caracterisation'
-T1 = 66
-T2 = 358
-T3 = 448
+T1 = 65.67
+T2 = 359.35
+T3 = 447.94
 experiments = [
     'RX-D8 Advance',
     'RX-D8 Discover',
@@ -148,50 +167,48 @@ experiments = [
     'Powder-Dosage métaux (voltamétrie)',
 ]
 wu = 'day'
+session_names = ['Morning', 'AfterNoon']
+wu_label = 'Number of half day'
 wu_quantity = 0.5
 
 [entities.CLEANR]
 name = 'Clean Room Processes'
-T1 = 281
-T2 = 652
-T3 = 815
+T1 = 304.38
+T2 = 650.12
+T3 = 812.65
 experiments = [
-    'CR-Laser lithography',
-    'CR-Photolithography',
-    'CR-Physical Vapor Deposition - sputtering',
-    'CR-Physical Vapor Deposition - ebeam',
-    'CR-Plasma etching - RIE',
-    'CR-Ion beam etching',
-    'CR-Chemistry (wet etching, surface treatments)',
-    'CR-Electrical Characterizations',
-    'CR-Mechanical profilometer',
-    'CR-DUS',
+    'Laser lithography',
+    'Photolithography',
+    'Physical Vapor Deposition - sputtering',
+    'Physical Vapor Deposition - ebeam',
+    'Plasma etching - RIE',
+    'Ion beam etching',
+    'Chemistry (wet etching, surface treatments)',
+    'Electrical Characterizations',
+    'Mechanical profilometer',
+    'DUS',
+    'Microscope Keyence',
+    'Lithography/ZEISS',
 ]
 wu = 'day'
+session_names = ['Morning', 'AfterNoon']
+wu_label = 'Number of half day'
 wu_quantity = 0.5
+wu_extra = {night = true}
 
 [entities.NEARF]
 name = 'Near-field microscopy'
-T1 = 281
-T2 = 652
-T3 = 815
+T1 = 304.38
+T2 = 650.12
+T3 = 812.65
 experiments = [
     'D3000',
     'D3100-STMLE',
     'Multimode',
 ]
 wu = 'day'
-wu_quantity = 0.5
-
-[entities.FIB_LITHO]
-name = 'Lithography using the ZEISS'
-T1 = 281
-T2 = 652
-T3 = 815
-experiments = [
-    'Lithography/ZEISS',
-]
-wu = 'day'
+session_names = ['Morning', 'AfterNoon']
+wu_label = 'Number of half day'
 wu_quantity = 0.5
 
 [entities.CHEMISTRY]
@@ -215,12 +232,13 @@ experiments = [
 ]
 wu = 'day'
 wu_quantity = 0.5
+session_names = ['8h30-10h30', '10h30-12h30', '14h-16h', '16h-18h']
 
 [entities.GROWTH]
 name = 'Growth'
-T1 = 122
-T2 = 219
-T3 = 274
+T1 = 122.31
+T2 = 219.32
+T3 = 274.15
 experiments = [
     'Growth Plassys',
     'Growth Mantis',
@@ -228,24 +246,26 @@ experiments = [
     'Four RTA',
 ]
 wu = 'hour'
-wu_quantity = 1
+wu_quantity = 0.0002777778 #fractionnal part in seconds
+wu_label = 'Number of seconds'
 
 [entities.IMPLANT]
 name = 'Ionic Implantation'
-T1 = 232
-T2 = 2958
-T3 = 3698
+T1 = 232.45
+T2 = 1498.35
+T3 = 1872.9
 experiments = [
     'Implantation',
 ]
 wu = 'hour'
-wu_quantity = 1
+wu_quantity = 0.0002777778 #fractionnal part in seconds
+wu_label = 'Number of seconds'
 
 [entities.UHVI]
 name = 'UHV Imagery'
-T1 = 413
-T2 = 540
-T3 = 676
+T1 = 414.16
+T2 = 541.64
+T3 = 677.05
 experiments = [
     'DUF-RT STM/AFM Maintenance',
     'DUF-RT STM/AFM Sample/Spectroscopy',
@@ -260,9 +280,9 @@ wu_quantity = 1
 
 [entities.DUFG]
 name = 'Growth DUF'
-T1 = 413
-T2 = 540
-T3 = 676
+T1 = 414.16
+T2 = 541.64
+T3 = 677.05
 experiments = [
     'DUF-Ion Source Maintenance',
     'DUF-Ion Source Ion deposition',
@@ -276,9 +296,9 @@ wu_quantity = 1
 
 [entities.LT4P]
 name = 'LT-UHV 4 tips'
-T1 = 1166
-T2 = 1459
-T3 = 1824
+T1 = 1168.99
+T2 = 1462.06
+T3 = 1827.6
 experiments = [
     'LT-UHV-4STM SEM Maintenance',
     'LT-UHV-4STM SEM Sample preparation',
@@ -288,27 +308,30 @@ experiments = [
 ]
 wu = 'day'
 wu_quantity = 1
+session_names = ['Morning', 'AfterNoon']
 
 [entities.MECA]
 name = 'Mechanic Service'
-T1 = 247
-T2 = 1066
-T3 = 1333
+T1 = 247.32
+T2 = 1066.35
+T3 = 1332.9
 experiments = [
     'ABEILHOU Pierre',
     'GATTI Bertrand',
 ]
 wu = 'day'
 wu_quantity = 0.5
+session_names = ['Morning', 'AfterNoon']
 
 [entities.ELEC]
 name = 'Electronic Service'
-T1 = 81
-T2 = 976
-T3 = 1121
+T1 = 80.47
+T2 = 957.71
+T3 = 1197.1
 experiments = [
     'PERTEL Christian',
     'LASFAR Abdelouahed',
 ]
 wu = 'day'
 wu_quantity = 1
+session_names = ['Morning', 'AfterNoon']

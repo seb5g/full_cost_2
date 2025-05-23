@@ -9,7 +9,8 @@ from .filters import RecordFilter
 from fullcoster.utils import manage_time
 
 #################################################################
-from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory, WUCategories
+from fullcoster.constants.activities import Activity, ACTIVITIES, ActivityCategory
+from fullcoster.constants.entities import WUCategory
 """ 
 {% raw %}
 The template tag {{'activity'}} will be replaced by the name of the ActivityCategory enum specifying the Activity
@@ -38,13 +39,13 @@ class GetRecord(GetRecord):
     activity = activity_dict
 
     def validate_record(self, record, form):
-        if activity.wu == WUCategories.day or activity.wu == WUCategories.session:
+        if activity.wu == WUCategory.day or activity.wu == WUCategory.session:
             error = manage_time.is_range_intersecting_date_session(record, self.record_class)
-        elif activity.wu == WUCategories.sample:
+        elif activity.wu == WUCategory.sample:
             error = None
-        elif activity.wu == WUCategories.duration:
+        elif activity.wu == WUCategory.duration:
             error = None
-        elif activity.wu == WUCategories.hours:
+        elif activity.wu == WUCategory.hour:
             error = manage_time.is_range_intersecting_datetime(record, self.record_class)
 
         if error is not None:

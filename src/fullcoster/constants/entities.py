@@ -9,7 +9,7 @@ from fullcoster.utils.enum import BaseEnum
 from enum import StrEnum
 
 
-entity_config_path = Path(__file__).parent.parent.joinpath('app_base/config_entities.toml')
+entity_config_path = Path(__file__).parent.parent.joinpath('resources/config_entities.toml')
 
 
 class PriceCategory(StrEnum):
@@ -44,12 +44,20 @@ class WU:
     cat_quantity: Union[float, Iterable[str]]
     cat_extra: dict = None
 
+    def __eq__(self, other: 'WU'):
+        if not isinstance(other, WU):
+            return False
+        return self.category == other.category  #  and
+                # self.cat_extra == other.cat_extra and
+                # self.cat_quantity == other.cat_quantity)
+
 
 class WUCategory(BaseEnum):
     day = 1
     hour = 2
     sample = 3
     session = 4
+    duration = 4
 
     def to_wu(self,
               cat_quantity: Union[float, Iterable[str]],
@@ -73,6 +81,9 @@ class Entity:
                            self.prices[price_enum],
                            self.short))
         return prices
+
+    def __repr__(self):
+        return f'Entity: {self.name}/{self.short}'
 
 
 EntityCategory = BaseEnum(
