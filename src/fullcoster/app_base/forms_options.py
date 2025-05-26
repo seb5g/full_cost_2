@@ -2,17 +2,18 @@ from django.forms import ModelForm, DateInput, Textarea, NumberInput, Select, Ch
 from crispy_forms.layout import Fieldset, Submit, Row, Column, Div, Reset, Layout, Button
 from crispy_forms.bootstrap import FormActions
 
-from fullcoster.constants.activities import Activity, WUCategories
+from fullcoster.constants.activities import Activity
+from fullcoster.constants.entities import WUCategory
 
 
 def get_field(activity: Activity):
     fields = []
     fields.append('date_from')
-    if activity.wu == WUCategories.day:
+    if activity.wu == WUCategory.day:
         fields.append('date_to')
     if activity.session_names is not None:
         fields.extend(['time_from', 'time_to'])
-    if activity.wu == WUCategories.duration:
+    if activity.wu == WUCategory.duration:
         fields.append('duration')
     fields.extend(['user', 'wu'])
     if activity.night:
@@ -23,13 +24,13 @@ def get_field(activity: Activity):
 
 def get_labels(activity: Activity):
     labels = {}
-    if activity.wu == WUCategories.sample:
+    if activity.wu == WUCategory.sample:
         labels.update({'date_from': 'Date:'})
     else:
         labels.update({'date_from': 'From:'})
-    if activity.wu == WUCategories.day:
+    if activity.wu == WUCategory.day:
         labels.update({'date_to': 'To:'})
-    if activity.wu == WUCategories.duration:
+    if activity.wu == WUCategory.duration:
         labels.update({'duration': 'Duration in s:'})
     labels.update({'wu': 'WU:', 'experiment': 'Experiment:'})
     if activity.night:
@@ -42,7 +43,7 @@ def get_labels(activity: Activity):
 def get_help_text(activity: Activity):
     help_texts = {}
     help_texts.update({'date_from': 'The starting date of your run'})
-    if activity.wu == WUCategories.day:
+    if activity.wu == WUCategory.day:
         help_texts.update({'date_to': 'The last date of your run'})
 
     #help_texts.update({'wu': activity.wu_label})
@@ -58,16 +59,16 @@ def get_help_text(activity: Activity):
 def get_widgets(activity: Activity):
     widgets = {}
     widgets.update({'date_from': DateInput(attrs={'type': 'date', 'class': 'datepicker dfrom time'})})
-    if activity.wu == WUCategories.day:
+    if activity.wu == WUCategory.day:
         widgets.update({'date_to': DateInput(attrs={'type': 'date', 'class': 'datepicker dto time'})})
-    if activity.wu == WUCategories.duration:
+    if activity.wu == WUCategory.duration:
         widgets.update({'duration': NumberInput(attrs={'min':0, 'step':1, 'class': 'duration'}),})
 
     if activity.session_names is not None:
-        if activity.wu == WUCategories.day or activity.wu == WUCategories.session:
+        if activity.wu == WUCategory.day or activity.wu == WUCategory.session:
             widgets.update({'time_from': Select(attrs={'class': 'tfrom time'}),
                             'time_to': Select(attrs={'class': 'tto time'})})
-        elif activity.wu == WUCategories.hours:
+        elif activity.wu == WUCategory.hours:
             widgets.update({'time_from': TimeInput(attrs={'type': 'time', 'class': 'timepicker tfrom time'}),
                             'time_to': TimeInput(attrs={'type': 'time', 'class': 'timepicker tto time'}),})
 
@@ -93,16 +94,16 @@ def get_layout(activity: Activity):
 
     date_row = Row(Column('date_from', css_class='form-group col-md-3'), css_class='form-row')
 
-    if activity.wu == WUCategories.day or activity.wu == WUCategories.session or activity.wu == WUCategories.hours:
+    if activity.wu == WUCategory.day or activity.wu == WUCategory.session or activity.wu == WUCategory.hour:
         date_row.append(Column('time_from', css_class='form-group col-md-3'))
 
     date_row.append(Div(css_class='w-100'))
 
-    if activity.wu == WUCategories.day:
+    if activity.wu == WUCategory.day:
         date_row.append(Column('date_to', css_class='form-group col-md-3'))
-    if activity.wu == WUCategories.day or activity.wu == WUCategories.session or activity.wu == WUCategories.hours:
+    if activity.wu == WUCategory.day or activity.wu == WUCategory.session or activity.wu == WUCategory.hour:
         date_row.append(Column('time_to', css_class='form-group col-md-3'))
-    if activity.wu == WUCategories.duration:
+    if activity.wu == WUCategory.duration:
         date_row.append(Column('duration', css_class='form-group col-md-6 gi-col durationcol'))
     date_row.append(Column('experiment', css_class='form-group col-6'))
 

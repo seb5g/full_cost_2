@@ -15,6 +15,7 @@ activity_short = Path(__file__).parts[-2]
 
 class Gestionnaire(models.Model):
 
+
     first_name = models.CharField(max_length=200, default=None)
     last_name = models.CharField(max_length=200, default=None)
     email = models.EmailField(max_length=200, default=None)
@@ -103,6 +104,7 @@ class Extraction(models.Model):
                 f"{self.creation_id:03d} for {self.project}")
 
 class Record(models.Model):
+
     submitted = models.DateTimeField(default=now)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, blank = True, null=True,
                              related_name="%(app_label)s_%(class)s_related",

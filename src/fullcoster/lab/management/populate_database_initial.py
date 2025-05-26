@@ -129,10 +129,9 @@ def populate_experiments():
 
 
 if __name__ == '__main__':
-    populate_administrators()
-    populate_users()
-
-    populate_prices()
+    # populate_administrators()
+    # populate_users()
+    # populate_prices()
     populate_projects()
 
 

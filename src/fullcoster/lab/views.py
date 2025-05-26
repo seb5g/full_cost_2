@@ -38,6 +38,7 @@ except ProgrammingError as e:
     RecordTableFull = None
     ExtractionTable = None
     RecordTable = None
+    print(str(e))
     print("Could not yet load Project table as it's not populated...")
 
 from .forms import ExtractionForm
