@@ -43,7 +43,7 @@ $(document).ready(function() {
     function calculatewu(){
 
         try {
-            Nunits=Math.round($(".duration").val()/{{activity.wu_unity}} * 10)/10;
+            Nunits=Math.round($(".duration").val()/{{activity.wu_quantity}} * 10)/10;
             Nunits = Math.max(Nunits, 1);
             return Nunits;
            }
