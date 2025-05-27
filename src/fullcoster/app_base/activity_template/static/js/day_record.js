@@ -1,3 +1,9 @@
+/*
+{% raw %}
+The template tag {{'activity'}} will be replaced by the Activity object type specifying the Activity
+{% endraw %}
+*/
+
 $(document).ready(function() {
 
     $(".wu").prop("readonly",true);
@@ -16,7 +22,7 @@ $(document).ready(function() {
             {alert("Days are not in the right order!");
             return false;}
 
-        else if (dto.getTime() == dfrom.getTime() && tto ==0 && tfrom == 1)
+        else if (dto.getTime() == dfrom.getTime() && tto < tfrom)
             {alert("Sessions are not in the right order!");
             return false;}
 
@@ -57,18 +63,22 @@ $(document).ready(function() {
             var dfrom = $(".dfrom").val();
             var dto = $(".dto").val();
 
-            var tfrom = $(".tfrom").val(); //values are 0 or 1 has defined in the model field
+            var tfrom = $(".tfrom").val();
             var tto = $(".tto").val();
             var ndays = Number(elapsed_days(new Date(dfrom),new Date(dto)));
+            var wu_quantity = {{activity.wu_quantity}}
+            var n_sessions = new Number($(".tto")[0].length)
+
             {% if activity.night %}
             var Nnights = Number($(".nights").val())
             if (Nnights > ndays){alert("You cannot do more nights than days"); return 0;}
-            var Nunits = new Number(2*ndays + Nnights);
+
+            var Nunits = new Number(ndays / wu_quantity + Nnights);
             {% else %}
-            var Nunits = new Number(2*ndays);
+            var Nunits = new Number(ndays / wu_quantity);
             {% endif %}
-            if (tfrom != 0){Nunits-=1;}
-            if (tto == 0){Nunits-=1;}
+            if (tfrom != 0){Nunits -= 1 / wu_quantity * (tfrom) / n_sessions;}
+            if (tto != n_sessions-1){Nunits -= 1 / wu_quantity * (n_sessions-tto - 1) / n_sessions;}
 
             return Nunits;
            }
