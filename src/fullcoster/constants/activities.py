@@ -18,8 +18,7 @@ class Activity:
     activity_short: str
     activity_long: str
     wu: WUCategory
-    wu_unit: Any
-    wu_unity: float
+    wu_quantity: float
     wu_label: str
     session_names: list[str]
     night: bool
@@ -58,11 +57,10 @@ for activity_short, activity_dict in toml.load(activity_config_path)['activities
         Activity(activity_short,
                  activity_long=activity_dict['name'],
                  wu=WUCategory[entities[0].wu.category],  # to make sure the wu is within the possible options
-                 wu_unit=activity_dict.get('wu_unit', 'day'),
-                 wu_unity = activity_dict.get('wu_unity', 1),
-                 wu_label=activity_dict.get('wu_label', 'Working Unit:'),
-                 session_names=activity_dict.get('session_names', None),
-                 night=activity_dict.get('night', False),
+                 wu_quantity=entities[0].wu.cat_quantity,
+                 wu_label=entities[0].wu.label,
+                 session_names=entities[0].wu.sessions,
+                 night=entities[0].wu.cat_extra.get('night', False) if entities[0].wu.cat_extra else False,
                  entities=entities
                  ))
 

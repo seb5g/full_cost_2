@@ -277,6 +277,7 @@ experiments = [
 ]
 wu = 'day'
 wu_quantity = 1
+session_names = ['Morning', 'AfterNoon']
 
 [entities.DUFG]
 name = 'Growth DUF'
@@ -293,6 +294,7 @@ experiments = [
 ]
 wu = 'day'
 wu_quantity = 1
+session_names = ['Morning', 'AfterNoon']
 
 [entities.LT4P]
 name = 'LT-UHV 4 tips'

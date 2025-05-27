@@ -42,14 +42,16 @@ class WU:
     """
     category: str
     cat_quantity: Union[float, Iterable[str]]
+    label: str = ''
+    sessions: list[str] = None
     cat_extra: dict = None
 
     def __eq__(self, other: 'WU'):
         if not isinstance(other, WU):
             return False
-        return self.category == other.category  #  and
-                # self.cat_extra == other.cat_extra and
-                # self.cat_quantity == other.cat_quantity)
+        return (self.category == other.category  and
+                self.sessions == other.sessions and
+                self.label == other.label)
 
 
 class WUCategory(BaseEnum):
@@ -57,12 +59,14 @@ class WUCategory(BaseEnum):
     hour = 2
     sample = 3
     session = 4
-    duration = 4
+    duration = 5
 
     def to_wu(self,
               cat_quantity: Union[float, Iterable[str]],
+              label: str = '',
+              sessions: list[str] = None,
               cat_extra=None,) -> WU:
-        return WU(self.name, cat_quantity, cat_extra)
+        return WU(self.name, cat_quantity, label, sessions, cat_extra)
 
 
 @dataclass()
@@ -102,7 +106,9 @@ for entity_short, entity_dict in toml.load(entity_config_path)['entities'].items
                                                     experiments=entity_dict['experiments'],
                                                     wu=WUCategory[entity_dict['wu']].to_wu(
                                                         cat_quantity=entity_dict.get('wu_quantity', 1),
-                                                        cat_extra=entity_dict.get('wu_extra', None)
+                                                        label=entity_dict.get('wu_label', ''),
+                                                        sessions=entity_dict.get('session_names', None),
+                                                        cat_extra=entity_dict.get('wu_extra', None),
                                                     ))
 
 def get_entities_as_list() -> list[(str, str)]:
