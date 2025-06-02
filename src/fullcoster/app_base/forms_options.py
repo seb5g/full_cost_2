@@ -11,7 +11,7 @@ def get_field(activity: Activity):
     fields.append('date_from')
     if activity.wu == WUCategory.day:
         fields.append('date_to')
-    if activity.session_names is not None:
+    if activity.session_names is not None or activity.wu == WUCategory.hour:
         fields.extend(['time_from', 'time_to'])
     if activity.wu == WUCategory.duration:
         fields.append('duration')
@@ -32,10 +32,10 @@ def get_labels(activity: Activity):
         labels.update({'date_to': 'To:'})
     if activity.wu == WUCategory.duration:
         labels.update({'duration': 'Duration in s:'})
-    labels.update({'wu': 'WU:', 'experiment': 'Experiment:'})
+    labels.update({'wu': activity.wu_label, 'experiment': 'Experiment:'})
     if activity.night:
         labels.update({'nights': 'N nights:'})
-    if activity.session_names is not None:
+    if activity.session_names is not None or activity.wu == WUCategory.hour:
         labels.update({'time_from': 'Time From:', 'time_to': 'Time To:'})
     return labels
 
@@ -53,6 +53,10 @@ def get_help_text(activity: Activity):
     if activity.session_names is not None:
         help_texts.update({'time_from': 'The first session of your run',
                            'time_to': 'The last session of your run'})
+    if activity.wu == WUCategory.hour:
+        help_texts.update({'time_from': 'Time formated as (HH:MM:SS)',
+                           'time_to': 'Time formated as (HH:MM:SS)'})
+
     return help_texts
 
 
@@ -64,11 +68,11 @@ def get_widgets(activity: Activity):
     if activity.wu == WUCategory.duration:
         widgets.update({'duration': NumberInput(attrs={'min':0, 'step':1, 'class': 'duration'}),})
 
-    if activity.session_names is not None:
+    if activity.session_names is not None or activity.wu == WUCategory.hour:
         if activity.wu == WUCategory.day or activity.wu == WUCategory.session:
             widgets.update({'time_from': Select(attrs={'class': 'tfrom time'}),
                             'time_to': Select(attrs={'class': 'tto time'})})
-        elif activity.wu == WUCategory.hours:
+        elif activity.wu == WUCategory.hour:
             widgets.update({'time_from': TimeInput(attrs={'type': 'time', 'class': 'timepicker tfrom time'}),
                             'time_to': TimeInput(attrs={'type': 'time', 'class': 'timepicker tto time'}),})
 

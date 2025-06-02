@@ -47,7 +47,7 @@ entities = [
     'CHEMISTRY',
 ]
 
-[activities.GROWTH_IMP]
+[activities.GROWTHIMP]
 name = 'Growth and Implantation'
 entities = [
     'GROWTH',

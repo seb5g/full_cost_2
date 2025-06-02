@@ -247,7 +247,7 @@ experiments = [
 ]
 wu = 'hour'
 wu_quantity = 0.0002777778 #fractionnal part in seconds
-wu_label = 'Number of seconds'
+wu_label = 'Number of hours:'
 
 [entities.IMPLANT]
 name = 'Ionic Implantation'
@@ -259,7 +259,7 @@ experiments = [
 ]
 wu = 'hour'
 wu_quantity = 0.0002777778 #fractionnal part in seconds
-wu_label = 'Number of seconds'
+wu_label = 'Number of hours:'
 
 [entities.UHVI]
 name = 'UHV Imagery'
