@@ -43,7 +43,7 @@ $(document).ready(function() {
             var wu_quantity = 0.0002777778;
             Nseconds = (date_to.getTime() - date_from.getTime()) / 1000;
             var Nunits = new Number(Nseconds * wu_quantity);
-            if (Nunits <= 0)
+            if (Nunits < 0)
                 {alert("Set Times are not in the right order!");
                 return 0;}
             return Math.round(Nunits*100)/100;

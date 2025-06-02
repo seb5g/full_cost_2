@@ -67,8 +67,10 @@ $(document).ready(function() {
             var tto = $(".tto").val();
             var ndays = Number(elapsed_days(new Date(dfrom),new Date(dto)));
             var wu_quantity = {{activity.wu_quantity}}
+            try {
             var n_sessions = new Number($(".tto")[0].length)
-
+            }
+            catch (error){return 0}
             {% if activity.night %}
             var Nnights = Number($(".nights").val())
             if (Nnights > ndays){alert("You cannot do more nights than days"); return 0;}
