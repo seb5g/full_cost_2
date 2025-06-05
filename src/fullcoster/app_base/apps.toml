@@ -1,1 +1,1 @@
-apps = []
+apps = [ "MET", "PREPA", "FIB_MEB", "OSM", "CARAC", "NANOFAB", "CHEM", "GROWTHIMP", "STM_AFM", "ENGINEERING",]
