@@ -46,7 +46,7 @@ $(document).ready(function() {
             if (Nunits < 0)
                 {alert("Set Times are not in the right order!");
                 return 0;}
-            return Math.round(Nunits*100)/100;
+            return Math.round(Nunits*10)/10;
            }
         catch (error) {alert("catch triggered"+error);return 0}
     }
