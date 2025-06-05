@@ -213,9 +213,9 @@ wu_quantity = 0.5
 
 [entities.CHEMISTRY]
 name = 'Chemistry'
-T1 = 95
-T2 = 149
-T3 = 186
+T1 = 94.98
+T2 = 148.68
+T3 = 185.85
 experiments = [
     'Labo 103',
     'Labo 105',
@@ -231,7 +231,7 @@ experiments = [
     'P007 boite à gants',
 ]
 wu = 'day'
-wu_quantity = 0.5
+wu_quantity = 1
 session_names = ['8h30-10h30', '10h30-12h30', '14h-16h', '16h-18h']
 
 [entities.GROWTH]
