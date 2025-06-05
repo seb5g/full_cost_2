@@ -66,7 +66,7 @@ $(document).ready(function() {
             var tfrom = $(".tfrom").val();
             var tto = $(".tto").val();
             var ndays = Number(elapsed_days(new Date(dfrom),new Date(dto)));
-            var wu_quantity = 0.5
+            var wu_quantity = 1
             try {
             var n_sessions = new Number($(".tto")[0].length)
             }
