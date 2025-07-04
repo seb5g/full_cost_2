@@ -66,7 +66,9 @@ $(document).ready(function() {
             var tfrom = $(".tfrom").val();
             var tto = $(".tto").val();
             var ndays = Number(elapsed_days(new Date(dfrom),new Date(dto)));
-            var wu_quantity = 0.5
+            var exp = $("select.experiment").children("option:selected").text();
+            var meca = exp.includes("ABEILHOU") || exp.includes("GATTI")
+            if (meca) {wu_quantity = 0.5} else {wu_quantity = 1}
             try {
             var n_sessions = new Number($(".tto")[0].length)
             }
@@ -97,6 +99,11 @@ $(document).ready(function() {
         if (dto < dfrom)
             {alertc("Date to cannot be before Date from!");
             $(".dto").val(dfrom.yyyymmdd());}
+    })
+
+  $("select.experiment").change(function() {
+        var Nunits = calculatewu();
+        $(".wu").val(Nunits);
     })
 
     $(".time").change(function() {
