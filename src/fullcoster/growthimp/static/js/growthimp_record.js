@@ -40,13 +40,26 @@ $(document).ready(function() {
             date_from = new Date(now_date_string + " " + tfrom);
             date_to = new Date(now_date_string + " " + tto);
 
-            var wu_quantity = 0.0002777778;
+            var wu_quantity = 0.0002777777;
             Nseconds = (date_to.getTime() - date_from.getTime()) / 1000;
-            var Nunits = new Number(Nseconds * wu_quantity);
+
+            var exp = $("select.experiment").children("option:selected").text();
+            var implantation = exp.includes("Implantation");
+            var four = exp.includes("Four");
+            var Nhours = new Number(Nseconds * wu_quantity);
+            if (implantation) {
+                Nunits = 1 + Math.round(Nhours*10)/10;
+            } else {
+                if (four) {
+                Nunits = Math.round(Nhours/4*100)/100;
+                } else {
+                    Nunits = 1 + Math.ceil(Nhours);
+                };
+            }
             if (Nunits < 0)
                 {alert("Set Times are not in the right order!");
                 return 0;}
-            return Math.round(Nunits*10)/10;
+            return Nunits;
            }
         catch (error) {alert("catch triggered"+error);return 0}
     }
@@ -61,6 +74,11 @@ $(document).ready(function() {
     };
 
     $(".time").change(function() {
+        var Nunits = calculatewu();
+        $(".wu").val(Nunits);
+    })
+
+    $("select.experiment").change(function() {
         var Nunits = calculatewu();
         $(".wu").val(Nunits);
     })
