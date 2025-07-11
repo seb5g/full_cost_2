@@ -101,10 +101,11 @@ $(document).ready(function() {
             $(".dto").val(dfrom.yyyymmdd());}
     })
 
-  $("select.experiment").change(function() {
+    $("select.experiment").change(function() {
         var Nunits = calculatewu();
         $(".wu").val(Nunits);
     })
+
 
     $(".time").change(function() {
         var Nunits = calculatewu();
