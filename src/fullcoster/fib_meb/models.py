@@ -77,5 +77,10 @@ class Record(*base_class):
                     f'{self.experiment} from {self.date_from}/{self.get_time_from_display()} to'
                     f' {self.date_to}/{self.get_time_to_display()}')
         except:
-            return 'Null record'
+            try:
+                return (f'{activity_short} record {self.id} submitted the {sub}: {self.user} used '
+                        f'{self.experiment} the {self.date_from}/{self.get_time_from_display()} to'
+                        f' {self.date_from}/{self.get_time_to_display()}')
+            except:
+                return 'Null record'
 
