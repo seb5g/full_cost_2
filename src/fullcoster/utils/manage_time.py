@@ -72,6 +72,8 @@ def is_range_intersecting_datetime(record, Record):
 def is_range_intersecting_date_session(record, Record):
     error = None
     r_exp = Record.objects.filter(experiment__exact=record.experiment)
+    if not hasattr(record, 'date_to'): # could happen...
+        return error
     for ind, r in enumerate(r_exp):
         inter1 = inter.closed(record.date_from, record.date_to)
         inter2 = inter.closed(r.date_from, r.date_to)
